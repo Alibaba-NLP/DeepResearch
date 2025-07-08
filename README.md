@@ -60,6 +60,7 @@ alt="Alibaba-NLP%2FWebAgent | Trendshift" style="width: 250px; height: 55px;" wi
 - We introduce a four-stage training paradigm comprising **browsing data construction, trajectory sampling, supervised fine-tuning for effective cold start, and reinforcement learning for improved generalization**, enabling the agent to autonomously acquire autonomous search and reasoning skills.
 - Our data-centric approach integrates trajectory-level supervision fine-tuning and reinforcement learning (DAPO) to develop a scalable pipeline for **training agentic systems** via SFT or RL.
 - WebDancer achieves a Pass@3 score of 64.1% on GAIA and 62.0% on WebWalkerQA.
+- [CLICK TO VISUALISE AND QUERY REPO](https://repomapr.com/Alibaba-NLP/WebAgent)
 
 ## 🚀 Quick Start
 
@@ -178,6 +179,7 @@ If this work is helpful, please kindly cite as:
 The repo is contributed by [Jialong Wu](https://callanwu.github.io/). If you have any questions, please feel free to contact via wujialongml@gmail.com or create an issue.
 
 ## 🌟 Misc
+
 
 <div align="center">
 
