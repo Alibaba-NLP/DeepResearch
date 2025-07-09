@@ -9,6 +9,9 @@ export JINA_API_KEY=''
 # DASHSCOPE
 export DASHSCOPE_API_KEY=''
 
+# GEMINI (Uncomment and set your API key if using Gemini-powered agents)
+# export GEMINI_API_KEY=''
+
 cd ..
 
 python -m demos.assistant_qwq_chat

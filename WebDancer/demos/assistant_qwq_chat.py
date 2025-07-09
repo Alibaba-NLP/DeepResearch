@@ -8,6 +8,7 @@ from qwen_agent.utils.output_beautify import typewriter_print
 from demos.agents.search_agent import SearchAgent
 from demos.llm.oai import TextChatAtOAI
 from demos.llm.qwen_dashscope import QwenChatAtDS
+from demos.llm.gemini import TextChatAtGemini # Import Gemini LLM
 from demos.gui.web_ui import WebUI
 from demos.utils.date import date2str, get_date_now
 from demos.tools import Visit, Search
@@ -46,25 +47,63 @@ def init_qwen_agent_service(model: str = 'qwq-32b'):
 
     return bot
 
-def init_dev_search_agent_service(name: str = 'SEARCH', port: int = 8002, desc: str = '初版', reasoning: bool = True, max_llm_calls: int = 20, tools = ['search', 'visit'], addtional_agent = None):
-    llm_cfg = TextChatAtOAI({
-        'model': '',
-        'model_type': 'oai',
-        'model_server': f'http://127.0.0.1:{port}/v1',
-        'api_key': 'EMPTY',
+def init_dev_search_agent_service(
+    name: str = 'SEARCH',
+    port: int = 8002,  # Only used if llm_provider is 'oai' and model_server is not overridden
+    desc: str = '初版',
+    reasoning: bool = True,
+    max_llm_calls: int = 20,
+    tools = ['search', 'visit'],
+    addtional_agent = None,
+    llm_provider: str = 'oai', # 'oai' or 'gemini'
+    llm_model_name: str = '', # Specific model name, e.g., 'gemini-1.5-flash-latest'
+    llm_api_key_env: str = '', # Environment variable name for API key
+    llm_model_server: str = '' # Optional model server override
+):
+    llm_config = {
         'generate_cfg': {
-            'fncall_prompt_type': 'nous',
+            'fncall_prompt_type': 'nous', # This might be qwen_agent specific, review if Gemini needs it
             'temperature': 0.6,
             'top_p': 0.95,
-            'top_k': -1,
-            'repetition_penalty': 1.1,
-            'max_tokens': 32768,
-            'stream_options': {
-                'include_usage': True,
-            },
-            'timeout': 3000
-        },
-    })
+            # 'top_k': -1, # Gemini might not use -1 for top_k
+            'repetition_penalty': 1.1, # Check if Gemini supports this
+            'max_tokens': 32768, # Gemini calls this max_output_tokens
+            # 'stream_options': {'include_usage': True,}, # OpenAI specific
+            'timeout': 3000 # Network timeout
+        }
+    }
+
+    if llm_provider == 'oai':
+        llm_config.update({
+            'model': llm_model_name or '', # For OAI, empty might mean local server default
+            'model_type': 'oai',
+            'model_server': llm_model_server or f'http://127.0.0.1:{port}/v1',
+            'api_key': os.getenv(llm_api_key_env, 'EMPTY'), # Default to 'EMPTY' for local OAI
+        })
+        # Adjust specific generate_cfg for OAI if needed
+        llm_config['generate_cfg']['top_k'] = -1
+        llm_config['generate_cfg']['stream_options'] = {'include_usage': True}
+        llm_cfg_instance = TextChatAtOAI(llm_config)
+    elif llm_provider == 'gemini':
+        if not llm_model_name:
+            llm_model_name = 'gemini-1.5-flash-latest' # Default Gemini model
+
+        llm_config.update({
+            'model': llm_model_name,
+            'model_type': 'gemini',
+            'api_key': os.getenv(llm_api_key_env, ''), # Gemini key must be valid
+        })
+        # Adjust generate_cfg for Gemini
+        llm_config['generate_cfg']['max_output_tokens'] = llm_config['generate_cfg'].pop('max_tokens')
+        if 'repetition_penalty' in llm_config['generate_cfg']: # Gemini doesn't use this
+            del llm_config['generate_cfg']['repetition_penalty']
+        if 'fncall_prompt_type' in llm_config['generate_cfg']: # qwen-specific
+             del llm_config['generate_cfg']['fncall_prompt_type']
+
+        llm_cfg_instance = TextChatAtGemini(llm_config)
+    else:
+        raise ValueError(f"Unsupported llm_provider: {llm_provider}")
+
     def make_system_prompt():
         system_message="You are a Web Information Seeking Master. Your task is to thoroughly seek the internet for information and provide accurate answers to questions. with chinese language." \
                        "And you are also a Location-Based Services (LBS) assistant designed to help users find location-specific information." \
@@ -131,18 +170,72 @@ def app_tui():
 
 def app_gui():
     agents = []
-    for name, port, desc, reasoning, max_llm_calls, tools in [
-        ('WebDancer-QwQ-32B', 8004, '...', True, 50, ['search', 'visit']),
-    ]:
-        search_bot_dev = init_dev_search_agent_service(
-            name=name,
-            port=port,
-            desc=desc,
-            reasoning=reasoning,
-            max_llm_calls=max_llm_calls,
-            tools=tools,
-        )
-        agents.append(search_bot_dev)
+    # Original OAI-based agent configuration
+    # for name, port, desc, reasoning, max_llm_calls, tools in [
+    #     ('WebDancer-QwQ-32B', 8004, 'Default OAI (local)', True, 50, ['search', 'visit']),
+    # ]:
+    #     search_bot_dev = init_dev_search_agent_service(
+    #         name=name,
+    #         port=port, # For OAI
+    #         desc=desc,
+    #         reasoning=reasoning,
+    #         max_llm_calls=max_llm_calls,
+    #         tools=tools,
+    #         llm_provider='oai', # Explicitly OAI
+    #         llm_api_key_env='OPENAI_API_KEY' # Example if using a remote OpenAI compatible API
+    #     )
+    #     agents.append(search_bot_dev)
+
+    # Add Gemini agent configuration
+    # Ensure GEMINI_API_KEY is set in your environment
+    gemini_agent_config = {
+        'name': 'WebDancer-Gemini',
+        'desc': 'Powered by Gemini',
+        'reasoning': True,
+        'max_llm_calls': 30, # Adjust as needed
+        'tools': ['search', 'visit'],
+        'llm_provider': 'gemini',
+        'llm_model_name': 'gemini-1.5-flash-latest', # Or your preferred Gemini model
+        'llm_api_key_env': 'GEMINI_API_KEY'
+        # 'port' is not used for Gemini unless llm_model_server is specified for a proxy
+    }
+    try:
+        gemini_bot = init_dev_search_agent_service(**gemini_agent_config)
+        agents.append(gemini_bot)
+    except Exception as e:
+        print(f"Failed to initialize Gemini agent: {e}. Check API key and configurations.")
+
+    # Example: Add another OAI agent if you have one, e.g. a locally deployed model
+    oai_local_agent_config = {
+        'name': 'WebDancer-OAI-Local',
+        'port': 8004, # Example port for your local OAI compatible server
+        'desc': 'Local OAI Model',
+        'reasoning': True,
+        'max_llm_calls': 50,
+        'tools': ['search', 'visit'],
+        'llm_provider': 'oai',
+        'llm_api_key_env': 'LOCAL_OAI_API_KEY', # Or 'EMPTY' if not needed
+        'llm_model_name': '' # Let server decide or specify if needed
+    }
+    try:
+        oai_local_bot = init_dev_search_agent_service(**oai_local_agent_config)
+        agents.append(oai_local_bot)
+    except Exception as e:
+        print(f"Failed to initialize local OAI agent: {e}.")
+
+
+    if not agents:
+        print("No agents initialized. Exiting GUI setup.")
+        # Optionally, initialize a fallback or raise an error
+        # For now, let's try to create a default Qwen agent if others fail
+        try:
+            print("Falling back to Qwen Dashscope agent.")
+            qwen_bot = init_qwen_agent_service() # Ensure this function is robust
+            agents.append(qwen_bot)
+        except Exception as e:
+            print(f"Failed to initialize Qwen fallback agent: {e}")
+            print("Cannot start GUI without any active agent. Please check configurations.")
+            return
 
 
     chatbot_config = {
