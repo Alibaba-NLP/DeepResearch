@@ -43,15 +43,14 @@ async def get_info(url, screenshot = True) -> str:
         str: html content and cleaned markdown content
     """
     run_config = CrawlerRunConfig(
-        screenshot=True,             # Grab a screenshot as base64
+        screenshot=screenshot,             # Grab a screenshot as base64
         screenshot_wait_for=1.0,     # Wait 1s before capturing
     )
     async with AsyncWebCrawler() as crawler:
+        result = await crawler.arun(url, config=run_config)
         if screenshot:
-            result = await crawler.arun(url, config=run_config)
             return result.html, clean_markdown(result.markdown), result.screenshot
         else:
-            result = await crawler.arun(url, screenshot=screenshot)
             return result.html, clean_markdown(result.markdown)
     
 def get_content_between_a_b(start_tag, end_tag, text):

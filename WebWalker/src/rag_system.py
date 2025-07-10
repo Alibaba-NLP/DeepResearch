@@ -32,7 +32,7 @@ def o1_api(ds, output_path):
         print("Please set OPENAI_API_KEY and OPENAI_BASE_URL environment variables.")
         return
     client = AsyncOpenAI(base_url=OPENAI_BASE_URL, api_key=OPENAI_API_KEY)
-    model = "o1-preview-2024-09-12"
+    model = os.getenv("OPENAI_MODEL", "o1-preview-2024-09-12")
     MAX_CONCURRENT = 16
 
     @retry(stop=stop_after_attempt(10), wait=wait_exponential(min=4, max=60))
@@ -59,10 +59,15 @@ def o1_api(ds, output_path):
             with open(output_path, "a", encoding="utf-8") as f:
                 f.write(json.dumps(result, ensure_ascii=False) + "\n")
 
-    visited = []
+    visited = set()
     if os.path.exists(output_path):
         with open(output_path, "r", encoding="utf-8") as f:
-            visited = [json.loads(line)["question"] for line in f]
+            for line in f:
+                try:
+                    visited.add(json.loads(line)["question"])
+                except json.JSONDecodeError:
+                    # Handle malformed JSON lines if necessary
+                    continue
     prompts = []
     for item in ds["question"]:
         if item not in visited:
@@ -73,7 +78,7 @@ def o1_api(ds, output_path):
 
 def gemini_api(ds, output_path, search=False):
     if GEMINI_API_KEY is None or GEMINI_BASE_URL is None:
-        print("Please set GEMINI_API_URL and GEMINI_AUTH_TOKEN environment variables.")
+        print("Please set GEMINI_API_KEY and GEMINI_BASE_URL environment variables.")
         return
     headers = {
         'Authorization': f'Bearer {GEMINI_API_KEY}',
@@ -94,10 +99,14 @@ def gemini_api(ds, output_path, search=False):
             return await response.json()
 
     async def run_gemini_api():
-        if not os.path.exists(output_path):
-            open(output_path, "w").close()
-        with open(output_path, "r", encoding="utf-8") as f:
-            visited = [json.loads(line)["question"] for line in f]
+        visited = set()
+        if os.path.exists(output_path):
+            with open(output_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    try:
+                        visited.add(json.loads(line)["question"])
+                    except json.JSONDecodeError:
+                        continue
         data_list = []
         for item in ds["question"]:
             if item not in visited:
@@ -107,7 +116,7 @@ def gemini_api(ds, output_path, search=False):
             if search:
                 tasks = [
                     fetch(session, GEMINI_BASE_URL, headers, {
-                        "model": "gemini-1.5-pro",
+                        "model": os.getenv("GEMINI_MODEL", "gemini-1.5-pro"),
                         "contents": [
                             {"role": "user", 
                              "parts": 
@@ -131,7 +140,7 @@ def gemini_api(ds, output_path, search=False):
             else:
                 tasks = [
                     fetch(session, GEMINI_BASE_URL, headers, {
-                        "model": "gemini-1.5-pro",
+                        "model": os.getenv("GEMINI_MODEL", "gemini-1.5-pro"),
                         "contents": [{"role": "user", "parts": [{"text": query}]}],
                         "candidates": 1
                     }, semaphore, query)
@@ -166,11 +175,14 @@ def doubao_api(ds, output_path):
             print(f"Error: {e}")
             return
 
-    if not os.path.exists(output_path):
-        open(output_path, "w").close()
     visited = set()
-    with open(output_path, "r", encoding="utf-8") as f:
-        visited.update(json.loads(line)["question"] for line in f)
+    if os.path.exists(output_path):
+        with open(output_path, "r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    visited.add(json.loads(line)["question"])
+                except json.JSONDecodeError:
+                    continue
     data_list = []
     for item in ds["question"]:
         if item not in visited:
@@ -215,12 +227,14 @@ def kimi_api(ds, output_path):
             print(f"Error: {e}")
             return
 
-    if not os.path.exists(output_path):
-        open(output_path, "w").close()
-    
     visited = set()
-    with open(output_path, "r", encoding="utf-8") as f:
-        visited.update(json.loads(line)["question"] for line in f)
+    if os.path.exists(output_path):
+        with open(output_path, "r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    visited.add(json.loads(line)["question"])
+                except json.JSONDecodeError:
+                    continue
 
     data_list = []
     for item in ds["question"]:
@@ -275,12 +289,14 @@ def wenxin_api(ds, output_path):
         response = requests.post(url, headers=headers, data=payload)
         return response.json()["result"]
 
-    if not os.path.exists(output_path):
-        open(output_path, "w").close()
-    
     visited = set()
-    with open(output_path, "r", encoding="utf-8") as f:
-        visited.update(json.loads(line)["question"] for line in f)
+    if os.path.exists(output_path):
+        with open(output_path, "r", encoding="utf-8") as f:
+            for line in f:
+                try:
+                    visited.add(json.loads(line)["question"])
+                except json.JSONDecodeError:
+                    continue
     
     data_list = []
     for item in ds["question"]:

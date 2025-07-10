@@ -118,17 +118,25 @@ class WebWalker(FnCallAgent):
         num_llm_calls_available = action_count
         while num_llm_calls_available > 0:
             num_llm_calls_available -= 1
-            output = []
-            for output in self._call_llm(messages=text_messages):
-                if output:
-                    yield [Message(role=ASSISTANT, content=output[-1].content)]
-            # Accumulate the current response
-            if output:
-                response += output[-1].content
+            last_llm_output = None # To store the last message from _call_llm
+            for msg in self._call_llm(messages=text_messages):
+                if msg:
+                    last_llm_output = msg
+                    yield [Message(role=ASSISTANT, content=msg.content)]
 
-            has_action, action, action_input, thought = self._detect_tool("\n"+output[-1].content)
+            # Accumulate the current response
+            if last_llm_output:
+                response += last_llm_output.content
+            else:
+                # Handle the case where _call_llm yielded no messages
+                print("Warning: _call_llm yielded no messages. Skipping action detection.")
+                # Decrement num_llm_calls_available to prevent infinite loop if LLM consistently fails
+                num_llm_calls_available -= 1
+                continue # Skip to the next iteration of the while loop
+
+            has_action, action, action_input, thought = self._detect_tool("\n"+last_llm_output.content)
             if not has_action:
-                if "Final Answer: " in output[-1].content:
+                if "Final Answer: " in last_llm_output.content:
                     break
                 else:
                     continue
