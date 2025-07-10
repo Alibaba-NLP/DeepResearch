@@ -38,8 +38,8 @@ class MultiTurnReactAgent(FnCallAgent):
 
     def call_server(self, msgs, max_tries=10):
         # Set OpenAI API key and base URL using vLLM API server
-        openai_api_key = os.getenv("OPENAI_API_KEY", "EMPTY")
-        openai_api_base = os.getenv("OPENAI_API_BASE", "http://127.0.0.1:6001/v1")
+        openai_api_key = "EMPTY"
+        openai_api_base = "http://127.0.0.1:6001/v1"
 
         client = OpenAI(
             api_key=openai_api_key,
