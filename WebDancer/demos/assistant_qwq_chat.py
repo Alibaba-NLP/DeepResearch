@@ -78,7 +78,7 @@ def init_dev_search_agent_service(name: str = 'SEARCH', port: int = 8002, desc: 
     bot = SearchAgent(
         llm=llm_cfg,
         function_list=tools,
-        system_message="",
+        system_message=make_system_prompt(),
         name=f'WebDancer',
         description=f"I am WebDancer, a web information seeking agent, welcome to try!",
         extra={
