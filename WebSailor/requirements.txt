@@ -1,2 +1,2 @@
-sglang[all]==0.4.9.post1
-qwen-agent[gui,rag,code_interpreter,mcp]==0.0.27
+sglang[all]
+qwen-agent[gui,rag,code_interpreter,mcp]
