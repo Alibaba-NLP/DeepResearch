@@ -38,8 +38,8 @@ class MultiTurnReactAgent(FnCallAgent):
 
     def call_server(self, msgs, max_tries=10):
         # Set OpenAI API key and base URL using vLLM API server
-        openai_api_key = "EMPTY"
-        openai_api_base = "http://127.0.0.1:6001/v1"
+        openai_api_key = os.getenv("OPENAI_API_KEY", "EMPTY")
+        openai_api_base = os.getenv("OPENAI_API_BASE", "http://127.0.0.1:6001/v1")
 
         client = OpenAI(
             api_key=openai_api_key,
@@ -58,7 +58,7 @@ class MultiTurnReactAgent(FnCallAgent):
                 content = chat_response.choices[0].message.content
                 if content:
                     return content
-            except Exception as e:
+            except Exception as e: # Catching a general exception for now, but ideally this should be more specific (e.g., openai.APIError)
                 if attempt == (max_tries - 1):
                     print(f"SGLang server error {e}")
                     return f"SGLang server error"
@@ -87,8 +87,7 @@ class MultiTurnReactAgent(FnCallAgent):
 
         answer = data['item']['answer']
         self.user_prompt = user_prompt
-        self.user_prompt = self.user_prompt + question
-        messages = [{"role": "system", "content": self.system_message}, {"role": "user", "content": self.user_prompt}]
+        messages = [{"role": "system", "content": self.system_message}, {"role": "user", "content": user_prompt + question}]
         num_llm_calls_available = MAX_LLM_CALL_PER_RUN
         round = 0
         while num_llm_calls_available > 0:
@@ -107,8 +106,10 @@ class MultiTurnReactAgent(FnCallAgent):
                     tool_name = tool_call.get('name', '')
                     tool_args = tool_call.get('arguments', {})
                     result = self._call_tool(tool_name, tool_args)
-                except:
+                except json.JSONDecodeError:
                     result = 'Error: Tool call is not a valid JSON. Tool call must contain a valid "name" and "arguments" field.'
+                except Exception as e:
+                    result = f'Error calling tool: {e}'
                 result = "<tool_response>\n" + result + "\n</tool_response>"
                 messages.append({"role": "user", "content": result})
             if '<answer>' in content and '</answer>' in content:
