@@ -1,0 +1,425 @@
+{
+  "id": "04681048-3c17-485d-bc7f-76de9da6d7cc",
+  "nodes": {
+    "1caf5a4a-c952-4c13-9631-7411e85874e2": {
+      "id": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "label": "FIFA Women's World Cup Original Trophy",
+      "entity_type": "artifact",
+      "domain": "sports",
+      "properties": {
+        "Material": "Gold-plated sterling silver",
+        "Designer": "William Sawaya",
+        "Inaugural Year": "1991"
+      },
+      "features": {
+        "Unique Design": "The trophy features a spiral design with a golden football at the top, symbolizing the dynamic nature and elegance of women’s football.",
+        "Historical Significance": "This trophy was the first to be awarded in the inaugural FIFA Women's World Cup, held in China in 1991, marking a significant milestone in the recognition of women's football globally."
+      },
+      "metadata": {}
+    },
+    "rel_1": {
+      "id": "rel_1",
+      "label": "Current FIFA Women's World Cup Trophy",
+      "entity_type": "related_entity",
+      "domain": "sports",
+      "properties": {},
+      "features": {},
+      "metadata": {}
+    },
+    "expanded_4": {
+      "id": "expanded_4",
+      "label": "Sawaya & Moroni",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_6": {
+      "id": "expanded_6",
+      "label": "gold-plated sterling silver",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_7": {
+      "id": "expanded_7",
+      "label": "spiral design",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_15": {
+      "id": "expanded_15",
+      "label": "prestigious artifact",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_22": {
+      "id": "expanded_22",
+      "label": "electroplating",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_23": {
+      "id": "expanded_23",
+      "label": "jewelry market",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_24": {
+      "id": "expanded_24",
+      "label": "pattern",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_32": {
+      "id": "expanded_32",
+      "label": "sterling silver and 23-karat yellow and white gold",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 4
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "3325485b-e99e-4a3a-9dc9-2b2bf87959fa",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "rel_1",
+      "relation_type": "Successor",
+      "properties": {
+        "description": "The original trophy was replaced by a new design introduced in 1999, which is currently used for the FIFA Women's World Cup."
+      },
+      "weight": 1.0,
+      "confidence": 1.0,
+      "metadata": {}
+    },
+    {
+      "id": "da31d682-12bb-4d21-baa5-47a4b75991f2",
+      "source": "rel_1",
+      "target": "expanded_4",
+      "relation_type": "handcrafted_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "65a7d924-83e4-4883-affd-646399b75884",
+      "source": "rel_1",
+      "target": "expanded_6",
+      "relation_type": "made_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "4e1469f8-3148-4390-a08b-96d4764ec4df",
+      "source": "rel_1",
+      "target": "expanded_7",
+      "relation_type": "has_property",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "94dc0f68-d3c5-49f0-9c22-0dbb07b106b7",
+      "source": "rel_1",
+      "target": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "relation_type": "part_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "3db18213-f8dc-432e-b118-eebcad5d3ed6",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_15",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup. Designed by William Sawaya and crafted by Milanese company Sawaya & Moroni, the trophy stands at 47 centimeters tall and weighs approximately 4.6 kilograms. It is made of sterling silver, clad in 23-karat yellow and white gold, and features a spiral design that elegantly wraps around a football at the top. The spiral represents the athleticism, dynamism, and elegance of women's football, while the football symbolizes the global nature of the sport. The base of the trophy is made of polished marble, adding to its grandeur and stability. This design was first introduced in 1999, replacing the previous trophy used in the inaugural 1991 tournament. The trophy's aesthetic and symbolic elements reflect the spirit of the competition and the achievements of the athletes who compete for it.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that parallels the development and recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the original trophy used during this tournament was different from the current design. The 1991 trophy was a simple, more modest design, reflecting the nascent stage of women's international football. In 1999, coinciding with the third edition of the tournament hosted by the United States, FIFA introduced a new trophy design to better represent the growing prestige and popularity of the women's game. This new design by William Sawaya was intended to capture the elegance and dynamism of women's football. Since its introduction, the trophy has been awarded to the winning team at each subsequent Women's World Cup, becoming a symbol of excellence and achievement in women's football. The trophy's evolution",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "db7e0d13-1bc7-4741-9930-0609ff752ac8",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_4",
+      "relation_type": "crafted_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup. Designed by William Sawaya and crafted by Milanese company Sawaya & Moroni, the trophy stands at 47 centimeters tall and weighs approximately 4.6 kilograms. It is made of sterling silver, clad in 23-karat yellow and white gold, and features a spiral design that elegantly wraps around a football at the top. The spiral represents the athleticism, dynamism, and elegance of women's football, while the football symbolizes the global nature of the sport. The base of the trophy is made of polished marble, adding to its grandeur and stability. This design was first introduced in 1999, replacing the previous trophy used in the inaugural 1991 tournament. The trophy's aesthetic and symbolic elements reflect the spirit of the competition and the achievements of the athletes who compete for it.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that parallels the development and recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the original trophy used during this tournament was different from the current design. The 1991 trophy was a simple, more modest design, reflecting the nascent stage of women's international football. In 1999, coinciding with the third edition of the tournament hosted by the United States, FIFA introduced a new trophy design to better represent the growing prestige and popularity of the women's game. This new design by William Sawaya was intended to capture the elegance and dynamism of women's football. Since its introduction, the trophy has been awarded to the winning team at each subsequent Women's World Cup, becoming a symbol of excellence and achievement in women's football. The trophy's evolution",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "b20257c5-6b3d-4149-a871-f24fc6463655",
+      "source": "expanded_6",
+      "target": "expanded_22",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Composition of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver is a type of jewelry and decorative item that combines two precious metals: gold and sterling silver. Sterling silver is an alloy consisting of 92.5% silver and 7.5% other metals, usually copper, which enhances its strength and durability. The 'gold-plated' aspect refers to a thin layer of gold that is applied to the surface of the sterling silver item. This layer is typically applied through a process known as electroplating, where an electric current is used to deposit a thin layer of gold onto the silver. The thickness of the gold layer can vary, but it is generally very thin, often measured in microns. This combination allows for the appearance and prestige of gold at a lower cost, while also benefiting from the structural integrity of sterling silver. Gold-plated sterling silver is popular in the jewelry market due to its affordability compared to solid gold items, while still providing a luxurious appearance.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Properties and Care of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver possesses unique properties that make it a popular choice for jewelry and decorative items. The gold layer provides a lustrous and appealing finish, while the sterling silver core ensures durability and strength. However, the gold plating is susceptible to wear and tarnish over time, especially if exposed to harsh chemicals, moisture, or friction. To maintain the appearance and longevity of gold-plated sterling silver, it is recommended to avoid contact with water, perfumes, lotions, and cleaning agents. When not in use, storing the items in a dry, soft pouch or a lined jewelry box can help prevent scratches and tarnishing. Regular gentle cleaning with a soft cloth can also help maintain its shine. It's important to note that over time, the gold layer may wear off, revealing the sterling silver beneath, which can be re-plated by a professional jeweler if desired.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Market Context of Gold-Plated Sterling Silver\",\n            \"content\": \"The use of gold-plated sterling silver in jewelry and decorative arts has a rich historical context. The practice of gilding, or applying a thin layer of gold to other metals, dates back to ancient civilizations, including the Egyptians and Romans, who used it to create luxurious items without the high cost of solid gold. In the modern era, gold-plated sterling silver has become a staple in the jewelry industry, offering an affordable alternative to solid gold pieces. The market for gold-plated sterling silver is driven by its cost-effectiveness, aesthetic appeal, and versatility. It allows consumers to enjoy the look and feel of gold without the significant investment. This type of jewelry is particularly popular in fashion-forward markets where trends change rapidly, and consumers seek stylish yet affordable options. The rise of online retail and global trade has further expanded the reach of gold-plated sterling silver, making it accessible to a wide audience. As sustainability becomes a growing concern, the ability to recycle and re-plate these items adds to their appeal, aligning with consumer preferences for environmentally friendly products.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "880555cf-26e6-4c2c-8078-ff475659e99a",
+      "source": "expanded_6",
+      "target": "expanded_23",
+      "relation_type": "popular_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Composition of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver is a type of jewelry and decorative item that combines two precious metals: gold and sterling silver. Sterling silver is an alloy consisting of 92.5% silver and 7.5% other metals, usually copper, which enhances its strength and durability. The 'gold-plated' aspect refers to a thin layer of gold that is applied to the surface of the sterling silver item. This layer is typically applied through a process known as electroplating, where an electric current is used to deposit a thin layer of gold onto the silver. The thickness of the gold layer can vary, but it is generally very thin, often measured in microns. This combination allows for the appearance and prestige of gold at a lower cost, while also benefiting from the structural integrity of sterling silver. Gold-plated sterling silver is popular in the jewelry market due to its affordability compared to solid gold items, while still providing a luxurious appearance.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Properties and Care of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver possesses unique properties that make it a popular choice for jewelry and decorative items. The gold layer provides a lustrous and appealing finish, while the sterling silver core ensures durability and strength. However, the gold plating is susceptible to wear and tarnish over time, especially if exposed to harsh chemicals, moisture, or friction. To maintain the appearance and longevity of gold-plated sterling silver, it is recommended to avoid contact with water, perfumes, lotions, and cleaning agents. When not in use, storing the items in a dry, soft pouch or a lined jewelry box can help prevent scratches and tarnishing. Regular gentle cleaning with a soft cloth can also help maintain its shine. It's important to note that over time, the gold layer may wear off, revealing the sterling silver beneath, which can be re-plated by a professional jeweler if desired.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Market Context of Gold-Plated Sterling Silver\",\n            \"content\": \"The use of gold-plated sterling silver in jewelry and decorative arts has a rich historical context. The practice of gilding, or applying a thin layer of gold to other metals, dates back to ancient civilizations, including the Egyptians and Romans, who used it to create luxurious items without the high cost of solid gold. In the modern era, gold-plated sterling silver has become a staple in the jewelry industry, offering an affordable alternative to solid gold pieces. The market for gold-plated sterling silver is driven by its cost-effectiveness, aesthetic appeal, and versatility. It allows consumers to enjoy the look and feel of gold without the significant investment. This type of jewelry is particularly popular in fashion-forward markets where trends change rapidly, and consumers seek stylish yet affordable options. The rise of online retail and global trade has further expanded the reach of gold-plated sterling silver, making it accessible to a wide audience. As sustainability becomes a growing concern, the ability to recycle and re-plate these items adds to their appeal, aligning with consumer preferences for environmentally friendly products.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "34c723d2-052f-424a-a91e-1ac26915fd26",
+      "source": "expanded_7",
+      "target": "expanded_24",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"The Concept and Definition of Spiral Design\",\n            \"content\": \"Spiral design refers to a pattern or structure that follows a helical or coiled shape, often characterized by a series of curves that radiate around a central point. This design is prevalent in both natural and man-made forms, appearing in phenomena such as galaxies, hurricanes, and the shells of certain mollusks, as well as in architectural and artistic creations. The spiral design is known for its aesthetic appeal and its mathematical properties, often associated with the Fibonacci sequence and the golden ratio. In mathematics, a spiral can be defined as a curve that emanates from a point, moving progressively farther away as it revolves around the point. This design is not only visually striking but also functionally significant, as it can represent growth, evolution, and continuity. The spiral design is utilized in various fields, including architecture, where it can be seen in the form of spiral staircases, and in graphic design, where it serves as a dynamic and engaging visual element.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of Spiral Designs\",\n            \"content\": \"Spiral designs have been a part of human culture and history for thousands of years, with evidence of their use found in ancient artifacts and structures across the globe. In many cultures, spirals are symbolic, representing concepts such as life, death, and rebirth, or the cyclical nature of existence. For instance, in Celtic art, the spiral is a prominent motif, often seen in stone carvings and metalwork, symbolizing the sun or the cycle of life. Similarly, in ancient Greece, the spiral was used in architectural elements such as the Ionic column, which features volutes, or spiral scrolls, at its capital. The spiral design also holds significance in Eastern cultures; in Hinduism and Buddhism, the spiral is often associated with the concept of spiritual growth and enlightenment. The historical use of spirals is not limited to symbolism; they have also been employed for practical purposes. For example, the",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "ba45b7b9-77c3-4c3f-8771-c8dc1b49ff80",
+      "source": "rel_1",
+      "target": "expanded_4",
+      "relation_type": "handcrafted_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The current FIFA Women's World Cup Trophy is a symbol of excellence in women's football, representing the pinnacle of success for national teams around the world. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was first introduced for the 1999 FIFA Women's World Cup. Standing at 47 centimeters tall and weighing approximately 4.6 kilograms, the trophy is made of sterling silver and 23-karat yellow and white gold. Its design features a spiral band that wraps around a football at the top, symbolizing the athleticism, dynamism, and elegance of women's football. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's aesthetic is both modern and timeless, capturing the spirit and energy of the sport while honoring the achievements of the world's best female footballers.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the evolution and growing recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991, but the current trophy design was not introduced until the 1999 tournament, hosted by the United States. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy in 1999 coincided with a landmark moment in women's sports, as the tournament gained unprecedented attention and popularity, particularly in the host nation. The trophy's design was intended to capture the dynamic and progressive nature of women's football, and it has since become an iconic symbol of the sport. Over the years, the trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, Japan, and Norway, each of whom has contributed to the growth and development of the sport.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Symbolism of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance not only as a physical award but also as a symbol of the progress and achievements in women's football. It represents the culmination of years of dedication, teamwork, and excellence for the winning team, serving as a testament to their hard work and skill. Beyond its role as a trophy, it embodies the broader movement for gender equality in sports, highlighting the strides made in providing women with equal opportunities to compete at the highest levels. The trophy's presence at the tournament serves as a reminder of the global reach and impact of women's football, inspiring young girls and women around the world to pursue their passion for the sport. Each time the trophy is lifted, it reinforces the message that women's football is a vital and vibrant part of the global sports landscape, deserving of recognition and celebration. The trophy's symbolism extends beyond the field, as it encourages continued efforts to support and promote women's sports at all levels.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "d237028d-f7d7-4f00-8d9f-a5d547cac3c1",
+      "source": "rel_1",
+      "target": "expanded_32",
+      "relation_type": "made_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The current FIFA Women's World Cup Trophy is a symbol of excellence in women's football, representing the pinnacle of success for national teams around the world. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was first introduced for the 1999 FIFA Women's World Cup. Standing at 47 centimeters tall and weighing approximately 4.6 kilograms, the trophy is made of sterling silver and 23-karat yellow and white gold. Its design features a spiral band that wraps around a football at the top, symbolizing the athleticism, dynamism, and elegance of women's football. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's aesthetic is both modern and timeless, capturing the spirit and energy of the sport while honoring the achievements of the world's best female footballers.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the evolution and growing recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991, but the current trophy design was not introduced until the 1999 tournament, hosted by the United States. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy in 1999 coincided with a landmark moment in women's sports, as the tournament gained unprecedented attention and popularity, particularly in the host nation. The trophy's design was intended to capture the dynamic and progressive nature of women's football, and it has since become an iconic symbol of the sport. Over the years, the trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, Japan, and Norway, each of whom has contributed to the growth and development of the sport.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Symbolism of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance not only as a physical award but also as a symbol of the progress and achievements in women's football. It represents the culmination of years of dedication, teamwork, and excellence for the winning team, serving as a testament to their hard work and skill. Beyond its role as a trophy, it embodies the broader movement for gender equality in sports, highlighting the strides made in providing women with equal opportunities to compete at the highest levels. The trophy's presence at the tournament serves as a reminder of the global reach and impact of women's football, inspiring young girls and women around the world to pursue their passion for the sport. Each time the trophy is lifted, it reinforces the message that women's football is a vital and vibrant part of the global sports landscape, deserving of recognition and celebration. The trophy's symbolism extends beyond the field, as it encourages continued efforts to support and promote women's sports at all levels.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "18112315-9ff9-4187-85b4-cdef58431163",
+      "source": "rel_1",
+      "target": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "relation_type": "part_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The current FIFA Women's World Cup Trophy is a symbol of excellence in women's football, representing the pinnacle of success for national teams around the world. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was first introduced for the 1999 FIFA Women's World Cup. Standing at 47 centimeters tall and weighing approximately 4.6 kilograms, the trophy is made of sterling silver and 23-karat yellow and white gold. Its design features a spiral band that wraps around a football at the top, symbolizing the athleticism, dynamism, and elegance of women's football. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's aesthetic is both modern and timeless, capturing the spirit and energy of the sport while honoring the achievements of the world's best female footballers.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the evolution and growing recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991, but the current trophy design was not introduced until the 1999 tournament, hosted by the United States. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy in 1999 coincided with a landmark moment in women's sports, as the tournament gained unprecedented attention and popularity, particularly in the host nation. The trophy's design was intended to capture the dynamic and progressive nature of women's football, and it has since become an iconic symbol of the sport. Over the years, the trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, Japan, and Norway, each of whom has contributed to the growth and development of the sport.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Symbolism of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance not only as a physical award but also as a symbol of the progress and achievements in women's football. It represents the culmination of years of dedication, teamwork, and excellence for the winning team, serving as a testament to their hard work and skill. Beyond its role as a trophy, it embodies the broader movement for gender equality in sports, highlighting the strides made in providing women with equal opportunities to compete at the highest levels. The trophy's presence at the tournament serves as a reminder of the global reach and impact of women's football, inspiring young girls and women around the world to pursue their passion for the sport. Each time the trophy is lifted, it reinforces the message that women's football is a vital and vibrant part of the global sports landscape, deserving of recognition and celebration. The trophy's symbolism extends beyond the field, as it encourages continued efforts to support and promote women's sports at all levels.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "60589322-0b02-4f09-ab3f-ff89b17a2094",
+      "source": "expanded_24",
+      "target": "expanded_15",
+      "relation_type": "found_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Types of Patterns\",\n            \"content\": \"A pattern is a discernible regularity in the world or in a manmade design. As such, the elements of a pattern repeat in a predictable manner. Patterns can be found in various domains, including mathematics, nature, and art. In mathematics, patterns are often sequences or arrangements that follow a specific rule or formula, such as the Fibonacci sequence or geometric progressions. In nature, patterns manifest in the form of spirals, waves, or fractals, such as the spiral shells of mollusks or the branching of trees. In art and design, patterns are used to create visual interest and can be seen in textiles, architecture, and graphic design. There are several types of patterns, including symmetrical patterns, which are balanced and identical on both sides; asymmetrical patterns, which do not mirror each other but still achieve a sense of balance; and tessellations, which are patterns made of shapes that fit together without gaps or overlaps. Understanding patterns is crucial in various fields, as they help in predicting behaviors, designing algorithms, and creating aesthetically pleasing compositions.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Patterns in Nature and Their Significance\",\n            \"content\": \"Patterns in nature are ubiquitous and have fascinated humans for centuries. These patterns are not just aesthetically pleasing but also serve functional purposes. For",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "f7efd2ac-b25c-4f5d-a864-add06f62dc71",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_15",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and manufactured by Milan-based Sawaya & Moroni, the trophy was unveiled in 1998. It stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The design of the trophy is both elegant and symbolic, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and growth of women's football globally. The ball at the top signifies the sport itself, while the overall upward movement of the design symbolizes the aspirations and achievements of female footballers worldwide. The trophy's base is engraved with the names of the winning teams, creating a historical record of success in the tournament.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that reflects the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but the original trophy was introduced later in 1998, ahead of the 1999 tournament in the United States. Prior to the introduction of this trophy, the winners of the 1991 and 1995 tournaments were awarded a different trophy, which was more simplistic in design. The introduction of the new trophy in 1998 marked a significant moment in the recognition and celebration of women's football, as it provided a unique and prestigious symbol for the competition. The trophy has since been awarded to the champions of each Women's World Cup, with the United States, Germany, Japan, and Norway among the nations that have lifted it. The trophy's introduction and continued use underscore FIFA's commitment to promoting and supporting women's football globally.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy: Custodianship and Legacy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is not only a symbol of victory but also a piece of art that carries a legacy of excellence in women's football. The trophy is kept by FIFA and is not permanently awarded to the winning team. Instead, the champions receive a replica trophy, which they can keep as a memento of their triumph. This custodianship ensures that the original trophy remains a part of FIFA's heritage collection, preserving its condition and significance for future generations. The legacy of the trophy is further enriched by its role in promoting gender equality and inspiring young female athletes worldwide. Each tournament and each victory adds to the narrative of women's football, with the trophy serving as a tangible reminder of the progress and achievements made in the sport. The trophy's presence at the Women's World Cup finals and its presentation to the winning team is a moment of immense pride and celebration, highlighting the dedication, skill, and teamwork required to reach the pinnacle of international football.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "dc186d9b-cfb3-4a3e-83d7-7143da86138b",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_4",
+      "relation_type": "manufactured_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and manufactured by Milan-based Sawaya & Moroni, the trophy was unveiled in 1998. It stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The design of the trophy is both elegant and symbolic, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and growth of women's football globally. The ball at the top signifies the sport itself, while the overall upward movement of the design symbolizes the aspirations and achievements of female footballers worldwide. The trophy's base is engraved with the names of the winning teams, creating a historical record of success in the tournament.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that reflects the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but the original trophy was introduced later in 1998, ahead of the 1999 tournament in the United States. Prior to the introduction of this trophy, the winners of the 1991 and 1995 tournaments were awarded a different trophy, which was more simplistic in design. The introduction of the new trophy in 1998 marked a significant moment in the recognition and celebration of women's football, as it provided a unique and prestigious symbol for the competition. The trophy has since been awarded to the champions of each Women's World Cup, with the United States, Germany, Japan, and Norway among the nations that have lifted it. The trophy's introduction and continued use underscore FIFA's commitment to promoting and supporting women's football globally.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy: Custodianship and Legacy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is not only a symbol of victory but also a piece of art that carries a legacy of excellence in women's football. The trophy is kept by FIFA and is not permanently awarded to the winning team. Instead, the champions receive a replica trophy, which they can keep as a memento of their triumph. This custodianship ensures that the original trophy remains a part of FIFA's heritage collection, preserving its condition and significance for future generations. The legacy of the trophy is further enriched by its role in promoting gender equality and inspiring young female athletes worldwide. Each tournament and each victory adds to the narrative of women's football, with the trophy serving as a tangible reminder of the progress and achievements made in the sport. The trophy's presence at the Women's World Cup finals and its presentation to the winning team is a moment of immense pride and celebration, highlighting the dedication, skill, and teamwork required to reach the pinnacle of international football.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "42909f00-be69-4143-a124-1e7e9c241b14",
+      "source": "expanded_7",
+      "target": "expanded_24",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding Spiral Design: Definition and Applications\",\n            \"content\": \"Spiral design refers to a pattern or structure that follows a helical or coiled form, often observed in both natural and man-made objects. This design is characterized by a series of curves that emanate from a central point, gradually expanding outward in a circular motion. Spiral designs are prevalent in various fields, including architecture, art, mathematics, and nature. In mathematics, the spiral is often associated with the Fibonacci sequence, where each number is the sum of the two preceding ones, leading to the creation of the Golden Spiral, a logarithmic spiral that appears in many natural phenomena. In architecture, spiral designs can be seen in structures like spiral staircases, which provide an efficient use of space while adding aesthetic value. In art, spirals are used to convey movement and dynamism, often symbolizing growth, evolution, and transformation. The spiral design is also significant in cultural contexts, representing concepts such as infinity, continuity, and the cyclical nature of life.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Properties and Mathematical Foundations of Spiral Designs\",\n            \"content\": \"Spiral designs are fascinating due to their unique properties and mathematical foundations. One of the most intriguing aspects of spirals is their ability to maintain a constant angle with respect to the radial line from the center, a property known as self-similarity. This means that the shape of the spiral remains consistent as it expands outward, a characteristic that is particularly evident in logarithmic spirals. Logarithmic spirals are defined by the equation r = a * e^(bθ), where r is the radius, θ is the angle, and a and b are constants. This mathematical formulation allows for the spiral to grow exponentially, making it a common pattern in natural phenomena such as galaxies, hurricanes, and shells. Another important property of spirals is their scalability; they can be expanded or contracted without altering their fundamental shape, making them versatile in design applications. Spirals also exhibit fractal-like properties, where smaller segments of the spiral resemble the whole, a concept that is widely explored in fractal geometry.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of Spiral Designs\",\n            \"content\": \"Spiral designs have held significant historical and cultural importance across various civilizations. In ancient cultures, spirals were often used as symbols in art and architecture, representing concepts such as life, death, and rebirth. For instance, in Celtic art, the spiral is a prominent motif, symbolizing the eternal cycle of life and the interconnectedness of all things. The Greeks and Romans also utilized spiral designs in their architectural elements, such as columns and capitals, which were not only functional but also added aesthetic value to their structures. In Eastern cultures, spirals are often associated with spiritual and religious symbolism. For example, in Hinduism and Buddhism, the spiral is a representation of the path to enlightenment, with the coiling form symbolizing the journey of the soul towards higher consciousness. In modern times, spiral designs continue to influence various fields, from graphic design to engineering, where they are used to create visually appealing and structurally efficient forms. The enduring presence of spiral designs throughout history underscores their universal appeal and the deep-seated human fascination with this geometric form.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "a057c729-58e8-448c-94d0-bb574f2bb72d",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_15",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winning team of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and crafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. The design is a testament to elegance and modernity, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and grace of the sport, while the ball symbolizes the global nature of football. The trophy stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The base of the trophy is made of a semi-precious mineral called sodalite, which adds to its aesthetic appeal. The trophy's design is not only a celebration of the sport but also a tribute to the skill and dedication of female athletes worldwide.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the growth and recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but it wasn't until the 1999 tournament in the United States that the current trophy design was introduced. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy design in 1999 coincided with a landmark tournament that significantly boosted the profile of women's football, particularly in the United States, where the final was played in front of a record-breaking crowd of over 90,000 spectators at the Rose Bowl in Pasadena, California. This event marked a turning point, showcasing the potential and popularity of women's football. Since then, the trophy has been awarded to the champions of each subsequent Women's World Cup, serving as a symbol of excellence and a source of inspiration for aspiring female footballers around the world.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy and Its Role in Promoting Gender Equality in Sports\",\n            \"content\": \"The FIFA Women's World Cup Trophy is more than just a symbol of victory; it plays a significant role in promoting gender equality in sports. As the most prestigious award in women's football, the trophy represents the achievements and progress of female athletes in a historically male-dominated sport. The visibility and recognition that come with winning the trophy have helped to elevate the status of women's football globally, encouraging more investment, media coverage, and participation at all levels. The Women's World Cup has become a platform for advocating gender equality, with FIFA and other organizations using the tournament to highlight issues such as equal pay, representation, and opportunities for women in sports. The trophy, therefore, is not just an artifact but a catalyst for change, inspiring future generations of female athletes to pursue their dreams and challenge societal norms. By celebrating the achievements of women in football, the FIFA Women's World Cup Trophy contributes to the broader movement towards gender equality in sports and beyond.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "a2695b60-f421-4a82-aa95-954fbfc9d7d0",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_4",
+      "relation_type": "crafted_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winning team of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and crafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. The design is a testament to elegance and modernity, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and grace of the sport, while the ball symbolizes the global nature of football. The trophy stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The base of the trophy is made of a semi-precious mineral called sodalite, which adds to its aesthetic appeal. The trophy's design is not only a celebration of the sport but also a tribute to the skill and dedication of female athletes worldwide.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the growth and recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but it wasn't until the 1999 tournament in the United States that the current trophy design was introduced. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy design in 1999 coincided with a landmark tournament that significantly boosted the profile of women's football, particularly in the United States, where the final was played in front of a record-breaking crowd of over 90,000 spectators at the Rose Bowl in Pasadena, California. This event marked a turning point, showcasing the potential and popularity of women's football. Since then, the trophy has been awarded to the champions of each subsequent Women's World Cup, serving as a symbol of excellence and a source of inspiration for aspiring female footballers around the world.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy and Its Role in Promoting Gender Equality in Sports\",\n            \"content\": \"The FIFA Women's World Cup Trophy is more than just a symbol of victory; it plays a significant role in promoting gender equality in sports. As the most prestigious award in women's football, the trophy represents the achievements and progress of female athletes in a historically male-dominated sport. The visibility and recognition that come with winning the trophy have helped to elevate the status of women's football globally, encouraging more investment, media coverage, and participation at all levels. The Women's World Cup has become a platform for advocating gender equality, with FIFA and other organizations using the tournament to highlight issues such as equal pay, representation, and opportunities for women in sports. The trophy, therefore, is not just an artifact but a catalyst for change, inspiring future generations of female athletes to pursue their dreams and challenge societal norms. By celebrating the achievements of women in football, the FIFA Women's World Cup Trophy contributes to the broader movement towards gender equality in sports and beyond.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "89cc7ebc-59e7-4bf4-badf-16ccbbd2fc2a",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_32",
+      "relation_type": "made_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winning team of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and crafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. The design is a testament to elegance and modernity, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and grace of the sport, while the ball symbolizes the global nature of football. The trophy stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The base of the trophy is made of a semi-precious mineral called sodalite, which adds to its aesthetic appeal. The trophy's design is not only a celebration of the sport but also a tribute to the skill and dedication of female athletes worldwide.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the growth and recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but it wasn't until the 1999 tournament in the United States that the current trophy design was introduced. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy design in 1999 coincided with a landmark tournament that significantly boosted the profile of women's football, particularly in the United States, where the final was played in front of a record-breaking crowd of over 90,000 spectators at the Rose Bowl in Pasadena, California. This event marked a turning point, showcasing the potential and popularity of women's football. Since then, the trophy has been awarded to the champions of each subsequent Women's World Cup, serving as a symbol of excellence and a source of inspiration for aspiring female footballers around the world.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy and Its Role in Promoting Gender Equality in Sports\",\n            \"content\": \"The FIFA Women's World Cup Trophy is more than just a symbol of victory; it plays a significant role in promoting gender equality in sports. As the most prestigious award in women's football, the trophy represents the achievements and progress of female athletes in a historically male-dominated sport. The visibility and recognition that come with winning the trophy have helped to elevate the status of women's football globally, encouraging more investment, media coverage, and participation at all levels. The Women's World Cup has become a platform for advocating gender equality, with FIFA and other organizations using the tournament to highlight issues such as equal pay, representation, and opportunities for women in sports. The trophy, therefore, is not just an artifact but a catalyst for change, inspiring future generations of female athletes to pursue their dreams and challenge societal norms. By celebrating the achievements of women in football, the FIFA Women's World Cup Trophy contributes to the broader movement towards gender equality in sports and beyond.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "389ee347-e130-4777-b987-cd1208391c46",
+      "source": "expanded_7",
+      "target": "expanded_24",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding Spiral Design: Definition and Applications\",\n            \"content\": \"Spiral design refers to a pattern or structure that follows a helical or spiral shape, characterized by a curve that winds around a central point while progressively moving away from it. This design is prevalent in both natural and human-made structures. In nature, spiral designs are evident in phenomena such as the arrangement of leaves around a stem (phyllotaxis), the shells of certain mollusks, and the spiral arms of galaxies. In human applications, spiral designs are utilized in various fields including architecture, art, and engineering. For instance, the spiral staircase is a classic architectural feature that maximizes space and aesthetic appeal. In mathematics, the Fibonacci sequence and the Golden Spiral are fundamental concepts that describe spiral growth patterns. The spiral design is also significant in cultural symbolism, often representing concepts such as growth, evolution, and the cyclical nature of life. Understanding spiral design involves exploring its geometric properties, mathematical principles, and its diverse applications across different domains.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Mathematical Properties of Spiral Design\",\n            \"content\": \"Spiral design is deeply rooted in mathematical principles, particularly in geometry and algebra. One of the most famous mathematical spirals is the Archimedean spiral, defined by the equation r = a + bθ in polar coordinates, where 'r' is the radial distance from the origin, 'θ' is the angle, and 'a' and 'b' are constants. This type of spiral maintains a constant distance between successive turns, making it useful in applications such as spiral staircases and phonograph records. Another significant spiral is the logarithmic spiral, described by the equation r = ae^(bθ), where 'e' is the base of the natural logarithm. This spiral is unique because it maintains a constant angle with respect to the radial line, a property known as self-similarity. The logarithmic spiral is found in natural formations such as nautilus shells and hurricanes. The Fibonacci spiral, which approximates the Golden Spiral, is constructed using the Fibonacci sequence, where each quarter-turn arc is a quarter-circle with a radius equal to the Fibonacci numbers. These mathematical properties not only define the aesthetic and structural characteristics of spiral designs but also influence their functional applications in technology and nature.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of Spiral Design\",\n            \"content\": \"The spiral design holds significant historical and cultural importance across various civilizations. In ancient cultures, spirals were often used as symbols in art and architecture, representing concepts such as infinity, growth, and the cyclical nature of life. For example, in Celtic art, the spiral motif is prevalent and is believed to symbolize the sun or the journey of life. The ancient Greeks and Romans also utilized spiral designs in their architectural elements, such as the volutes of Ionic columns. In Eastern cultures, the spiral is often associated with spiritual concepts, such as the Kundalini energy in Hinduism, which is depicted as a coiled serpent. The spiral design is also evident in sacred geometry, where it is used to represent the interconnectedness of all things. In modern times, spiral designs continue to inspire artists and architects, serving as a bridge between ancient symbolism and contemporary aesthetics. The enduring appeal of spiral design lies in its ability to convey movement, balance, and harmony, making it a timeless element in both cultural and artistic expressions.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "3d1c743a-0437-43f7-8ab6-9b7df5cf2038",
+      "source": "expanded_32",
+      "target": "expanded_23",
+      "relation_type": "used_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Composition and Characteristics of Sterling Silver and 23-Karat Gold\",\n            \"content\": \"Sterling silver and 23-karat gold are both precious metals commonly used in jewelry and decorative arts. Sterling silver is an alloy consisting of 92.5% silver and 7.5% other metals, usually copper. This composition enhances its durability and strength, making it suitable for crafting intricate designs. Sterling silver is known for its lustrous appearance and affordability compared to pure silver. On the other hand, 23-karat gold is a high-purity gold alloy, containing approximately 95.8% gold, with the remaining percentage made up of other metals like silver or copper. This high gold content gives it a rich yellow hue and a softer texture compared to lower-karat golds. White gold, often used in conjunction with yellow gold, is typically an alloy of gold and at least one white metal, such as palladium or nickel, and is usually rhodium-plated to enhance its whiteness and luster. The combination of sterling silver with 23-karat yellow and white gold in jewelry pieces offers a unique blend of durability, aesthetic appeal, and value, making it a popular choice among artisans and consumers alike.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of Sterling Silver and 23-Karat Gold\",\n            \"content\": \"The use of sterling silver and high-karat gold has a rich historical and cultural background. Sterling silver has been used since the 12th century, gaining prominence in England where it was standardized for coinage and later for household items and jewelry. Its hallmarking system became a model for quality assurance in precious metals. The term 'sterling' is believed to have originated from the Old English word 'steorling,' meaning 'little star,' possibly referring to the star emblem on early Norman coins. 23-karat gold, with its near-pure composition, has been revered since ancient times for its beauty and rarity. In many cultures, gold is a symbol of wealth, power, and divine connection. High-karat gold, such as 23-karat, is often used in religious artifacts, ceremonial items, and traditional jewelry, especially in Asian and Middle Eastern cultures. The combination of sterling silver and 23-karat gold in modern jewelry design reflects a fusion of historical craftsmanship and contemporary aesthetics, appealing to those who appreciate both tradition and innovation.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Applications and Market Trends for Sterling Silver and 23-Karat Gold\",\n            \"content\": \"Sterling silver and 23-karat gold are widely used in the jewelry industry due to their desirable properties and aesthetic appeal. Sterling silver is favored for its affordability, versatility, and ease of maintenance. It is commonly used in rings, necklaces, bracelets, and earrings, often combined with gemstones or enamel for added visual interest. 23-karat gold, with its high purity, is prized for its rich color and is often used in high-end jewelry pieces, including wedding bands, pendants, and cultural jewelry. White gold, as an alloy, provides a modern alternative to platinum, offering a similar appearance at a lower cost. In recent years, there has been a growing trend towards mixed-metal designs, where sterling silver is combined with yellow and white gold to create unique, multi-tonal pieces that appeal to a wide range of consumers. This trend reflects a broader movement towards personalization and customization in the jewelry market, where consumers seek pieces that reflect their individual style and values. Additionally, the sustainability and ethical sourcing of precious metals have become increasingly important to consumers, influencing purchasing decisions and driving demand for responsibly sourced sterling silver and gold.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    }
+  ],
+  "strategy": "dfs",
+  "complexity_score": 0.23933333333333334,
+  "topology_features": {
+    "num_nodes": 10,
+    "num_edges": 13,
+    "density": 0.28888888888888886,
+    "clustering_coefficient": 0.18666666666666668,
+    "avg_degree": 2.6,
+    "diameter": 4,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 10,
+    "num_edges": 13,
+    "density": 0.28888888888888886,
+    "clustering_coefficient": 0.18666666666666668,
+    "avg_degree": 2.6,
+    "diameter": 4,
+    "connected_components": 1
+  }
+}

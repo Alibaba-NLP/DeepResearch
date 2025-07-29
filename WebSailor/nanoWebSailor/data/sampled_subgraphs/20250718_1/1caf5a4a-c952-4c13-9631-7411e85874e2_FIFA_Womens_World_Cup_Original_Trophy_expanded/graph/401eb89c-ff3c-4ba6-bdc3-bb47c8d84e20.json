@@ -1,0 +1,132 @@
+{
+  "id": "401eb89c-ff3c-4ba6-bdc3-bb47c8d84e20",
+  "nodes": {
+    "rel_1": {
+      "id": "rel_1",
+      "label": "Current FIFA Women's World Cup Trophy",
+      "entity_type": "related_entity",
+      "domain": "sports",
+      "properties": {},
+      "features": {},
+      "metadata": {}
+    },
+    "expanded_6": {
+      "id": "expanded_6",
+      "label": "gold-plated sterling silver",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_22": {
+      "id": "expanded_22",
+      "label": "electroplating",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_23": {
+      "id": "expanded_23",
+      "label": "jewelry market",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_55": {
+      "id": "expanded_55",
+      "label": "92.5% pure silver",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "65a7d924-83e4-4883-affd-646399b75884",
+      "source": "rel_1",
+      "target": "expanded_6",
+      "relation_type": "made_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "b20257c5-6b3d-4149-a871-f24fc6463655",
+      "source": "expanded_6",
+      "target": "expanded_22",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Composition of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver is a type of jewelry and decorative item that combines two precious metals: gold and sterling silver. Sterling silver is an alloy consisting of 92.5% silver and 7.5% other metals, usually copper, which enhances its strength and durability. The 'gold-plated' aspect refers to a thin layer of gold that is applied to the surface of the sterling silver item. This layer is typically applied through a process known as electroplating, where an electric current is used to deposit a thin layer of gold onto the silver. The thickness of the gold layer can vary, but it is generally very thin, often measured in microns. This combination allows for the appearance and prestige of gold at a lower cost, while also benefiting from the structural integrity of sterling silver. Gold-plated sterling silver is popular in the jewelry market due to its affordability compared to solid gold items, while still providing a luxurious appearance.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Properties and Care of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver possesses unique properties that make it a popular choice for jewelry and decorative items. The gold layer provides a lustrous and appealing finish, while the sterling silver core ensures durability and strength. However, the gold plating is susceptible to wear and tarnish over time, especially if exposed to harsh chemicals, moisture, or friction. To maintain the appearance and longevity of gold-plated sterling silver, it is recommended to avoid contact with water, perfumes, lotions, and cleaning agents. When not in use, storing the items in a dry, soft pouch or a lined jewelry box can help prevent scratches and tarnishing. Regular gentle cleaning with a soft cloth can also help maintain its shine. It's important to note that over time, the gold layer may wear off, revealing the sterling silver beneath, which can be re-plated by a professional jeweler if desired.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Market Context of Gold-Plated Sterling Silver\",\n            \"content\": \"The use of gold-plated sterling silver in jewelry and decorative arts has a rich historical context. The practice of gilding, or applying a thin layer of gold to other metals, dates back to ancient civilizations, including the Egyptians and Romans, who used it to create luxurious items without the high cost of solid gold. In the modern era, gold-plated sterling silver has become a staple in the jewelry industry, offering an affordable alternative to solid gold pieces. The market for gold-plated sterling silver is driven by its cost-effectiveness, aesthetic appeal, and versatility. It allows consumers to enjoy the look and feel of gold without the significant investment. This type of jewelry is particularly popular in fashion-forward markets where trends change rapidly, and consumers seek stylish yet affordable options. The rise of online retail and global trade has further expanded the reach of gold-plated sterling silver, making it accessible to a wide audience. As sustainability becomes a growing concern, the ability to recycle and re-plate these items adds to their appeal, aligning with consumer preferences for environmentally friendly products.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "880555cf-26e6-4c2c-8078-ff475659e99a",
+      "source": "expanded_6",
+      "target": "expanded_23",
+      "relation_type": "popular_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Composition of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver is a type of jewelry and decorative item that combines two precious metals: gold and sterling silver. Sterling silver is an alloy consisting of 92.5% silver and 7.5% other metals, usually copper, which enhances its strength and durability. The 'gold-plated' aspect refers to a thin layer of gold that is applied to the surface of the sterling silver item. This layer is typically applied through a process known as electroplating, where an electric current is used to deposit a thin layer of gold onto the silver. The thickness of the gold layer can vary, but it is generally very thin, often measured in microns. This combination allows for the appearance and prestige of gold at a lower cost, while also benefiting from the structural integrity of sterling silver. Gold-plated sterling silver is popular in the jewelry market due to its affordability compared to solid gold items, while still providing a luxurious appearance.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Properties and Care of Gold-Plated Sterling Silver\",\n            \"content\": \"Gold-plated sterling silver possesses unique properties that make it a popular choice for jewelry and decorative items. The gold layer provides a lustrous and appealing finish, while the sterling silver core ensures durability and strength. However, the gold plating is susceptible to wear and tarnish over time, especially if exposed to harsh chemicals, moisture, or friction. To maintain the appearance and longevity of gold-plated sterling silver, it is recommended to avoid contact with water, perfumes, lotions, and cleaning agents. When not in use, storing the items in a dry, soft pouch or a lined jewelry box can help prevent scratches and tarnishing. Regular gentle cleaning with a soft cloth can also help maintain its shine. It's important to note that over time, the gold layer may wear off, revealing the sterling silver beneath, which can be re-plated by a professional jeweler if desired.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Market Context of Gold-Plated Sterling Silver\",\n            \"content\": \"The use of gold-plated sterling silver in jewelry and decorative arts has a rich historical context. The practice of gilding, or applying a thin layer of gold to other metals, dates back to ancient civilizations, including the Egyptians and Romans, who used it to create luxurious items without the high cost of solid gold. In the modern era, gold-plated sterling silver has become a staple in the jewelry industry, offering an affordable alternative to solid gold pieces. The market for gold-plated sterling silver is driven by its cost-effectiveness, aesthetic appeal, and versatility. It allows consumers to enjoy the look and feel of gold without the significant investment. This type of jewelry is particularly popular in fashion-forward markets where trends change rapidly, and consumers seek stylish yet affordable options. The rise of online retail and global trade has further expanded the reach of gold-plated sterling silver, making it accessible to a wide audience. As sustainability becomes a growing concern, the ability to recycle and re-plate these items adds to their appeal, aligning with consumer preferences for environmentally friendly products.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "14eb4fad-8eab-4ef7-9578-8d962dc95d5f",
+      "source": "expanded_55",
+      "target": "expanded_6",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding 92.5% Pure Silver: Sterling Silver\",\n            \"content\": \"92.5% pure silver is commonly known as sterling silver. This alloy consists of 92.5% silver and 7.5% of other metals, typically copper. The addition of copper or other metals enhances the hardness and durability of silver, which is naturally a very soft metal. Sterling silver is widely used in the manufacture of jewelry, tableware, and decorative items due to its lustrous appearance and improved strength. The hallmark '925' is often stamped on sterling silver items to indicate their purity. This standard has been used for centuries, with origins tracing back to the 12th century in Europe, where it was established to ensure the quality and authenticity of silver products. Sterling silver is also preferred for its hypoallergenic properties, making it suitable for people with sensitive skin. The alloy's ability to be polished to a high sheen and its resistance to tarnishing, when properly cared for, make it a popular choice for both functional and decorative purposes.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Properties and Applications of 92.5% Pure Silver\",\n            \"content\": \"Sterling silver, composed of 92.5% pure silver, exhibits several properties that make it ideal for various applications. Its high reflectivity and ability to take a high polish make it aesthetically appealing, which is why it is extensively used in the jewelry industry. The addition of copper not only increases its hardness but also improves its resistance to deformation and wear, which is crucial for items that are subject to frequent handling, such as cutlery and serving dishes. Despite its enhanced durability, sterling silver can tarnish over time due to the reaction of silver with sulfur compounds in the air. However, regular cleaning and proper storage can minimize tarnishing. Beyond its use in consumer goods, sterling silver is also employed in the production of musical instruments, such as flutes and saxophones, where its acoustic properties are valued. In electronics, sterling silver's excellent conductivity is leveraged in high-quality connectors and contacts. Its versatility and combination of aesthetic and functional properties continue to make 92.5% pure silver a material of choice across various industries.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical Significance and Cultural Impact of Sterling Silver\",\n            \"content\": \"The use of 92.5% pure silver, or sterling silver, has a rich historical and cultural significance. Its origins can be traced back to the 12th century, particularly in England, where it was used to establish a standard for coinage. The term 'sterling' is believed to have originated from the Old Norman French word 'esterlin', meaning 'little star', which was used to describe the Norman silver pennies. Over the centuries, sterling silver became synonymous with quality and craftsmanship. During the Victorian era, sterling silver was a symbol of wealth and status, with elaborate silverware and jewelry being highly prized possessions. The tradition of gifting silver items for special occasions, such as weddings and anniversaries, has persisted through the ages, symbolizing purity and prosperity. In many cultures, sterling silver is also associated with protection and healing properties, often used in amulets and talismans. Its enduring appeal is reflected in its continued use in modern design and fashion, where it is celebrated for its timeless elegance and versatility.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    }
+  ],
+  "strategy": "star",
+  "complexity_score": 0.16799999999999998,
+  "topology_features": {
+    "num_nodes": 5,
+    "num_edges": 4,
+    "density": 0.4,
+    "clustering_coefficient": 0.0,
+    "avg_degree": 1.6,
+    "diameter": 2,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 5,
+    "num_edges": 4,
+    "density": 0.4,
+    "clustering_coefficient": 0.0,
+    "avg_degree": 1.6,
+    "diameter": 2,
+    "connected_components": 1
+  }
+}

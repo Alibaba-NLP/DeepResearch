@@ -1,0 +1,68 @@
+{
+  "subgraph_id": "04681048-3c17-485d-bc7f-76de9da6d7cc",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/04681048-3c17-485d-bc7f-76de9da6d7cc.json",
+  "qa_pairs": [
+    {
+      "question": "Considering the historical evolution of the FIFA Women’s World Cup Trophy, which entity is responsible for both crafting the original trophy—featuring gold-plated sterling silver and a distinctive spiral (a design element that symbolizes growth)—and handcrafting its successor trophy, thereby linking the legacy of the tournament through their consistent craftsmanship?",
+      "answer": [
+        "Sawaya & Moroni",
+        "Sawaya and Moroni"
+      ],
+      "reasoning": "To answer the question, one must first identify the entity associated with the creation of the original trophy as well as the one linked with the current trophy. The knowledge graph shows that the original trophy was 'crafted by' and 'manufactured by' the entity Sawaya & Moroni. Additionally, the current trophy is noted to be 'handcrafted by' the same entity. By correlating these relationships and noting the use of specific materials such as gold-plated sterling silver and design features like the spiral design—which are mentioned in relation to the trophies—the consistent role of Sawaya & Moroni in both iterations is revealed.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the trophies involved and their associated properties, particularly the original and current FIFA Women’s World Cup Trophies.",
+          "Step 2: Look up the relationships for the original trophy to find entities related by 'crafted_by' and 'manufactured_by'. Expected result: Sawaya & Moroni.",
+          "Step 3: Search for the relationships pertaining to the current trophy, specifically 'handcrafted_by', to confirm the same entity is involved.",
+          "Step 4: Correlate the design elements such as the spiral design and the material (gold-plated sterling silver) that link both trophies.",
+          "Last step: Synthesize the information to conclude that Sawaya & Moroni is the entity responsible for both trophies."
+        ],
+        "nodes_used": [
+          "FIFA Women's World Cup Original Trophy (ID: 1caf5a4a-c952-4c13-9631-7411e85874e2)",
+          "Sawaya & Moroni (ID: expanded_4)",
+          "Current FIFA Women's World Cup Trophy (ID: rel_1)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, crafted_by, Sawaya & Moroni)",
+          "(FIFA Women's World Cup Original Trophy, manufactured_by, Sawaya & Moroni)",
+          "(Current FIFA Women's World Cup Trophy, handcrafted_by, Sawaya & Moroni)"
+        ],
+        "source_texts_used": [
+          "Source text describing the design and details of the FIFA Women's World Cup Original Trophy including material and craftsmanship details.",
+          "Source text for the Current FIFA Women's World Cup Trophy that mentions it is handcrafted by Sawaya & Moroni and includes information about its spiral design and composition."
+        ]
+      },
+      "id": "8f2d62dc-33ed-431a-aec9-1702d2ea9610",
+      "subgraph_id": "04681048-3c17-485d-bc7f-76de9da6d7cc",
+      "difficulty_level": 3,
+      "original_question": "Considering the historical evolution of the FIFA Women’s World Cup Trophy, which entity is responsible for both crafting the original trophy—featuring gold-plated sterling silver and a distinctive spiral (a design element that symbolizes growth)—and handcrafting its successor trophy, thereby linking the legacy of the tournament through their consistent craftsmanship?",
+      "obfuscated_question": "Considering the historical progression of the global tournament's insignia for elite female competitors, which organization is credited with both fabricating the inaugural award—featuring a luxurious metallic composite achieved by overlaying a prized yellow element atop a refined silvery base, paired with a spiraling form symbolizing organic growth—and meticulously crafting its subsequent version, thereby uniting the tournament's heritage through a legacy of consistent artisanal expertise?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 13,
+          "density": 0.28888888888888886,
+          "clustering_coefficient": 0.18666666666666668,
+          "avg_degree": 2.6,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "dfs",
+    "complexity_score": 0.23933333333333334,
+    "topology_features": {
+      "num_nodes": 10,
+      "num_edges": 13,
+      "density": 0.28888888888888886,
+      "clustering_coefficient": 0.18666666666666668,
+      "avg_degree": 2.6,
+      "diameter": 4,
+      "connected_components": 1
+    }
+  }
+}

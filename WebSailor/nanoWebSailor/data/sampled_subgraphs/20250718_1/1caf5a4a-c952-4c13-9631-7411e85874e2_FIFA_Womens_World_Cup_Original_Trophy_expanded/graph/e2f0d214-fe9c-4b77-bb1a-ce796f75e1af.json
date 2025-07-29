@@ -1,0 +1,319 @@
+{
+  "id": "e2f0d214-fe9c-4b77-bb1a-ce796f75e1af",
+  "nodes": {
+    "expanded_7": {
+      "id": "expanded_7",
+      "label": "spiral design",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_25": {
+      "id": "expanded_25",
+      "label": "graphic design",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_43": {
+      "id": "expanded_43",
+      "label": "branding",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 4
+      }
+    },
+    "expanded_45": {
+      "id": "expanded_45",
+      "label": "user interface design",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 4
+      }
+    },
+    "expanded_103": {
+      "id": "expanded_103",
+      "label": "Process",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_104": {
+      "id": "expanded_104",
+      "label": "User Experience Design",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_124": {
+      "id": "expanded_124",
+      "label": "Product Packaging",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_139": {
+      "id": "expanded_139",
+      "label": "Multidisciplinary Field",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_143": {
+      "id": "expanded_143",
+      "label": "Accessibility",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_202": {
+      "id": "expanded_202",
+      "label": "user research, prototyping, and testing",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "0edb0283-950b-491c-8fb3-4ab6f015bd8b",
+      "source": "expanded_7",
+      "target": "expanded_25",
+      "relation_type": "utilized_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"The Concept and Definition of Spiral Design\",\n            \"content\": \"Spiral design refers to a pattern or structure that follows a helical or coiled shape, often characterized by a series of curves that radiate around a central point. This design is prevalent in both natural and man-made forms, appearing in phenomena such as galaxies, hurricanes, and the shells of certain mollusks, as well as in architectural and artistic creations. The spiral design is known for its aesthetic appeal and its mathematical properties, often associated with the Fibonacci sequence and the golden ratio. In mathematics, a spiral can be defined as a curve that emanates from a point, moving progressively farther away as it revolves around the point. This design is not only visually striking but also functionally significant, as it can represent growth, evolution, and continuity. The spiral design is utilized in various fields, including architecture, where it can be seen in the form of spiral staircases, and in graphic design, where it serves as a dynamic and engaging visual element.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of Spiral Designs\",\n            \"content\": \"Spiral designs have been a part of human culture and history for thousands of years, with evidence of their use found in ancient artifacts and structures across the globe. In many cultures, spirals are symbolic, representing concepts such as life, death, and rebirth, or the cyclical nature of existence. For instance, in Celtic art, the spiral is a prominent motif, often seen in stone carvings and metalwork, symbolizing the sun or the cycle of life. Similarly, in ancient Greece, the spiral was used in architectural elements such as the Ionic column, which features volutes, or spiral scrolls, at its capital. The spiral design also holds significance in Eastern cultures; in Hinduism and Buddhism, the spiral is often associated with the concept of spiritual growth and enlightenment. The historical use of spirals is not limited to symbolism; they have also been employed for practical purposes. For example, the",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "7100475c-484d-4039-a292-b087905d3829",
+      "source": "expanded_25",
+      "target": "expanded_43",
+      "relation_type": "used_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of Graphic Design\",\n            \"content\": \"Graphic design is a creative discipline that involves the use of visual elements to communicate messages or ideas. It combines art and technology to create visually appealing designs that can convey information effectively. The core principles of graphic design include balance, contrast, emphasis, movement, proportion, and unity. These principles guide designers in creating compositions that are both aesthetically pleasing and functional. Graphic design is used in various mediums, such as print, digital, and environmental design, and it plays a crucial role in branding, advertising, and user interface design. The tools of graphic design have evolved significantly over the years, from traditional methods like drawing and painting to digital tools such as Adobe Photoshop, Illustrator, and InDesign. Understanding the audience and purpose of the design is essential for a graphic designer, as it influences the choice of colors, typography, and imagery.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of Graphic Design\",\n            \"content\": \"The history of graphic design can be traced back to ancient times, with the earliest examples found in cave paintings and hieroglyphics. However, graphic design as a distinct profession began to take shape in the late 19th and early 20th centuries, influenced by movements such as Art Nouveau and the Bauhaus. The invention of the printing press in the 15th century was a significant milestone, as it allowed for the mass production of books and other printed materials, laying the groundwork for modern graphic design. The 20th century saw the rise of advertising and the need for visual communication, which further propelled the development of graphic design. The digital revolution in the late 20th century transformed the field, introducing new tools and techniques that expanded the possibilities for designers. Today, graphic design continues to evolve with advancements in technology, including virtual reality and artificial intelligence, which are opening new frontiers for creative expression.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Role of Graphic Design in Branding and Marketing\",\n            \"content\": \"Graphic design plays a pivotal role in branding and marketing by helping businesses establish a visual identity and communicate their brand message effectively. A well-designed logo, for example, can become an instantly recognizable symbol of a company, conveying its values and personality. Graphic design is also crucial in creating marketing materials such as brochures, advertisements, and websites, which are designed to attract and engage customers. In the digital age, graphic design extends to social media, where visually appealing content can enhance a brand's presence and reach. The choice of colors, typography, and imagery in graphic design can influence consumer perceptions and behaviors, making it a powerful tool for marketers. Effective graphic design requires a deep understanding of the target audience and the ability to translate a brand's message into a visual language that resonates with consumers. As such, graphic designers often work closely with marketing teams to ensure that the visual elements align with the overall marketing strategy.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "d5fe953e-13be-45cf-91f0-b128b177dee2",
+      "source": "expanded_25",
+      "target": "expanded_45",
+      "relation_type": "used_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of Graphic Design\",\n            \"content\": \"Graphic design is a creative discipline that involves the use of visual elements to communicate messages or ideas. It combines art and technology to create visually appealing designs that can convey information effectively. The core principles of graphic design include balance, contrast, emphasis, movement, proportion, and unity. These principles guide designers in creating compositions that are both aesthetically pleasing and functional. Graphic design is used in various mediums, such as print, digital, and environmental design, and it plays a crucial role in branding, advertising, and user interface design. The tools of graphic design have evolved significantly over the years, from traditional methods like drawing and painting to digital tools such as Adobe Photoshop, Illustrator, and InDesign. Understanding the audience and purpose of the design is essential for a graphic designer, as it influences the choice of colors, typography, and imagery.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of Graphic Design\",\n            \"content\": \"The history of graphic design can be traced back to ancient times, with the earliest examples found in cave paintings and hieroglyphics. However, graphic design as a distinct profession began to take shape in the late 19th and early 20th centuries, influenced by movements such as Art Nouveau and the Bauhaus. The invention of the printing press in the 15th century was a significant milestone, as it allowed for the mass production of books and other printed materials, laying the groundwork for modern graphic design. The 20th century saw the rise of advertising and the need for visual communication, which further propelled the development of graphic design. The digital revolution in the late 20th century transformed the field, introducing new tools and techniques that expanded the possibilities for designers. Today, graphic design continues to evolve with advancements in technology, including virtual reality and artificial intelligence, which are opening new frontiers for creative expression.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Role of Graphic Design in Branding and Marketing\",\n            \"content\": \"Graphic design plays a pivotal role in branding and marketing by helping businesses establish a visual identity and communicate their brand message effectively. A well-designed logo, for example, can become an instantly recognizable symbol of a company, conveying its values and personality. Graphic design is also crucial in creating marketing materials such as brochures, advertisements, and websites, which are designed to attract and engage customers. In the digital age, graphic design extends to social media, where visually appealing content can enhance a brand's presence and reach. The choice of colors, typography, and imagery in graphic design can influence consumer perceptions and behaviors, making it a powerful tool for marketers. Effective graphic design requires a deep understanding of the target audience and the ability to translate a brand's message into a visual language that resonates with consumers. As such, graphic designers often work closely with marketing teams to ensure that the visual elements align with the overall marketing strategy.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "1dbf4a2f-dfeb-41af-9efa-bb9f56d7217b",
+      "source": "expanded_45",
+      "target": "expanded_103",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Interface Design\",\n            \"content\": \"User interface design (UI design) is the process of creating interfaces in software or computerized devices with a focus on looks or style. The goal of UI design is to make the user's interaction as simple and efficient as possible, in terms of accomplishing user goals (user-centered design). Good UI design is characterized by its clarity, efficiency, and responsiveness. Core principles of UI design include consistency, simplicity, and feedback. Consistency ensures that similar elements are treated the same way, which helps users understand and predict interactions. Simplicity involves removing unnecessary elements and focusing on the essential parts of the interface. Feedback provides users with information about what action has been performed and what the result is, which is crucial for user satisfaction and error prevention. UI design is closely related to user experience design (UX design), but while UX design focuses on the overall feel of the experience, UI design focuses on how the product's surfaces look and function.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Interface Design\",\n            \"content\": \"The history of user interface design dates back to the early days of computing. Initially, user interfaces were command-line based, requiring users to input text commands to interact with computers. This changed with the introduction of graphical user interfaces (GUIs) in the 1980s, pioneered by companies like Xerox PARC and popularized by Apple with the Macintosh. GUIs made computers more accessible to the general public by allowing users to interact with visual icons and a mouse rather than text commands. Over the years, UI design has evolved with technological advancements, including the rise of the internet, mobile devices, and touchscreens. The introduction of smartphones and tablets brought about new design challenges and opportunities, leading to the development of responsive design principles that ensure interfaces work well across different devices and screen sizes. Today, UI design continues to evolve with emerging technologies such as voice interfaces, virtual reality, and augmented reality, which require designers to rethink traditional interaction models.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Relationships and Interdisciplinary Nature of User Interface Design\",\n            \"content\": \"User interface design is inherently interdisciplinary, intersecting with fields such as psychology, graphic design, and computer science. Psychology plays a crucial role in understanding user behavior, cognitive load, and how users perceive and interact with interfaces. Graphic design contributes to the aesthetic aspects of UI design, including layout, color theory, typography, and visual hierarchy. Computer science provides the technical foundation for implementing and optimizing user interfaces, including knowledge of programming languages, frameworks, and software development processes. UI designers often work closely with UX designers, developers, product managers, and other stakeholders to create cohesive and effective user experiences. This collaboration is essential for ensuring that the design not only looks good but is also functional, accessible, and aligned with business goals. As technology continues to evolve, UI design increasingly incorporates elements of interaction design, information architecture, and usability testing, making it a dynamic and continually evolving field.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "cb522c57-624f-45c3-b9b1-97300e32ef24",
+      "source": "expanded_45",
+      "target": "expanded_104",
+      "relation_type": "related_to",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Interface Design\",\n            \"content\": \"User interface design (UI design) is the process of creating interfaces in software or computerized devices with a focus on looks or style. The goal of UI design is to make the user's interaction as simple and efficient as possible, in terms of accomplishing user goals (user-centered design). Good UI design is characterized by its clarity, efficiency, and responsiveness. Core principles of UI design include consistency, simplicity, and feedback. Consistency ensures that similar elements are treated the same way, which helps users understand and predict interactions. Simplicity involves removing unnecessary elements and focusing on the essential parts of the interface. Feedback provides users with information about what action has been performed and what the result is, which is crucial for user satisfaction and error prevention. UI design is closely related to user experience design (UX design), but while UX design focuses on the overall feel of the experience, UI design focuses on how the product's surfaces look and function.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Interface Design\",\n            \"content\": \"The history of user interface design dates back to the early days of computing. Initially, user interfaces were command-line based, requiring users to input text commands to interact with computers. This changed with the introduction of graphical user interfaces (GUIs) in the 1980s, pioneered by companies like Xerox PARC and popularized by Apple with the Macintosh. GUIs made computers more accessible to the general public by allowing users to interact with visual icons and a mouse rather than text commands. Over the years, UI design has evolved with technological advancements, including the rise of the internet, mobile devices, and touchscreens. The introduction of smartphones and tablets brought about new design challenges and opportunities, leading to the development of responsive design principles that ensure interfaces work well across different devices and screen sizes. Today, UI design continues to evolve with emerging technologies such as voice interfaces, virtual reality, and augmented reality, which require designers to rethink traditional interaction models.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Relationships and Interdisciplinary Nature of User Interface Design\",\n            \"content\": \"User interface design is inherently interdisciplinary, intersecting with fields such as psychology, graphic design, and computer science. Psychology plays a crucial role in understanding user behavior, cognitive load, and how users perceive and interact with interfaces. Graphic design contributes to the aesthetic aspects of UI design, including layout, color theory, typography, and visual hierarchy. Computer science provides the technical foundation for implementing and optimizing user interfaces, including knowledge of programming languages, frameworks, and software development processes. UI designers often work closely with UX designers, developers, product managers, and other stakeholders to create cohesive and effective user experiences. This collaboration is essential for ensuring that the design not only looks good but is also functional, accessible, and aligned with business goals. As technology continues to evolve, UI design increasingly incorporates elements of interaction design, information architecture, and usability testing, making it a dynamic and continually evolving field.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "5b4b8fab-2948-4252-b451-db1772c838ff",
+      "source": "expanded_25",
+      "target": "expanded_103",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of Graphic Design\",\n            \"content\": \"Graphic design is a creative process that combines art and technology to communicate ideas through visual content. The field encompasses a variety of disciplines, including typography, illustration, photography, and layout design. At its core, graphic design is about creating visual compositions to solve problems and communicate ideas effectively. The principles of graphic design include balance, contrast, emphasis, movement, proportion, and rhythm. These principles guide designers in creating visually appealing and effective designs that convey a specific message or evoke a particular emotion. Graphic design is used in various media, from print and digital advertisements to product packaging, websites, and branding materials. The role of a graphic designer is to understand the client's needs, the target audience, and the intended message to create designs that are both functional and aesthetically pleasing.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of Graphic Design\",\n            \"content\": \"The history of graphic design is rich and varied, tracing back to the origins of visual communication. Early forms of graphic design can be seen in ancient cave paintings and hieroglyphics, where visuals were used to convey stories and information. The invention of the printing press in the 15th century marked a significant milestone, as it allowed for the mass production of printed materials, leading to the development of typography and layout design. The 19th century saw the rise of advertising and the need for more sophisticated design techniques. The Bauhaus movement in the early 20th century played a pivotal role in shaping modern graphic design, emphasizing the integration of art, craft, and technology. With the advent of digital technology in the late 20th century, graphic design underwent another transformation, expanding into digital media and interactive design. Today, graphic design continues to evolve, incorporating new technologies such as virtual reality and augmented reality, while maintaining its foundational principles.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Role of Graphic Design in Branding and Marketing\",\n            \"content\": \"Graphic design plays a crucial role in branding and marketing, serving as a visual representation of a company's identity and values. A well-designed logo, for example, can become an instantly recognizable symbol that conveys a brand's message and ethos. Graphic design is integral to creating cohesive brand identities, which include logos, color schemes, typography, and other visual elements that distinguish a brand from its competitors. In marketing, graphic design is used to create engaging advertisements, promotional materials, and digital content that capture the audience's attention and communicate key messages effectively. The use of graphic design in marketing extends to social media, where visually appealing content can enhance engagement and brand awareness. By understanding the target audience and the brand's goals, graphic designers can create compelling visuals that resonate with consumers and drive business success. In an increasingly digital world, the ability to create strong visual content is more important than ever, making graphic design an essential component of any successful branding and marketing strategy.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "be27636b-fdc2-4ec9-8496-f8748a0e0cb0",
+      "source": "expanded_25",
+      "target": "expanded_124",
+      "relation_type": "used_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of Graphic Design\",\n            \"content\": \"Graphic design is a creative process that combines art and technology to communicate ideas through visual content. The field encompasses a variety of disciplines, including typography, illustration, photography, and layout design. At its core, graphic design is about creating visual compositions to solve problems and communicate ideas effectively. The principles of graphic design include balance, contrast, emphasis, movement, proportion, and rhythm. These principles guide designers in creating visually appealing and effective designs that convey a specific message or evoke a particular emotion. Graphic design is used in various media, from print and digital advertisements to product packaging, websites, and branding materials. The role of a graphic designer is to understand the client's needs, the target audience, and the intended message to create designs that are both functional and aesthetically pleasing.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of Graphic Design\",\n            \"content\": \"The history of graphic design is rich and varied, tracing back to the origins of visual communication. Early forms of graphic design can be seen in ancient cave paintings and hieroglyphics, where visuals were used to convey stories and information. The invention of the printing press in the 15th century marked a significant milestone, as it allowed for the mass production of printed materials, leading to the development of typography and layout design. The 19th century saw the rise of advertising and the need for more sophisticated design techniques. The Bauhaus movement in the early 20th century played a pivotal role in shaping modern graphic design, emphasizing the integration of art, craft, and technology. With the advent of digital technology in the late 20th century, graphic design underwent another transformation, expanding into digital media and interactive design. Today, graphic design continues to evolve, incorporating new technologies such as virtual reality and augmented reality, while maintaining its foundational principles.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Role of Graphic Design in Branding and Marketing\",\n            \"content\": \"Graphic design plays a crucial role in branding and marketing, serving as a visual representation of a company's identity and values. A well-designed logo, for example, can become an instantly recognizable symbol that conveys a brand's message and ethos. Graphic design is integral to creating cohesive brand identities, which include logos, color schemes, typography, and other visual elements that distinguish a brand from its competitors. In marketing, graphic design is used to create engaging advertisements, promotional materials, and digital content that capture the audience's attention and communicate key messages effectively. The use of graphic design in marketing extends to social media, where visually appealing content can enhance engagement and brand awareness. By understanding the target audience and the brand's goals, graphic designers can create compelling visuals that resonate with consumers and drive business success. In an increasingly digital world, the ability to create strong visual content is more important than ever, making graphic design an essential component of any successful branding and marketing strategy.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "6136c812-6bbc-4ea2-ba3e-6b50eea39959",
+      "source": "expanded_43",
+      "target": "expanded_103",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Elements of Branding\",\n            \"content\": \"Branding is a strategic process that involves creating a unique name, design, symbol, or other feature that distinguishes a product or service from its competitors. It is a crucial aspect of marketing and business strategy as it helps in establishing a significant and differentiated presence in the market that attracts and retains loyal customers. The core elements of branding include brand identity, brand image, brand positioning, brand equity, and brand loyalty. Brand identity refers to the visual and verbal elements that represent the brand, such as logos, colors, and slogans. Brand image is the perception of the brand in the minds of consumers. Brand positioning involves defining the brand's unique value proposition and how it stands out in the competitive landscape. Brand equity is the value added to a product by having a well-known brand name, and brand loyalty refers to consumers' commitment to repurchase or continue using the brand. Effective branding can lead to increased customer recognition, competitive advantage, and financial performance.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Evolution and Historical Background of Branding\",\n            \"content\": \"The concept of branding has evolved significantly over the centuries. Its origins can be traced back to ancient times when artisans would mark their goods with symbols to signify ownership or quality. In the Middle Ages, branding became more formalized with the use of trademarks by guilds to protect their products from imitation. The Industrial Revolution marked a turning point in branding as mass production led to the need for product differentiation. Companies like Procter & Gamble and Coca-Cola emerged during this time, utilizing branding to build consumer trust and loyalty. The 20th century saw the rise of brand management as a discipline, with the development of sophisticated marketing techniques and the advent of advertising. The digital age has further transformed branding, with the internet and social media providing new platforms for brand communication and engagement. Today, branding is not just about products but encompasses corporate branding, personal branding, and even place branding, reflecting its pervasive influence in various aspects of society.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Role of Branding in Consumer Behavior and Market Dynamics\",\n            \"content\": \"Branding plays a pivotal role in influencing consumer behavior and shaping market dynamics. It affects how consumers perceive and interact with products and services, often serving as a heuristic that simplifies decision-making processes. Strong brands can evoke emotional responses and create a sense of trust and reliability, which are critical factors in consumer choice. Branding also impacts consumer loyalty, as individuals are more likely to remain committed to brands that resonate with their values and lifestyle. In terms of market dynamics, branding can create barriers to entry for new competitors, as established brands often enjoy significant market power and customer loyalty. Furthermore, branding influences pricing strategies, as strong brands can command premium prices due to perceived higher value. In the digital era, branding has become more interactive, with consumers actively participating in brand narratives through social media and online communities. This shift has led to the emergence of co-creation, where consumers contribute to brand development and innovation, further highlighting the dynamic interplay between branding and consumer behavior.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "57a76f44-d4e4-41b9-b480-1f66fb9dc4b1",
+      "source": "expanded_45",
+      "target": "expanded_139",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Interface Design\",\n            \"content\": \"User Interface (UI) design refers to the process of designing the visual layout and interactive elements of a digital product, such as websites, applications, and software. The primary goal of UI design is to create interfaces that are aesthetically pleasing, intuitive, and efficient for users to navigate. Core principles of UI design include consistency, simplicity, feedback, and accessibility. Consistency ensures that similar elements behave in similar ways, which helps users learn and predict interactions. Simplicity focuses on minimizing unnecessary elements to avoid overwhelming users. Feedback involves providing users with clear responses to their actions, such as visual or auditory cues. Accessibility ensures that interfaces are usable by people with a wide range of abilities and disabilities, adhering to standards like the Web Content Accessibility Guidelines (WCAG). UI design is a multidisciplinary field that often involves collaboration between designers, developers, and user experience (UX) professionals to create cohesive and user-friendly digital experiences.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Interface Design\",\n            \"content\": \"The history of user interface design is closely tied to the evolution of computing technology. In the early days of computing, interfaces were primarily command-line based, requiring users to type specific commands to interact with computers. This changed in the 1970s and 1980s with the development of graphical user interfaces (GUIs), pioneered by companies like Xerox PARC and popularized by Apple with the Macintosh. GUIs introduced visual elements like windows, icons, and menus, making computers more accessible to non-technical users. The 1990s and 2000s saw the rise of the internet and web interfaces, leading to new design challenges and opportunities. The introduction of smartphones in the late 2000s brought about a shift towards mobile-first design, emphasizing touch interactions and responsive layouts. Today, UI design continues to evolve with emerging technologies such as virtual reality (VR), augmented reality (AR), and voice interfaces, each presenting unique design considerations and opportunities for innovation.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Relationship Between User Interface Design and User Experience Design\",\n            \"content\": \"User Interface (UI) design and User Experience (UX) design are closely related disciplines, often working in tandem to create seamless digital experiences. While UI design focuses on the visual and interactive aspects of a product, UX design encompasses the overall experience a user has with a product, including usability, functionality, and satisfaction. UI design is a subset of UX design, as the interface is a critical component of the user experience. Effective UI design contributes to a positive UX by ensuring that the interface is intuitive, aesthetically pleasing, and aligned with user expectations. UX design involves a broader scope, including user research, information architecture, and usability testing to understand user needs and behaviors. The relationship between UI and UX design is symbiotic; a well-designed UI enhances the user experience, while a deep understanding of UX principles informs better UI design decisions. Collaboration between UI and UX designers is essential to create products that are not only visually appealing but also functional and user-centered.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "0656d242-c45b-4ba5-a7b2-d7916819e3ca",
+      "source": "expanded_45",
+      "target": "expanded_143",
+      "relation_type": "has_property",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Interface Design\",\n            \"content\": \"User Interface (UI) design refers to the process of designing the visual layout and interactive elements of a digital product, such as websites, applications, and software. The primary goal of UI design is to create interfaces that are aesthetically pleasing, intuitive, and efficient for users to navigate. Core principles of UI design include consistency, simplicity, feedback, and accessibility. Consistency ensures that similar elements behave in similar ways, which helps users learn and predict interactions. Simplicity focuses on minimizing unnecessary elements to avoid overwhelming users. Feedback involves providing users with clear responses to their actions, such as visual or auditory cues. Accessibility ensures that interfaces are usable by people with a wide range of abilities and disabilities, adhering to standards like the Web Content Accessibility Guidelines (WCAG). UI design is a multidisciplinary field that often involves collaboration between designers, developers, and user experience (UX) professionals to create cohesive and user-friendly digital experiences.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Interface Design\",\n            \"content\": \"The history of user interface design is closely tied to the evolution of computing technology. In the early days of computing, interfaces were primarily command-line based, requiring users to type specific commands to interact with computers. This changed in the 1970s and 1980s with the development of graphical user interfaces (GUIs), pioneered by companies like Xerox PARC and popularized by Apple with the Macintosh. GUIs introduced visual elements like windows, icons, and menus, making computers more accessible to non-technical users. The 1990s and 2000s saw the rise of the internet and web interfaces, leading to new design challenges and opportunities. The introduction of smartphones in the late 2000s brought about a shift towards mobile-first design, emphasizing touch interactions and responsive layouts. Today, UI design continues to evolve with emerging technologies such as virtual reality (VR), augmented reality (AR), and voice interfaces, each presenting unique design considerations and opportunities for innovation.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Relationship Between User Interface Design and User Experience Design\",\n            \"content\": \"User Interface (UI) design and User Experience (UX) design are closely related disciplines, often working in tandem to create seamless digital experiences. While UI design focuses on the visual and interactive aspects of a product, UX design encompasses the overall experience a user has with a product, including usability, functionality, and satisfaction. UI design is a subset of UX design, as the interface is a critical component of the user experience. Effective UI design contributes to a positive UX by ensuring that the interface is intuitive, aesthetically pleasing, and aligned with user expectations. UX design involves a broader scope, including user research, information architecture, and usability testing to understand user needs and behaviors. The relationship between UI and UX design is symbiotic; a well-designed UI enhances the user experience, while a deep understanding of UX principles informs better UI design decisions. Collaboration between UI and UX designers is essential to create products that are not only visually appealing but also functional and user-centered.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "d03cf98a-ca7f-49ab-a1ba-177c3e720299",
+      "source": "expanded_104",
+      "target": "expanded_139",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Experience Design\",\n            \"content\": \"User Experience Design (UX Design) is a multidisciplinary field focused on creating products that provide meaningful and relevant experiences to users. It encompasses the entire process of acquiring and integrating a product, including aspects of branding, design, usability, and function. The core principles of UX Design include understanding user needs, ensuring accessibility, providing usability, and creating a seamless interaction between the user and the product. UX Design is not just about the aesthetics of a product but also about how it feels and functions. It involves user research, prototyping, and testing to ensure that the product meets user expectations and requirements. The goal is to enhance user satisfaction by improving the usability, accessibility, and pleasure provided in the interaction with the product.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Experience Design\",\n            \"content\": \"The concept of User Experience Design has evolved significantly over the years. The term 'user experience' was popularized by Don Norman in the 1990s when he worked at Apple Computer as a User Experience Architect. However, the roots of UX Design can be traced back to earlier design disciplines such as human-computer interaction (HCI) and ergonomics. In the early days of computing, the focus was primarily on functionality, but as technology advanced, the need for more user-friendly interfaces became apparent. The 1980s saw the rise of graphical user interfaces (GUIs), which paved the way for more intuitive user interactions. With the advent of the internet and mobile technology, UX Design has become even more critical, as users now expect seamless and engaging experiences across multiple platforms and devices. Today, UX Design is an integral part of product development, with a strong emphasis on user-centered design processes.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Relationship Between User Experience Design and Other Design Disciplines\",\n            \"content\": \"User Experience Design is closely related to several other design disciplines, including User Interface Design (UI Design), Interaction Design (IxD), and Information Architecture (IA). While UX Design focuses on the overall experience of using a product, UI Design is concerned with the visual aspects of the interface, such as layout, colors, and typography. Interaction Design deals with the way users interact with the product, including the design of interactive elements like buttons and menus. Information Architecture involves organizing and structuring content in a way that makes it easy for users to find and understand information. These disciplines often overlap and work together to create a cohesive user experience. UX Designers must collaborate with UI Designers, Interaction Designers, and Information Architects to ensure that all aspects of the product work harmoniously to meet user needs and expectations.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "16158e34-8ae7-460c-bc9d-d3a35e4fb92c",
+      "source": "expanded_104",
+      "target": "expanded_43",
+      "relation_type": "encompasses",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Experience Design\",\n            \"content\": \"User Experience Design (UX Design) is a multidisciplinary field focused on creating products that provide meaningful and relevant experiences to users. It encompasses the entire process of acquiring and integrating a product, including aspects of branding, design, usability, and function. The core principles of UX Design include understanding user needs, ensuring accessibility, providing usability, and creating a seamless interaction between the user and the product. UX Design is not just about the aesthetics of a product but also about how it feels and functions. It involves user research, prototyping, and testing to ensure that the product meets user expectations and requirements. The goal is to enhance user satisfaction by improving the usability, accessibility, and pleasure provided in the interaction with the product.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Experience Design\",\n            \"content\": \"The concept of User Experience Design has evolved significantly over the years. The term 'user experience' was popularized by Don Norman in the 1990s when he worked at Apple Computer as a User Experience Architect. However, the roots of UX Design can be traced back to earlier design disciplines such as human-computer interaction (HCI) and ergonomics. In the early days of computing, the focus was primarily on functionality, but as technology advanced, the need for more user-friendly interfaces became apparent. The 1980s saw the rise of graphical user interfaces (GUIs), which paved the way for more intuitive user interactions. With the advent of the internet and mobile technology, UX Design has become even more critical, as users now expect seamless and engaging experiences across multiple platforms and devices. Today, UX Design is an integral part of product development, with a strong emphasis on user-centered design processes.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Relationship Between User Experience Design and Other Design Disciplines\",\n            \"content\": \"User Experience Design is closely related to several other design disciplines, including User Interface Design (UI Design), Interaction Design (IxD), and Information Architecture (IA). While UX Design focuses on the overall experience of using a product, UI Design is concerned with the visual aspects of the interface, such as layout, colors, and typography. Interaction Design deals with the way users interact with the product, including the design of interactive elements like buttons and menus. Information Architecture involves organizing and structuring content in a way that makes it easy for users to find and understand information. These disciplines often overlap and work together to create a cohesive user experience. UX Designers must collaborate with UI Designers, Interaction Designers, and Information Architects to ensure that all aspects of the product work harmoniously to meet user needs and expectations.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "e5d88c19-dff7-405f-a10c-82dbf54d6804",
+      "source": "expanded_104",
+      "target": "expanded_143",
+      "relation_type": "has_property",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Experience Design\",\n            \"content\": \"User Experience Design (UX Design) is a multidisciplinary field focused on creating products that provide meaningful and relevant experiences to users. It encompasses the entire process of acquiring and integrating a product, including aspects of branding, design, usability, and function. The core principles of UX Design include understanding user needs, ensuring accessibility, providing usability, and creating a seamless interaction between the user and the product. UX Design is not just about the aesthetics of a product but also about how it feels and functions. It involves user research, prototyping, and testing to ensure that the product meets user expectations and requirements. The goal is to enhance user satisfaction by improving the usability, accessibility, and pleasure provided in the interaction with the product.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Experience Design\",\n            \"content\": \"The concept of User Experience Design has evolved significantly over the years. The term 'user experience' was popularized by Don Norman in the 1990s when he worked at Apple Computer as a User Experience Architect. However, the roots of UX Design can be traced back to earlier design disciplines such as human-computer interaction (HCI) and ergonomics. In the early days of computing, the focus was primarily on functionality, but as technology advanced, the need for more user-friendly interfaces became apparent. The 1980s saw the rise of graphical user interfaces (GUIs), which paved the way for more intuitive user interactions. With the advent of the internet and mobile technology, UX Design has become even more critical, as users now expect seamless and engaging experiences across multiple platforms and devices. Today, UX Design is an integral part of product development, with a strong emphasis on user-centered design processes.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Relationship Between User Experience Design and Other Design Disciplines\",\n            \"content\": \"User Experience Design is closely related to several other design disciplines, including User Interface Design (UI Design), Interaction Design (IxD), and Information Architecture (IA). While UX Design focuses on the overall experience of using a product, UI Design is concerned with the visual aspects of the interface, such as layout, colors, and typography. Interaction Design deals with the way users interact with the product, including the design of interactive elements like buttons and menus. Information Architecture involves organizing and structuring content in a way that makes it easy for users to find and understand information. These disciplines often overlap and work together to create a cohesive user experience. UX Designers must collaborate with UI Designers, Interaction Designers, and Information Architects to ensure that all aspects of the product work harmoniously to meet user needs and expectations.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "7cabaf9d-8478-417b-85e1-d0efaaedd0d3",
+      "source": "expanded_104",
+      "target": "expanded_202",
+      "relation_type": "involves",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Core Principles of User Experience Design\",\n            \"content\": \"User Experience Design (UX Design) is a multidisciplinary field focused on creating products that provide meaningful and relevant experiences to users. It encompasses the entire process of acquiring and integrating a product, including aspects of branding, design, usability, and function. The core principles of UX Design include understanding user needs, ensuring accessibility, providing usability, and creating a seamless interaction between the user and the product. UX Design is not just about the aesthetics of a product but also about how it feels and functions. It involves user research, prototyping, and testing to ensure that the product meets user expectations and requirements. The goal is to enhance user satisfaction by improving the usability, accessibility, and pleasure provided in the interaction with the product.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of User Experience Design\",\n            \"content\": \"The concept of User Experience Design has evolved significantly over the years. The term 'user experience' was popularized by Don Norman in the 1990s when he worked at Apple Computer as a User Experience Architect. However, the roots of UX Design can be traced back to earlier design disciplines such as human-computer interaction (HCI) and ergonomics. In the early days of computing, the focus was primarily on functionality, but as technology advanced, the need for more user-friendly interfaces became apparent. The 1980s saw the rise of graphical user interfaces (GUIs), which paved the way for more intuitive user interactions. With the advent of the internet and mobile technology, UX Design has become even more critical, as users now expect seamless and engaging experiences across multiple platforms and devices. Today, UX Design is an integral part of product development, with a strong emphasis on user-centered design processes.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The Relationship Between User Experience Design and Other Design Disciplines\",\n            \"content\": \"User Experience Design is closely related to several other design disciplines, including User Interface Design (UI Design), Interaction Design (IxD), and Information Architecture (IA). While UX Design focuses on the overall experience of using a product, UI Design is concerned with the visual aspects of the interface, such as layout, colors, and typography. Interaction Design deals with the way users interact with the product, including the design of interactive elements like buttons and menus. Information Architecture involves organizing and structuring content in a way that makes it easy for users to find and understand information. These disciplines often overlap and work together to create a cohesive user experience. UX Designers must collaborate with UI Designers, Interaction Designers, and Information Architects to ensure that all aspects of the product work harmoniously to meet user needs and expectations.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    }
+  ],
+  "strategy": "dfs",
+  "complexity_score": 0.32533333333333336,
+  "topology_features": {
+    "num_nodes": 10,
+    "num_edges": 14,
+    "density": 0.3111111111111111,
+    "clustering_coefficient": 0.37,
+    "avg_degree": 2.8,
+    "diameter": 4,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 10,
+    "num_edges": 14,
+    "density": 0.3111111111111111,
+    "clustering_coefficient": 0.37,
+    "avg_degree": 2.8,
+    "diameter": 4,
+    "connected_components": 1
+  }
+}

@@ -1,0 +1,245 @@
+{
+  "id": "40b05f1d-4514-40c8-aa42-67ae92163ecc",
+  "nodes": {
+    "expanded_4": {
+      "id": "expanded_4",
+      "label": "Sawaya & Moroni",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_19": {
+      "id": "expanded_19",
+      "label": "Milan, Italy",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_20": {
+      "id": "expanded_20",
+      "label": "Zaha Hadid",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_66": {
+      "id": "expanded_66",
+      "label": "economic heart of Italy",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_68": {
+      "id": "expanded_68",
+      "label": "Milan Fashion Week",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_73": {
+      "id": "expanded_73",
+      "label": "Vitra Fire Station",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_171": {
+      "id": "expanded_171",
+      "label": "1993",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_172": {
+      "id": "expanded_172",
+      "label": "Vitra Campus",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "c579c04c-9964-439d-ad3e-fb53d94711c9",
+      "source": "expanded_4",
+      "target": "expanded_19",
+      "relation_type": "located_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Overview of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni is an Italian design and architecture firm renowned for its innovative approach to furniture and interior design. Founded in 1984 by William Sawaya and Paolo Moroni, the company has established itself as a leader in the high-end design sector, blending artistic creativity with functional elegance. The firm is headquartered in Milan, Italy, a city known for its rich design heritage and vibrant cultural scene. Sawaya & Moroni is celebrated for its collaborations with some of the most influential architects and designers globally, including Zaha Hadid, Jean Nouvel, and Daniel Libeskind. These collaborations have resulted in a diverse portfolio of products that range from avant-garde furniture pieces to complete architectural projects. The company's philosophy emphasizes the fusion of art and design, creating pieces that are not only functional but also serve as artistic statements. Sawaya & Moroni's work is characterized by its bold forms, innovative use of materials, and meticulous attention to detail, making it a favorite among collectors and design enthusiasts worldwide.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Design Philosophy and Product Range of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni's design philosophy is deeply rooted in the belief that furniture should transcend mere functionality to become a form of artistic expression. This philosophy is evident in their diverse product range, which includes chairs, tables, sofas, and lighting fixtures, each designed with a unique aesthetic that challenges traditional design norms. The firm is known for its experimental approach to materials, often incorporating unconventional elements such as carbon fiber, resin, and metal alloys into their designs. This innovative use of materials not only enhances the visual appeal of their products but also improves their durability and functionality. Sawaya & Moroni's commitment to quality craftsmanship is reflected in their meticulous production processes, which combine traditional techniques with cutting-edge technology. Their products are often limited editions, adding an element of exclusivity and desirability. The firm's ability to seamlessly blend form and function has earned them numerous accolades in the design industry, solidifying their reputation as pioneers of contemporary design.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Collaborations and Impact on Contemporary Design\",\n            \"content\": \"Sawaya & Moroni has played a significant role in shaping contemporary design through its strategic collaborations with some of the world's most visionary architects and designers. These partnerships have resulted in groundbreaking projects that push the boundaries of design and architecture. One of the most notable collaborations was with the late Zaha Hadid, a Pritzker Prize-winning architect known for her futuristic and fluid designs. Together, they created iconic pieces such as the 'Z-Chair' and 'Z-Table,' which are celebrated for their sculptural forms and innovative use of materials. Another significant collaboration was with Jean Nouvel, which resulted in the 'Nouvel Chair,' a minimalist yet striking piece that reflects Nouvel's architectural style. These collaborations have not only expanded Sawaya & Moroni's design repertoire but have also influenced the broader design community by introducing new concepts and techniques. The firm's ability to attract and work with top-tier talent is a testament to its status as a leading force in the design world. Through these partnerships, Sawaya & Moroni continues to inspire and shape the future of design, leaving a lasting impact on the industry.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "0d502820-1b5b-498c-a6d3-a1057b538882",
+      "source": "expanded_4",
+      "target": "expanded_20",
+      "relation_type": "collaborated_with",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Overview of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni is an Italian design and architecture firm renowned for its innovative approach to furniture and interior design. Founded in 1984 by William Sawaya and Paolo Moroni, the company has established itself as a leader in the high-end design sector, blending artistic creativity with functional elegance. The firm is headquartered in Milan, Italy, a city known for its rich design heritage and vibrant cultural scene. Sawaya & Moroni is celebrated for its collaborations with some of the most influential architects and designers globally, including Zaha Hadid, Jean Nouvel, and Daniel Libeskind. These collaborations have resulted in a diverse portfolio of products that range from avant-garde furniture pieces to complete architectural projects. The company's philosophy emphasizes the fusion of art and design, creating pieces that are not only functional but also serve as artistic statements. Sawaya & Moroni's work is characterized by its bold forms, innovative use of materials, and meticulous attention to detail, making it a favorite among collectors and design enthusiasts worldwide.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Design Philosophy and Product Range of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni's design philosophy is deeply rooted in the belief that furniture should transcend mere functionality to become a form of artistic expression. This philosophy is evident in their diverse product range, which includes chairs, tables, sofas, and lighting fixtures, each designed with a unique aesthetic that challenges traditional design norms. The firm is known for its experimental approach to materials, often incorporating unconventional elements such as carbon fiber, resin, and metal alloys into their designs. This innovative use of materials not only enhances the visual appeal of their products but also improves their durability and functionality. Sawaya & Moroni's commitment to quality craftsmanship is reflected in their meticulous production processes, which combine traditional techniques with cutting-edge technology. Their products are often limited editions, adding an element of exclusivity and desirability. The firm's ability to seamlessly blend form and function has earned them numerous accolades in the design industry, solidifying their reputation as pioneers of contemporary design.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Collaborations and Impact on Contemporary Design\",\n            \"content\": \"Sawaya & Moroni has played a significant role in shaping contemporary design through its strategic collaborations with some of the world's most visionary architects and designers. These partnerships have resulted in groundbreaking projects that push the boundaries of design and architecture. One of the most notable collaborations was with the late Zaha Hadid, a Pritzker Prize-winning architect known for her futuristic and fluid designs. Together, they created iconic pieces such as the 'Z-Chair' and 'Z-Table,' which are celebrated for their sculptural forms and innovative use of materials. Another significant collaboration was with Jean Nouvel, which resulted in the 'Nouvel Chair,' a minimalist yet striking piece that reflects Nouvel's architectural style. These collaborations have not only expanded Sawaya & Moroni's design repertoire but have also influenced the broader design community by introducing new concepts and techniques. The firm's ability to attract and work with top-tier talent is a testament to its status as a leading force in the design world. Through these partnerships, Sawaya & Moroni continues to inspire and shape the future of design, leaving a lasting impact on the industry.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "06137dfa-7f11-4c71-ad7c-824814cfdd50",
+      "source": "expanded_4",
+      "target": "expanded_19",
+      "relation_type": "headquartered_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Overview of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni is an Italian design and architecture firm renowned for its innovative approach to furniture design and architecture. Founded in 1984 by William Sawaya and Paolo Moroni, the company has established itself as a leader in the contemporary design world. The firm is headquartered in Milan, Italy, a city known for its rich design heritage and vibrant creative scene. Sawaya & Moroni is celebrated for its collaborations with some of the most prominent architects and designers globally, including Zaha Hadid, Jean Nouvel, and Daniel Libeskind. The company’s portfolio includes a wide range of products, from bespoke furniture pieces to architectural projects, emphasizing a seamless blend of functionality and aesthetics. Their designs often feature bold, sculptural forms and innovative use of materials, reflecting a commitment to pushing the boundaries of traditional design.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Design Philosophy and Signature Style of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni's design philosophy is deeply rooted in the belief that furniture and architecture should not only serve functional purposes but also inspire and evoke emotions. The firm is known for its avant-garde approach, often incorporating unconventional materials and cutting-edge technology into its designs. This philosophy is evident in their signature style, which is characterized by clean lines, geometric forms, and a minimalist aesthetic. Despite the simplicity of their designs, Sawaya & Moroni's pieces often make a bold statement, reflecting a harmonious balance between form and function. The company’s commitment to quality craftsmanship is evident in the meticulous attention to detail and the use of high-quality materials in their products. This dedication to excellence has earned Sawaya & Moroni a reputation for producing timeless pieces that are both functional and artistic.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Collaborations and Impact on Contemporary Design\",\n            \"content\": \"Sawaya & Moroni has significantly impacted the contemporary design landscape through its numerous collaborations with renowned architects and designers. These partnerships have resulted in iconic pieces that have become staples in modern design. For instance, their collaboration with Zaha Hadid resulted in the 'Z-Chair,' a piece that exemplifies Hadid's signature fluid forms and dynamic lines. Similarly, their work with Jean Nouvel led to the creation of the 'Nouvelle Vague' collection, which showcases Nouvel's architectural prowess and innovative use of materials. These collaborations have not only expanded Sawaya & Moroni's design repertoire but have also contributed to the evolution of contemporary design by challenging traditional norms and introducing new concepts. The firm's ability to seamlessly integrate the visions of different designers into their brand has made them a pivotal player in the design industry, influencing trends and inspiring new generations of designers.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "55e33b4f-b844-43f7-be7b-32df90e15ae3",
+      "source": "expanded_4",
+      "target": "expanded_20",
+      "relation_type": "collaborated_with",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Overview of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni is an Italian design and architecture firm renowned for its innovative approach to furniture design and architecture. Founded in 1984 by William Sawaya and Paolo Moroni, the company has established itself as a leader in the contemporary design world. The firm is headquartered in Milan, Italy, a city known for its rich design heritage and vibrant creative scene. Sawaya & Moroni is celebrated for its collaborations with some of the most prominent architects and designers globally, including Zaha Hadid, Jean Nouvel, and Daniel Libeskind. The company’s portfolio includes a wide range of products, from bespoke furniture pieces to architectural projects, emphasizing a seamless blend of functionality and aesthetics. Their designs often feature bold, sculptural forms and innovative use of materials, reflecting a commitment to pushing the boundaries of traditional design.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Design Philosophy and Signature Style of Sawaya & Moroni\",\n            \"content\": \"Sawaya & Moroni's design philosophy is deeply rooted in the belief that furniture and architecture should not only serve functional purposes but also inspire and evoke emotions. The firm is known for its avant-garde approach, often incorporating unconventional materials and cutting-edge technology into its designs. This philosophy is evident in their signature style, which is characterized by clean lines, geometric forms, and a minimalist aesthetic. Despite the simplicity of their designs, Sawaya & Moroni's pieces often make a bold statement, reflecting a harmonious balance between form and function. The company’s commitment to quality craftsmanship is evident in the meticulous attention to detail and the use of high-quality materials in their products. This dedication to excellence has earned Sawaya & Moroni a reputation for producing timeless pieces that are both functional and artistic.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Collaborations and Impact on Contemporary Design\",\n            \"content\": \"Sawaya & Moroni has significantly impacted the contemporary design landscape through its numerous collaborations with renowned architects and designers. These partnerships have resulted in iconic pieces that have become staples in modern design. For instance, their collaboration with Zaha Hadid resulted in the 'Z-Chair,' a piece that exemplifies Hadid's signature fluid forms and dynamic lines. Similarly, their work with Jean Nouvel led to the creation of the 'Nouvelle Vague' collection, which showcases Nouvel's architectural prowess and innovative use of materials. These collaborations have not only expanded Sawaya & Moroni's design repertoire but have also contributed to the evolution of contemporary design by challenging traditional norms and introducing new concepts. The firm's ability to seamlessly integrate the visions of different designers into their brand has made them a pivotal player in the design industry, influencing trends and inspiring new generations of designers.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "92e09f6f-19d7-4ec6-998f-0e3fcddd5b0e",
+      "source": "expanded_19",
+      "target": "expanded_66",
+      "relation_type": "has_property",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Milan: Economic Powerhouse of Italy\",\n            \"content\": \"Milan, the capital of the Lombardy region in northern Italy, is widely recognized as the economic heart of the country. As of the latest data, Milan is Italy's second most populous city, with a metropolitan area that is home to over 3 million people. The city is a leading global city, with strengths in the arts, commerce, design, education, entertainment, fashion, finance, healthcare, media, services, research, and tourism. Milan's economy is driven by its status as a major financial hub, hosting the Italian Stock Exchange and numerous multinational corporations. The city is also famous for its fashion and design industries, hosting events like Milan Fashion Week and the Milan Furniture Fair, which draw international attention. Additionally, Milan's infrastructure supports its economic activities, with a well-developed transport network that includes three international airports, a major railway hub, and an extensive public transit system. The city's economic landscape is further enriched by its prestigious educational institutions, such as Bocconi University and the Polytechnic University of Milan, which contribute to a skilled workforce and innovation.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Evolution of Milan\",\n            \"content\": \"Milan's history dates back to around 400 BC when it was founded by the Celtic Insubres. It became a significant center of the Roman Empire after being conquered in 222 BC. Known as Mediolanum, the city flourished under Roman rule and became the capital of the Western Roman Empire in 286 AD. Throughout the Middle Ages, Milan was a center of commerce and trade, which laid the foundation for its future economic prowess. The city was ruled by various powers, including the Visconti and Sforza families, who contributed to its architectural and cultural development. The Renaissance period saw Milan become a hub of art and learning, with figures like Leonardo da Vinci leaving a lasting legacy. In the 19th century, Milan played a crucial role in the Italian unification movement, known as the Risorgimento. Today, remnants of its rich history can be seen in its architecture, with landmarks such as the Gothic Cathedral of Milan (Duomo di Milano), the Sforza Castle, and the Santa Maria delle Grazie convent, which houses da Vinci's famous mural, 'The Last Supper.'\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Cultural and Architectural Heritage of Milan\",\n            \"content\": \"Milan is renowned for its rich cultural and architectural heritage, which reflects its historical significance and modern dynamism. The city's skyline is a blend of historic and contemporary architecture, symbolizing its ability to preserve tradition while embracing innovation. The Duomo di Milano, a masterpiece of Gothic architecture, is one of the largest cathedrals in the world and a symbol of the city. Another architectural marvel is the Galleria Vittorio Emanuele II, one of the world's oldest shopping malls, known for its stunning glass and iron architecture. Milan's cultural scene is vibrant, with numerous museums, theaters, and galleries. The La Scala opera house is one of the most prestigious opera venues globally, attracting world-class performers. The city's art scene is equally impressive, with institutions like the Pinacoteca di Brera and the Museo del Novecento showcasing works from the Renaissance to contemporary art. Milan's cultural calendar is packed with events, from the Milan Fashion Week to the Salone del Mobile, reflecting its status as a global design capital. The city's diverse cultural offerings and architectural landmarks make it a must-visit destination for art and history enthusiasts.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.91,
+      "metadata": {}
+    },
+    {
+      "id": "c6de2e7c-9d6f-4094-b47c-bdeee6ce9931",
+      "source": "expanded_19",
+      "target": "expanded_68",
+      "relation_type": "hosts",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Milan: Economic Powerhouse of Italy\",\n            \"content\": \"Milan, the capital of the Lombardy region in northern Italy, is widely recognized as the economic heart of the country. As of the latest data, Milan is Italy's second most populous city, with a metropolitan area that is home to over 3 million people. The city is a leading global city, with strengths in the arts, commerce, design, education, entertainment, fashion, finance, healthcare, media, services, research, and tourism. Milan's economy is driven by its status as a major financial hub, hosting the Italian Stock Exchange and numerous multinational corporations. The city is also famous for its fashion and design industries, hosting events like Milan Fashion Week and the Milan Furniture Fair, which draw international attention. Additionally, Milan's infrastructure supports its economic activities, with a well-developed transport network that includes three international airports, a major railway hub, and an extensive public transit system. The city's economic landscape is further enriched by its prestigious educational institutions, such as Bocconi University and the Polytechnic University of Milan, which contribute to a skilled workforce and innovation.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Evolution of Milan\",\n            \"content\": \"Milan's history dates back to around 400 BC when it was founded by the Celtic Insubres. It became a significant center of the Roman Empire after being conquered in 222 BC. Known as Mediolanum, the city flourished under Roman rule and became the capital of the Western Roman Empire in 286 AD. Throughout the Middle Ages, Milan was a center of commerce and trade, which laid the foundation for its future economic prowess. The city was ruled by various powers, including the Visconti and Sforza families, who contributed to its architectural and cultural development. The Renaissance period saw Milan become a hub of art and learning, with figures like Leonardo da Vinci leaving a lasting legacy. In the 19th century, Milan played a crucial role in the Italian unification movement, known as the Risorgimento. Today, remnants of its rich history can be seen in its architecture, with landmarks such as the Gothic Cathedral of Milan (Duomo di Milano), the Sforza Castle, and the Santa Maria delle Grazie convent, which houses da Vinci's famous mural, 'The Last Supper.'\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Cultural and Architectural Heritage of Milan\",\n            \"content\": \"Milan is renowned for its rich cultural and architectural heritage, which reflects its historical significance and modern dynamism. The city's skyline is a blend of historic and contemporary architecture, symbolizing its ability to preserve tradition while embracing innovation. The Duomo di Milano, a masterpiece of Gothic architecture, is one of the largest cathedrals in the world and a symbol of the city. Another architectural marvel is the Galleria Vittorio Emanuele II, one of the world's oldest shopping malls, known for its stunning glass and iron architecture. Milan's cultural scene is vibrant, with numerous museums, theaters, and galleries. The La Scala opera house is one of the most prestigious opera venues globally, attracting world-class performers. The city's art scene is equally impressive, with institutions like the Pinacoteca di Brera and the Museo del Novecento showcasing works from the Renaissance to contemporary art. Milan's cultural calendar is packed with events, from the Milan Fashion Week to the Salone del Mobile, reflecting its status as a global design capital. The city's diverse cultural offerings and architectural landmarks make it a must-visit destination for art and history enthusiasts.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "cf4f92d1-1f78-4445-aa0a-f2e984249b57",
+      "source": "expanded_20",
+      "target": "expanded_73",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid, born on October 31, 1950, in Baghdad, Iraq, was a visionary architect whose innovative designs reshaped the landscape of contemporary architecture. She was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Hadid's work is characterized by its futuristic forms, fluid lines, and dynamic structures, which often defy traditional architectural norms. Her architectural philosophy was deeply influenced by her studies at the Architectural Association School of Architecture in London, where she was mentored by Rem Koolhaas and Elia Zenghelis. Hadid's projects, such as the Vitra Fire Station in Germany and the MAXXI Museum in Rome, showcase her ability to blend bold aesthetics with functional design. Her legacy continues to inspire architects worldwide, making her a pivotal figure in the evolution of modern architecture.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is renowned for its avant-garde approach, characterized by sweeping curves, fragmented geometry, and a sense of movement. Her designs often incorporate advanced digital technology and materials, allowing for the creation of complex, organic forms that challenge conventional architectural boundaries. One of her most notable innovations is the use of parametric design, which involves using algorithms to generate intricate structures that are both aesthetically striking and structurally sound. Hadid's projects, such as the Heydar Aliyev Center in Baku and the Guangzhou Opera House in China, exemplify her commitment to pushing the limits of architectural design. Her work not only redefines the visual language of architecture but also addresses the functional needs of urban environments, making her a pioneer in integrating technology with artistic vision.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Impact on Global Architecture and Design\",\n            \"content\": \"Zaha Hadid's influence extends far beyond her individual projects, as she played a crucial role in shaping the global architectural discourse. Her firm, Zaha Hadid Architects, continues to operate under the leadership of Patrik Schumacher, perpetuating her innovative spirit and design ethos. Hadid's impact is evident in the way contemporary architecture embraces fluidity, complexity, and experimentation. Her work has inspired a new generation of architects to explore unconventional forms and sustainable solutions. Beyond architecture, Hadid's design philosophy has permeated other fields, including fashion, furniture, and urban planning. Her collaborations with brands like Chanel and Adidas demonstrate her ability to translate architectural principles into diverse contexts. Zaha Hadid's legacy is one of breaking barriers and redefining possibilities, leaving an indelible mark on the world of design and architecture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "d0e0d800-1359-43b7-a875-a39f690d5f03",
+      "source": "expanded_73",
+      "target": "expanded_20",
+      "relation_type": "designed_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Architectural Significance of the Vitra Fire Station\",\n            \"content\": \"The Vitra Fire Station, located in Weil am Rhein, Germany, is a seminal work of contemporary architecture designed by the renowned architect Zaha Hadid. Completed in 1993, it was Hadid's first major built project and is often cited as a pivotal moment in her career, showcasing her distinctive style characterized by dynamic forms and innovative use of space. The building's design reflects Hadid's interest in deconstructivism, with its sharp angles, fragmented geometry, and fluid lines that challenge traditional architectural norms. The fire station is part of the Vitra Campus, a collection of architectural works by leading architects, which serves as both a production site and a design museum. The Vitra Fire Station is not only functional but also an artistic statement, blurring the lines between utility and art. Its design is intended to evoke a sense of movement and urgency, fitting for a building meant to house emergency services. Although it no longer functions as a fire station, it remains a significant piece of architectural history and is used for exhibitions and events.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Context and Development of the Vitra Fire Station\",\n            \"content\": \"The Vitra Fire Station was commissioned in response to a devastating fire in 1981 that destroyed a large portion of the Vitra furniture manufacturing complex. In the aftermath, Vitra's chairman, Rolf Fehlbaum, decided to rebuild the site with a focus on innovative architecture. This decision led to the creation of the Vitra Campus, which features buildings by prominent architects such as Frank Gehry, Tadao Ando, and Herzog & de Meuron. Zaha Hadid was selected to design the fire station as part of this ambitious project. The construction of the Vitra Fire Station marked a significant moment in architectural history, as it was one of the first buildings to be completed by a female architect of Hadid's stature. The project faced numerous challenges, including budget constraints and the technical complexity of Hadid's design. Despite these hurdles, the fire station was completed and opened in 1993, receiving critical acclaim for its bold design and innovative approach. Although the building is no longer used as a fire station, it remains an integral part of the Vitra Campus and is celebrated for its contribution to contemporary architecture.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Vitra Fire Station's Role in the Vitra Campus and Its Cultural Impact\",\n            \"content\": \"The Vitra Fire Station is an integral component of the Vitra Campus, a site that has become a pilgrimage destination for architecture enthusiasts worldwide. The campus is a unique blend of industrial production and architectural innovation, housing buildings designed by some of the most influential architects of the late 20th and early 21st centuries. The Vitra Fire Station, with its striking design, plays a crucial role in the campus's narrative, symbolizing the intersection of functionality and avant-garde design. Its presence on the campus underscores Vitra's commitment to pushing the boundaries of design and architecture. Beyond its architectural significance, the Vitra Fire Station has had a profound cultural impact. It has inspired a generation of architects and designers, serving as a testament to the possibilities of modern architecture. The building is frequently studied in architectural courses and is a subject of numerous publications and documentaries. Its influence extends beyond architecture into broader discussions about the role of design in society. The Vitra Fire Station exemplifies how architecture can transcend its utilitarian purpose to become a cultural and artistic icon.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "6c381904-bce3-44f7-ad43-d0f671eefab2",
+      "source": "expanded_73",
+      "target": "expanded_171",
+      "relation_type": "completed_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Architectural Significance of the Vitra Fire Station\",\n            \"content\": \"The Vitra Fire Station, located in Weil am Rhein, Germany, is a seminal work of contemporary architecture designed by the renowned architect Zaha Hadid. Completed in 1993, it was Hadid's first major built project and is often cited as a pivotal moment in her career, showcasing her distinctive style characterized by dynamic forms and innovative use of space. The building's design reflects Hadid's interest in deconstructivism, with its sharp angles, fragmented geometry, and fluid lines that challenge traditional architectural norms. The fire station is part of the Vitra Campus, a collection of architectural works by leading architects, which serves as both a production site and a design museum. The Vitra Fire Station is not only functional but also an artistic statement, blurring the lines between utility and art. Its design is intended to evoke a sense of movement and urgency, fitting for a building meant to house emergency services. Although it no longer functions as a fire station, it remains a significant piece of architectural history and is used for exhibitions and events.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Context and Development of the Vitra Fire Station\",\n            \"content\": \"The Vitra Fire Station was commissioned in response to a devastating fire in 1981 that destroyed a large portion of the Vitra furniture manufacturing complex. In the aftermath, Vitra's chairman, Rolf Fehlbaum, decided to rebuild the site with a focus on innovative architecture. This decision led to the creation of the Vitra Campus, which features buildings by prominent architects such as Frank Gehry, Tadao Ando, and Herzog & de Meuron. Zaha Hadid was selected to design the fire station as part of this ambitious project. The construction of the Vitra Fire Station marked a significant moment in architectural history, as it was one of the first buildings to be completed by a female architect of Hadid's stature. The project faced numerous challenges, including budget constraints and the technical complexity of Hadid's design. Despite these hurdles, the fire station was completed and opened in 1993, receiving critical acclaim for its bold design and innovative approach. Although the building is no longer used as a fire station, it remains an integral part of the Vitra Campus and is celebrated for its contribution to contemporary architecture.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Vitra Fire Station's Role in the Vitra Campus and Its Cultural Impact\",\n            \"content\": \"The Vitra Fire Station is an integral component of the Vitra Campus, a site that has become a pilgrimage destination for architecture enthusiasts worldwide. The campus is a unique blend of industrial production and architectural innovation, housing buildings designed by some of the most influential architects of the late 20th and early 21st centuries. The Vitra Fire Station, with its striking design, plays a crucial role in the campus's narrative, symbolizing the intersection of functionality and avant-garde design. Its presence on the campus underscores Vitra's commitment to pushing the boundaries of design and architecture. Beyond its architectural significance, the Vitra Fire Station has had a profound cultural impact. It has inspired a generation of architects and designers, serving as a testament to the possibilities of modern architecture. The building is frequently studied in architectural courses and is a subject of numerous publications and documentaries. Its influence extends beyond architecture into broader discussions about the role of design in society. The Vitra Fire Station exemplifies how architecture can transcend its utilitarian purpose to become a cultural and artistic icon.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "0ee7d2fe-1f48-47cf-b6e6-4080c92ba49a",
+      "source": "expanded_73",
+      "target": "expanded_172",
+      "relation_type": "part_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Architectural Significance of the Vitra Fire Station\",\n            \"content\": \"The Vitra Fire Station, located in Weil am Rhein, Germany, is a seminal work of contemporary architecture designed by the renowned architect Zaha Hadid. Completed in 1993, it was Hadid's first major built project and is often cited as a pivotal moment in her career, showcasing her distinctive style characterized by dynamic forms and innovative use of space. The building's design reflects Hadid's interest in deconstructivism, with its sharp angles, fragmented geometry, and fluid lines that challenge traditional architectural norms. The fire station is part of the Vitra Campus, a collection of architectural works by leading architects, which serves as both a production site and a design museum. The Vitra Fire Station is not only functional but also an artistic statement, blurring the lines between utility and art. Its design is intended to evoke a sense of movement and urgency, fitting for a building meant to house emergency services. Although it no longer functions as a fire station, it remains a significant piece of architectural history and is used for exhibitions and events.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Context and Development of the Vitra Fire Station\",\n            \"content\": \"The Vitra Fire Station was commissioned in response to a devastating fire in 1981 that destroyed a large portion of the Vitra furniture manufacturing complex. In the aftermath, Vitra's chairman, Rolf Fehlbaum, decided to rebuild the site with a focus on innovative architecture. This decision led to the creation of the Vitra Campus, which features buildings by prominent architects such as Frank Gehry, Tadao Ando, and Herzog & de Meuron. Zaha Hadid was selected to design the fire station as part of this ambitious project. The construction of the Vitra Fire Station marked a significant moment in architectural history, as it was one of the first buildings to be completed by a female architect of Hadid's stature. The project faced numerous challenges, including budget constraints and the technical complexity of Hadid's design. Despite these hurdles, the fire station was completed and opened in 1993, receiving critical acclaim for its bold design and innovative approach. Although the building is no longer used as a fire station, it remains an integral part of the Vitra Campus and is celebrated for its contribution to contemporary architecture.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Vitra Fire Station's Role in the Vitra Campus and Its Cultural Impact\",\n            \"content\": \"The Vitra Fire Station is an integral component of the Vitra Campus, a site that has become a pilgrimage destination for architecture enthusiasts worldwide. The campus is a unique blend of industrial production and architectural innovation, housing buildings designed by some of the most influential architects of the late 20th and early 21st centuries. The Vitra Fire Station, with its striking design, plays a crucial role in the campus's narrative, symbolizing the intersection of functionality and avant-garde design. Its presence on the campus underscores Vitra's commitment to pushing the boundaries of design and architecture. Beyond its architectural significance, the Vitra Fire Station has had a profound cultural impact. It has inspired a generation of architects and designers, serving as a testament to the possibilities of modern architecture. The building is frequently studied in architectural courses and is a subject of numerous publications and documentaries. Its influence extends beyond architecture into broader discussions about the role of design in society. The Vitra Fire Station exemplifies how architecture can transcend its utilitarian purpose to become a cultural and artistic icon.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    }
+  ],
+  "strategy": "dfs",
+  "complexity_score": 0.1275,
+  "topology_features": {
+    "num_nodes": 8,
+    "num_edges": 7,
+    "density": 0.25,
+    "clustering_coefficient": 0.0,
+    "avg_degree": 1.75,
+    "diameter": 5,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 8,
+    "num_edges": 7,
+    "density": 0.25,
+    "clustering_coefficient": 0.0,
+    "avg_degree": 1.75,
+    "diameter": 5,
+    "connected_components": 1
+  }
+}

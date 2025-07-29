@@ -1,0 +1,121 @@
+{
+  "subgraph_id": "e2f0d214-fe9c-4b77-bb1a-ce796f75e1af",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/e2f0d214-fe9c-4b77-bb1a-ce796f75e1af.json",
+  "qa_pairs": [
+    {
+      "question": "Considering the multiple design disciplines and processes, which design discipline, characterized as a multidisciplinary field, encompasses branding, is known to have accessibility as one of its properties, and explicitly involves methodologies such as user research, prototyping, and testing?",
+      "answer": [
+        "User Experience Design",
+        "UX Design"
+      ],
+      "reasoning": "The answer is deduced by synthesizing several relationships from the knowledge graph: First, the design discipline that 'encompasses branding' must be found; second, the discipline that 'has property Accessibility' and 'involves user research, prototyping, and testing' must be identified. When these attributes are combined, the discipline that meets all these criteria is User Experience Design. This conclusion is reached by noticing that User Experience Design is a multidisciplinary field, has accessibility as a property, involves a process of user research, prototyping, and testing, and encompasses branding, making it the matching entity.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the discipline that 'encompasses branding'. Expected to find User Experience Design.",
+          "Step 2: Verify which discipline 'has property Accessibility'. Expected to see both User Experience Design and user interface design, but User Experience Design is the one that also involves other criteria.",
+          "Step 3: Check the discipline that 'involves user research, prototyping, and testing'. Expected to directly find User Experience Design.",
+          "Last step: Synthesize these pieces of information to conclude that the answer is User Experience Design, also known as UX Design."
+        ],
+        "nodes_used": [
+          "expanded_104 (User Experience Design)",
+          "expanded_43 (branding)",
+          "expanded_45 (user interface design)"
+        ],
+        "triples_used": [
+          "(User Experience Design, encompasses, branding)",
+          "(User Experience Design, has_property, Accessibility)",
+          "(User Experience Design, involves, user research, prototyping, and testing)"
+        ],
+        "source_texts_used": [
+          "User Experience Design definition text: '...involves user research, prototyping, and testing...'",
+          "Text on branding: '...branding...'",
+          "General notes on accessibility in relation to design disciplines."
+        ]
+      },
+      "id": "ae7e06fc-41b8-4e7b-89b6-b62a108f190f",
+      "subgraph_id": "e2f0d214-fe9c-4b77-bb1a-ce796f75e1af",
+      "difficulty_level": 3,
+      "original_question": "Considering the multiple design disciplines and processes, which design discipline, characterized as a multidisciplinary field, encompasses branding, is known to have accessibility as one of its properties, and explicitly involves methodologies such as user research, prototyping, and testing?",
+      "obfuscated_question": "Considering the myriad realms of creative problem-solving and iterative methodologies, which design specialty—recognized as a confluence of varied fields—incorporates the art of crafting a unique organizational persona and emphasizes principles that ensure products remain user-friendly for a diverse audience, all while systematically engaging in in-depth explorations of human interactions, early-stage model creation, and evaluative trials?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 14,
+          "density": 0.3111111111111111,
+          "clustering_coefficient": 0.37,
+          "avg_degree": 2.8,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "In a creative ecosystem where spiral design is incorporated within a broader visual process, and this process is not only a foundational component in user interface design but also plays a vital role in both branding and product packaging, which design discipline serves as the central link that integrates these multifaceted applications and reinforces the user experience?",
+      "answer": [
+        "graphic design",
+        "GD"
+      ],
+      "reasoning": "To answer the question, one must first recognize that spiral design is utilized in a larger design discipline. Then, by examining the relationships in the knowledge graph, we note that graphic design is used in branding, product packaging, and user interface design, and it is also classified as a Process. This multilayered role, which bridges the creative pattern of spiral design with functional areas like branding and UI design, indicates that graphic design is the pivotal discipline. Synthesizing these relationships, the answer is clearly graphic design.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the connection between spiral design and a broader design discipline – find that spiral design is utilized in graphic design.",
+          "Step 2: Analyze which design discipline is used in related fields such as branding, product packaging, and user interface design, while also being defined as a Process.",
+          "Step 3: Recognize that graphic design fits all these roles based on the relationships (used_in and is_a) provided.",
+          "Last step: Synthesize the information to conclude that graphic design is the central discipline linking the creative and functional aspects described."
+        ],
+        "nodes_used": [
+          "expanded_7 (spiral design)",
+          "expanded_25 (graphic design)",
+          "expanded_43 (branding)",
+          "expanded_124 (Product Packaging)",
+          "expanded_45 (user interface design)",
+          "expanded_103 (Process)"
+        ],
+        "triples_used": [
+          "(spiral design, utilized_in, graphic design)",
+          "(graphic design, used_in, branding)",
+          "(graphic design, used_in, Product Packaging)",
+          "(graphic design, used_in, user interface design)",
+          "(graphic design, is_a, Process)"
+        ],
+        "source_texts_used": [
+          "Definition and Core Principles of Graphic Design",
+          "The Role of Graphic Design in Branding and Marketing",
+          "Definition and Core Principles of User Interface Design"
+        ]
+      },
+      "id": "0464b987-3529-4eb8-b129-d68425b3dfd9",
+      "subgraph_id": "e2f0d214-fe9c-4b77-bb1a-ce796f75e1af",
+      "difficulty_level": 3,
+      "original_question": "In a creative ecosystem where spiral design is incorporated within a broader visual process, and this process is not only a foundational component in user interface design but also plays a vital role in both branding and product packaging, which design discipline serves as the central link that integrates these multifaceted applications and reinforces the user experience?",
+      "obfuscated_question": "In a creatively vibrant ecosystem where a looping design motif is interwoven into an expansive visual strategy, and this strategy not only lays the foundation for crafting interactive digital canvases but also underpins both the cultivation of a brand’s identity and the artful presentation of tangible consumer goods, which design discipline functions as the pivotal nexus that unites these varied applications and elevates the overall user engagement?",
+      "uncertainty_score": 0.6499999999999999,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 14,
+          "density": 0.3111111111111111,
+          "clustering_coefficient": 0.37,
+          "avg_degree": 2.8,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 2,
+    "strategy": "dfs",
+    "complexity_score": 0.32533333333333336,
+    "topology_features": {
+      "num_nodes": 10,
+      "num_edges": 14,
+      "density": 0.3111111111111111,
+      "clustering_coefficient": 0.37,
+      "avg_degree": 2.8,
+      "diameter": 4,
+      "connected_components": 1
+    }
+  }
+}

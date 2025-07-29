@@ -1,0 +1,768 @@
+{
+  "dataset_info": {
+    "name": "SailorFog-QA",
+    "description": "基于复杂知识图谱子图生成的高难度问答数据集",
+    "total_qa_pairs": 15,
+    "successful_files": 11,
+    "total_files": 11,
+    "generation_config": {
+      "qa_pairs_per_subgraph": 3,
+      "difficulty_levels": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "qa_pairs": [
+    {
+      "question": "Which individual played a pivotal role in the creation of both the original and current FIFA Women's World Cup Trophies, not only by designing them but also by founding the firm responsible for their craftsmanship?",
+      "answer": [
+        "William Sawaya",
+        "Sawaya"
+      ],
+      "reasoning": "First, we note that the original trophy was designed by an individual who later also designed the current trophy, establishing a consistent creative signature across both artifacts. Additionally, this individual founded the design firm responsible for crafting these trophies. By linking the design roles of both trophies with the founding role of the firm, we can deduce that the answer is William Sawaya.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the designer of the FIFA Women's World Cup Original Trophy from its properties and relationships, which points to an individual.",
+          "Step 2: Check the design details and relationships of the Current FIFA Women's World Cup Trophy to see if the same individual is credited.",
+          "Step 3: Investigate the founding and creation roles of Sawaya & Moroni to confirm the common factor responsible for both design and manufacturing.",
+          "Last step: Synthesize the information from the original trophy, current trophy, and the founding of the firm to conclude that the individual is William Sawaya."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2 (FIFA Women's World Cup Original Trophy)",
+          "rel_1 (Current FIFA Women's World Cup Trophy)",
+          "expanded_3 (William Sawaya)",
+          "expanded_4 (Sawaya & Moroni)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, designed_by, William Sawaya)",
+          "(Current FIFA Women's World Cup Trophy, designed_by, William Sawaya)",
+          "(Sawaya & Moroni, founded_by, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "The original trophy text stating it is designed by William Sawaya and crafted by Sawaya & Moroni.",
+          "The current trophy design text which also mentions that it is designed by William Sawaya and handcrafted by Sawaya & Moroni.",
+          "The design firm information linking William Sawaya as a founder of Sawaya & Moroni."
+        ]
+      },
+      "id": "7be7f169-60ee-4bfa-b266-42417f3f4b6d",
+      "subgraph_id": "bec42a4d-45fe-400d-b022-d432fa31f86a",
+      "difficulty_level": 3,
+      "original_question": "Which individual played a pivotal role in the creation of both the original and current FIFA Women's World Cup Trophies, not only by designing them but also by founding the firm responsible for their craftsmanship?",
+      "obfuscated_question": "Which individual played a pivotal role in the creation of both the original and current FIFA Women's World Cup Trophies, not only by designing them but also by founding the firm responsible for their craftsmanship?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 9,
+          "num_edges": 11,
+          "density": 0.3055555555555556,
+          "clustering_coefficient": 0.3333333333333333,
+          "avg_degree": 2.4444444444444446,
+          "diameter": 6,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Which design firm not only crafted the FIFA Women's World Cup Original Trophy but also collaborated with the renowned architect born in Fumel, France, thereby linking the trophy’s artistic heritage with contemporary design innovation?",
+      "answer": [
+        "Sawaya & Moroni",
+        "Sawaya and Moroni"
+      ],
+      "reasoning": "The reasoning involves multiple steps: First, we identify the firm responsible for crafting the FIFA Women's World Cup Original Trophy, which is noted to be Sawaya & Moroni. Next, we note that this firm also collaborated with a renowned architect. By checking the related relationships, we find that Sawaya & Moroni worked with Jean Nouvel. Additionally, Jean Nouvel was born in Fumel, France. Combining these details shows that the firm linking the trophy’s creation and the notable architectural collaboration is Sawaya & Moroni.",
+      "reference": {
+        "search_path": [
+          "Step 1: Search for the entity that crafted the FIFA Women's World Cup Original Trophy. Expect to find that it is crafted by Sawaya & Moroni.",
+          "Step 2: Look for information linking the design firm to a renowned architect. Expect to confirm that Sawaya & Moroni collaborated with Jean Nouvel.",
+          "Step 3: Verify the birthplace of Jean Nouvel by checking details about his origin in Fumel, France.",
+          "Last step: Synthesize the information from these steps to conclude that the design firm is Sawaya & Moroni."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2",
+          "expanded_4",
+          "expanded_21",
+          "expanded_78"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, crafted_by, Sawaya & Moroni)",
+          "(Sawaya & Moroni, collaborated_with, Jean Nouvel)",
+          "(Jean Nouvel, born_in, Fumel, France)"
+        ],
+        "source_texts_used": [
+          "Design and Symbolism of the FIFA Women's World Cup Original Trophy",
+          "Overview of Sawaya & Moroni",
+          "Jean Nouvel: A Visionary Architect",
+          "Geographical and Demographic Overview of Fumel, France"
+        ]
+      },
+      "id": "3ce3c715-65dc-49a7-825f-ad9e1e755f90",
+      "subgraph_id": "bec42a4d-45fe-400d-b022-d432fa31f86a",
+      "difficulty_level": 3,
+      "original_question": "Which design firm not only crafted the FIFA Women's World Cup Original Trophy but also collaborated with the renowned architect born in Fumel, France, thereby linking the trophy’s artistic heritage with contemporary design innovation?",
+      "obfuscated_question": "Which innovative creative consultancy not only engineered the gleaming accolade—originally conceived as a distinguished prize for a globally celebrated women's sporting event, featuring an opulent metallic finish and the artistic vision of a renowned designer—but also partnered with an acclaimed architectural visionary born in a modest settlement of southwestern Gaul, thus blending a storied legacy of ornamental excellence with modern design innovation?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 9,
+          "num_edges": 11,
+          "density": 0.3055555555555556,
+          "clustering_coefficient": 0.3333333333333333,
+          "avg_degree": 2.4444444444444446,
+          "diameter": 6,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Both the FIFA Women's World Cup Original Trophy and the Current FIFA Women's World Cup Trophy were unveiled in 1998. Considering that these two trophies have distinct design features, which trophy is specifically known for having the names of winning teams engraved on it, and who was its designer?",
+      "answer": [
+        "FIFA Women's World Cup Original Trophy",
+        "Original Trophy"
+      ],
+      "reasoning": "Step-by-step reasoning: First, we note that both trophies share the same unveiling year (1998). Then, by examining the properties of each trophy, we observe that the Original Trophy is described as being engraved with the names of winning teams. Additionally, it is noted that it was designed by William Sawaya. The Current Trophy, while having features such as a marble base, does not have this engraving property. Thus, synthesizing these pieces of information leads to the conclusion that the trophy known for having the winning teams’ names engraved and designed by William Sawaya is the FIFA Women's World Cup Original Trophy.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify that both trophies were unveiled in 1998 from the given knowledge graph.",
+          "Step 2: Check the properties of the FIFA Women's World Cup Original Trophy to find that it is engraved with the names of winning teams.",
+          "Step 3: Verify the designer information for the Original Trophy (William Sawaya).",
+          "Step 4: Compare the design features with the Current Trophy (which is mentioned to have a marble base but no engraving property).",
+          "Last step: Synthesize the information to conclude that the Original Trophy is the one with the engraved names of winning teams and was designed by William Sawaya."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2",
+          "rel_1"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, engraved_with, names of winning teams)",
+          "(FIFA Women's World Cup Original Trophy, unveiled_in, 1998)",
+          "(FIFA Women's World Cup Original Trophy, Designer, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "Original trophy details: 'Gold-plated sterling silver' and 'Designer: William Sawaya' with engraving of winning teams.",
+          "The knowledge graph relation associating the Original Trophy with the engraved names."
+        ]
+      },
+      "id": "9d527e96-b6b9-451f-99c8-2cdad2ea165f",
+      "subgraph_id": "346130eb-494c-4677-9d55-a81017bc1303",
+      "difficulty_level": 3,
+      "original_question": "Both the FIFA Women's World Cup Original Trophy and the Current FIFA Women's World Cup Trophy were unveiled in 1998. Considering that these two trophies have distinct design features, which trophy is specifically known for having the names of winning teams engraved on it, and who was its designer?",
+      "obfuscated_question": "In the later years of the twentieth century, two prominent celebratory emblems were revealed for an international sporting event—one, a legacy artifact fashioned from a lustrous, precious metal alloy by a celebrated artisan, and the other, its modern counterpart with a refreshed design. Given their distinct aesthetic features, which of these commemorative pieces is uniquely recognized for bearing the engraved names of victorious groups, and who is the creative mind behind its design?",
+      "uncertainty_score": 0.6499999999999999,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 5,
+          "num_edges": 5,
+          "density": 0.5,
+          "clustering_coefficient": 0.3333333333333333,
+          "avg_degree": 2.0,
+          "diameter": 3,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Considering the historical evolution of the FIFA Women’s World Cup Trophy, which entity is responsible for both crafting the original trophy—featuring gold-plated sterling silver and a distinctive spiral (a design element that symbolizes growth)—and handcrafting its successor trophy, thereby linking the legacy of the tournament through their consistent craftsmanship?",
+      "answer": [
+        "Sawaya & Moroni",
+        "Sawaya and Moroni"
+      ],
+      "reasoning": "To answer the question, one must first identify the entity associated with the creation of the original trophy as well as the one linked with the current trophy. The knowledge graph shows that the original trophy was 'crafted by' and 'manufactured by' the entity Sawaya & Moroni. Additionally, the current trophy is noted to be 'handcrafted by' the same entity. By correlating these relationships and noting the use of specific materials such as gold-plated sterling silver and design features like the spiral design—which are mentioned in relation to the trophies—the consistent role of Sawaya & Moroni in both iterations is revealed.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the trophies involved and their associated properties, particularly the original and current FIFA Women’s World Cup Trophies.",
+          "Step 2: Look up the relationships for the original trophy to find entities related by 'crafted_by' and 'manufactured_by'. Expected result: Sawaya & Moroni.",
+          "Step 3: Search for the relationships pertaining to the current trophy, specifically 'handcrafted_by', to confirm the same entity is involved.",
+          "Step 4: Correlate the design elements such as the spiral design and the material (gold-plated sterling silver) that link both trophies.",
+          "Last step: Synthesize the information to conclude that Sawaya & Moroni is the entity responsible for both trophies."
+        ],
+        "nodes_used": [
+          "FIFA Women's World Cup Original Trophy (ID: 1caf5a4a-c952-4c13-9631-7411e85874e2)",
+          "Sawaya & Moroni (ID: expanded_4)",
+          "Current FIFA Women's World Cup Trophy (ID: rel_1)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, crafted_by, Sawaya & Moroni)",
+          "(FIFA Women's World Cup Original Trophy, manufactured_by, Sawaya & Moroni)",
+          "(Current FIFA Women's World Cup Trophy, handcrafted_by, Sawaya & Moroni)"
+        ],
+        "source_texts_used": [
+          "Source text describing the design and details of the FIFA Women's World Cup Original Trophy including material and craftsmanship details.",
+          "Source text for the Current FIFA Women's World Cup Trophy that mentions it is handcrafted by Sawaya & Moroni and includes information about its spiral design and composition."
+        ]
+      },
+      "id": "8f2d62dc-33ed-431a-aec9-1702d2ea9610",
+      "subgraph_id": "04681048-3c17-485d-bc7f-76de9da6d7cc",
+      "difficulty_level": 3,
+      "original_question": "Considering the historical evolution of the FIFA Women’s World Cup Trophy, which entity is responsible for both crafting the original trophy—featuring gold-plated sterling silver and a distinctive spiral (a design element that symbolizes growth)—and handcrafting its successor trophy, thereby linking the legacy of the tournament through their consistent craftsmanship?",
+      "obfuscated_question": "Considering the historical progression of the global tournament's insignia for elite female competitors, which organization is credited with both fabricating the inaugural award—featuring a luxurious metallic composite achieved by overlaying a prized yellow element atop a refined silvery base, paired with a spiraling form symbolizing organic growth—and meticulously crafting its subsequent version, thereby uniting the tournament's heritage through a legacy of consistent artisanal expertise?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 13,
+          "density": 0.28888888888888886,
+          "clustering_coefficient": 0.18666666666666668,
+          "avg_degree": 2.6,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Considering the historical lineage and the detailed design relationships of the FIFA Women’s World Cup trophies, which entity is credited with designing both the Original Trophy and its successor, and is also linked to the firm responsible for crafting and manufacturing them?",
+      "answer": [
+        "William Sawaya",
+        "William Sawaya"
+      ],
+      "reasoning": "The problem requires synthesizing multiple relationships: first, the original trophy is explicitly described as being designed by William Sawaya; second, the current trophy, which is the successor of the original, is also designed by William Sawaya. Although the firm Sawaya & Moroni is responsible for crafting and manufacturing both trophies, the design credit consistently goes to William Sawaya. By connecting these relationships, we conclude that William Sawaya is the entity common to both design attributions.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the design information for the FIFA Women's World Cup Original Trophy which attributes its design to William Sawaya.",
+          "Step 2: Identify the design details of the Current FIFA Women's World Cup Trophy, noting that it, too, was designed by William Sawaya.",
+          "Step 3: Recognize that the relationship 'Successor' links the current trophy to the original, reinforcing the lineage and common design feature.",
+          "Step 4: Note that although Sawaya & Moroni is linked to the crafting and manufacturing processes, design is solely credited to William Sawaya.",
+          "Last step: Synthesize the design attribution across the trophies to conclude that William Sawaya is responsible for both."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2 (FIFA Women's World Cup Original Trophy)",
+          "rel_1 (Current FIFA Women's World Cup Trophy)",
+          "expanded_3 (William Sawaya)",
+          "expanded_4 (Sawaya & Moroni)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, designed_by, William Sawaya)",
+          "(Current FIFA Women's World Cup Trophy, designed_by, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "Design and Symbolism of the FIFA Women's World Cup Original Trophy",
+          "Design and Features of the Current FIFA Women's World Cup Trophy"
+        ]
+      },
+      "id": "4d922de3-56fa-4b6f-8fc7-74cca35c9272",
+      "subgraph_id": "a49f5980-c1cf-4a6c-b55f-978e4cdcb631",
+      "difficulty_level": 3,
+      "original_question": "Considering the historical lineage and the detailed design relationships of the FIFA Women’s World Cup trophies, which entity is credited with designing both the Original Trophy and its successor, and is also linked to the firm responsible for crafting and manufacturing them?",
+      "obfuscated_question": "Considering the historical lineage and the detailed design relationships of the FIFA Women’s World Cup trophies, which entity is credited with designing both the Original Trophy and its successor, and is also linked to the firm responsible for crafting and manufacturing them?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 4,
+          "num_edges": 6,
+          "density": 1.0,
+          "clustering_coefficient": 1.0,
+          "avg_degree": 3.0,
+          "diameter": 1,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Considering the evolution of the FIFA Women's World Cup Trophy—from the original design introduced in 1999, which features a spiral design symbolizing growth and dynamism, to its current iteration that is also celebrated for embodying the global nature of the sport—which individual is recognized as the key designer responsible for both the original trophy and its successor, while also founding the firm that handcrafted these prestigious artifacts?",
+      "answer": [
+        "William Sawaya",
+        "Sawaya"
+      ],
+      "reasoning": "The task requires synthesizing multiple pieces of information from the knowledge graph and supporting source texts. First, we note that both the original and the current FIFA Women's World Cup Trophies were designed by the same person, as indicated by multiple relationships (e.g., 'designed_by William Sawaya' for both trophies). In addition, the original trophy is described as a prestigious artifact and is linked to the label of 'designed by William Sawaya'. Furthermore, Sawaya & Moroni, the firm linked with the trophy craftsmanship, was founded by William Sawaya, which reinforces his pivotal role. The spiral design property—symbolizing growth, evolution, and transformation—is featured on the current trophy, and although it is part of its design aesthetics, the common thread in both trophy versions is the involvement of William Sawaya. Thus, reasoning across these entities and relationships leads to the conclusion that William Sawaya is the key individual whose contributions have defined both trophies.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the design relationships in the trophies, noting that both the original and current FIFA Women's World Cup Trophies are 'designed by William Sawaya'.",
+          "Step 2: Recognize that the firm Sawaya & Moroni, implicated in the trophy craftsmanship, was founded by William Sawaya, linking craftsmanship to the design.",
+          "Step 3: Note further that the spiral design present in the current trophy symbolizes growth and is a recurring element, but the designer behind this consistent aesthetic is the same individual.",
+          "Last step: Synthesize the above information to deduce that William Sawaya is responsible for both the artistic and design evolution across the trophies."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2",
+          "expanded_3",
+          "expanded_4",
+          "expanded_7",
+          "expanded_15"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, designed_by, William Sawaya)",
+          "(Current FIFA Women's World Cup Trophy, designed_by, William Sawaya)",
+          "(Sawaya & Moroni, founded_by, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "The original trophy description stating it is a prestigious artifact designed by William Sawaya.",
+          "The details in the current trophy description that mention the spiral design and its symbolic representation of growth and the global nature of the sport, alongside its design attribution.",
+          "The background information on Sawaya & Moroni being founded by William Sawaya."
+        ]
+      },
+      "id": "3d3de992-dfbb-48d6-9819-2aa910720236",
+      "subgraph_id": "477992be-c18c-4dc0-8c9d-5ca70d0e34a7",
+      "difficulty_level": 3,
+      "original_question": "Considering the evolution of the FIFA Women's World Cup Trophy—from the original design introduced in 1999, which features a spiral design symbolizing growth and dynamism, to its current iteration that is also celebrated for embodying the global nature of the sport—which individual is recognized as the key designer responsible for both the original trophy and its successor, while also founding the firm that handcrafted these prestigious artifacts?",
+      "obfuscated_question": "Considering the evolution of the trophy awarded in a major international women's football tournament—from its early incarnation, introduced in the waning years of the past century and fashioned with a spiral motif symbolizing perpetual growth and energy, to its current version celebrated for evoking the sport’s broad cross-border appeal—which forward-thinking craftsman is acknowledged as the principal designer behind both these iterations, having also established the specialized atelier responsible for creating these revered symbols of athletic achievement?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 16,
+          "density": 0.35555555555555557,
+          "clustering_coefficient": 0.5066666666666666,
+          "avg_degree": 3.2,
+          "diameter": 3,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "The FIFA Women's World Cup trophies have undergone changes in their designs and materials over the years. Considering that the Original Trophy (introduced in 1999) was made of 'sterling silver and gold' and the current trophy is described in similar terms, by synthesizing the known properties of sterling silver (specifically that 92.5% pure silver is known as sterling silver and exhibits properties of ductility and is measured in karats), which material is explicitly used in the construction of the current FIFA Women’s World Cup Trophy?",
+      "answer": [
+        "gold-plated sterling silver",
+        "gold plated sterling silver"
+      ],
+      "reasoning": "First, we note that the Original Trophy was made of 'sterling silver and gold' and has a successor, the current trophy. Then, through the properties provided, we see that 92.5% pure silver is defined as sterling silver, and this term is used as part of the material composition of the current trophy. Additionally, the current trophy is explicitly stated to be made of 'gold-plated sterling silver'. The relationship between the alloy’s properties (ductility and measurement by karats) and its composition confirms that the material used in the current trophy is indeed gold-plated sterling silver. Hence, synthesizing information across multiple nodes and relationships confirms the answer.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the material composition of the FIFA Women's World Cup Original Trophy from the knowledge graph (made of 'sterling silver and gold').",
+          "Step 2: Locate the information for the Current FIFA Women's World Cup Trophy, which indicates it is made of 'gold-plated sterling silver', and note that it is the successor of the original trophy.",
+          "Step 3: Investigate the properties of 'sterling silver and gold' by reviewing the property that 92.5% pure silver is considered sterling silver and is measured by karats as well as its ductility.",
+          "Step 4: Synthesize the data to confirm that since 92.5% pure silver (sterling silver) is a defining component and it is cast/gilded, the current trophy’s material is confirmed as 'gold-plated sterling silver'."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2 (FIFA Women's World Cup Original Trophy)",
+          "rel_1 (Current FIFA Women's World Cup Trophy)",
+          "expanded_55 (92.5% pure silver)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, made_of, sterling silver and gold)",
+          "(FIFA Women's World Cup Original Trophy, Successor, Current FIFA Women's World Cup Trophy)",
+          "(Current FIFA Women's World Cup Trophy, made_of, gold-plated sterling silver)",
+          "(sterling silver and gold, has_property, 92.5% pure silver)",
+          "(92.5% pure silver, is_a, gold-plated sterling silver)"
+        ],
+        "source_texts_used": [
+          "Design and Features of the Current FIFA Women's World Cup Trophy",
+          "Historical Background and Evolution of the FIFA Women's World Cup Trophy",
+          "Understanding Sterling Silver and Gold: Composition and Properties"
+        ]
+      },
+      "id": "7139f2f9-1efd-4a00-8791-a6c481186722",
+      "subgraph_id": "f5ff09d8-ea14-4d14-99c6-ffe45c7974e9",
+      "difficulty_level": 3,
+      "original_question": "The FIFA Women's World Cup trophies have undergone changes in their designs and materials over the years. Considering that the Original Trophy (introduced in 1999) was made of 'sterling silver and gold' and the current trophy is described in similar terms, by synthesizing the known properties of sterling silver (specifically that 92.5% pure silver is known as sterling silver and exhibits properties of ductility and is measured in karats), which material is explicitly used in the construction of the current FIFA Women’s World Cup Trophy?",
+      "obfuscated_question": "In the history of the global women's football tournament, the championship awards have evolved over time. Given that the inaugural cup—introduced in the waning years of the 20th century—was fashioned from a highly refined silver alloy paired with a classic, lustrous yellow precious metal, and knowing that the current award is described in a comparable manner, by synthesizing the known characteristics of that high-purity silver (notably recognized for its nearly nine-tenths content and ductile properties measured in karats), which distinct material is explicitly incorporated in the construction of the present-day trophy?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 11,
+          "density": 0.24444444444444444,
+          "clustering_coefficient": 0.15,
+          "avg_degree": 2.2,
+          "diameter": 5,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "The current FIFA Women's World Cup Trophy is made of a material that is widely popular in the jewelry market for its luxurious appearance, yet its fabrication involves a specific chemical process. Based on the composition and production methods of this material, what is the primary process used to create it?",
+      "answer": [
+        "electroplating",
+        "Electroplating"
+      ],
+      "reasoning": "To answer this question, one must first recognize that the trophy is made of gold-plated sterling silver. Then, by understanding the production process of gold-plated sterling silver—which involves applying a thin layer of gold onto sterling silver via an electric current—the solver identifies that the key process responsible for this fabrication is electroplating. This reasoning synthesizes information from two interconnected sources: details about the trophy's material and the process by which gold-plated sterling silver is made.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify that the current FIFA Women's World Cup Trophy is made of gold-plated sterling silver, as mentioned in its design description.",
+          "Step 2: Locate information on gold-plated sterling silver to understand its composition and the processes involved in its production.",
+          "Step 3: Notice that the production of gold-plated sterling silver involves a distinct process where a thin layer of gold is applied to sterling silver using electricity.",
+          "Last step: Conclude that the process is electroplating, which is the direct method used to produce gold-plated sterling silver."
+        ],
+        "nodes_used": [
+          "rel_1",
+          "expanded_6",
+          "expanded_22"
+        ],
+        "triples_used": [
+          "(Current FIFA Women's World Cup Trophy, made_of, gold-plated sterling silver)",
+          "(gold-plated sterling silver, created_by, electroplating)"
+        ],
+        "source_texts_used": [
+          "Design and Features of the Current FIFA Women's World Cup Trophy (detailing that the trophy is made from gold-plated sterling silver)",
+          "Definition and Composition of Gold-Plated Sterling Silver (explaining that the gold plating process is performed by electroplating)"
+        ]
+      },
+      "id": "ca84d44a-8702-4d1b-9c03-2fd072fbfd27",
+      "subgraph_id": "401eb89c-ff3c-4ba6-bdc3-bb47c8d84e20",
+      "difficulty_level": 3,
+      "original_question": "The current FIFA Women's World Cup Trophy is made of a material that is widely popular in the jewelry market for its luxurious appearance, yet its fabrication involves a specific chemical process. Based on the composition and production methods of this material, what is the primary process used to create it?",
+      "obfuscated_question": "The reigning emblem of a distinguished international championship for female teams is fashioned from a substance highly prized in the luxury adornment market for its brilliant luster, though its creation requires a unique chemical transformation. Drawing on the material’s properties and the methods used in its production, what is the principal process involved in its fabrication?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 5,
+          "num_edges": 4,
+          "density": 0.4,
+          "clustering_coefficient": 0.0,
+          "avg_degree": 1.6,
+          "diameter": 2,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Which architect, born in a historic city that suffered a Mongol invasion, later designed an opera house that was completed during a major multi-sport event hosted in China?",
+      "answer": [
+        "Zaha Hadid",
+        "Hadid"
+      ],
+      "reasoning": "First, we identify the multi-sport event as the 2010 Asian Games, which was held in China, and note that the Guangzhou Opera House, completed in the same period, is located in China. Next, we determine that the Guangzhou Opera House was designed by an architect. We then look for the architect with a connection to a historically significant city and find that Zaha Hadid was born in Baghdad, Iraq—a city that was sacked by the Mongols. By synthesizing these pieces of information—her birthplace, the historical event associated with that city, and her design of the Guangzhou Opera House completed during the 2010 Asian Games—we conclude that the architect in question is Zaha Hadid.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the 2010 Asian Games as a major multi-sport event hosted in China.",
+          "Step 2: Note that the Guangzhou Opera House was completed during the 2010 Asian Games and is located in China.",
+          "Step 3: Find that the Guangzhou Opera House was designed by Zaha Hadid.",
+          "Step 4: Look into the background of Zaha Hadid to note her birth in Baghdad, Iraq, a city with historical significance.",
+          "Step 5: Recognize that Baghdad, Iraq was sacked by the Mongols, linking her origin to a major historical event.",
+          "Last step: Synthesize the above data to conclude that the architect is Zaha Hadid."
+        ],
+        "nodes_used": [
+          "expanded_20 (Zaha Hadid)",
+          "expanded_31 (2010 Asian Games)",
+          "expanded_76 (Guangzhou Opera House)",
+          "expanded_69 (Baghdad, Iraq)",
+          "expanded_168 (Mongols)"
+        ],
+        "triples_used": [
+          "(2010 Asian Games, located_in, China)",
+          "(Guangzhou Opera House, completed_in, 2010 Asian Games)",
+          "(Guangzhou Opera House, designed_by, Zaha Hadid)",
+          "(Zaha Hadid, born_in, Baghdad, Iraq)",
+          "(Baghdad, Iraq, sacked_by, Mongols)"
+        ],
+        "source_texts_used": [
+          "Architectural Marvel of Guangzhou Opera House",
+          "Zaha Hadid: Pioneering Architect of the 21st Century",
+          "Historical Significance of Baghdad"
+        ]
+      },
+      "id": "57c776a3-449d-4764-a640-0b9ddb9921dd",
+      "subgraph_id": "dfdcdb14-8b66-4079-bcc7-b2642d6b64ad",
+      "difficulty_level": 3,
+      "original_question": "Which architect, born in a historic city that suffered a Mongol invasion, later designed an opera house that was completed during a major multi-sport event hosted in China?",
+      "obfuscated_question": "Which architect, born in an ancient city that once endured an assault by nomadic conquerors from a vast Eurasian steppe, later designed an opera venue that was completed during a sweeping international sports celebration hosted by a renowned Eastern civilization celebrated for its millennia-old cultural legacy?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 10,
+          "density": 0.2222222222222222,
+          "clustering_coefficient": 0.2333333333333333,
+          "avg_degree": 2.0,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "An object is described as weighing approximately 4.6 kilograms. Considering that the pound is defined as exactly 0.45359237 kilograms and that in multiple independent sources it is stated that 10.14 pounds is equivalent to this object’s weight (with further conversion showing 10.14 pounds equals 4.599 kilograms and 162.24 ounces), which measurement in the imperial system is consistently used to represent the object's weight?",
+      "answer": [
+        "10.14 pounds",
+        "10.14 lb"
+      ],
+      "reasoning": "The problem requires synthesizing information from several sources. First, we note the object's weight is given as approximately 4.6 kilograms. One source explicitly converts this to 10.14 pounds. Another confirms that 10.14 pounds is defined using the exact conversion factor, 0.45359237 kilograms per pound, and further converts 10.14 pounds back into a metric value of 4.599 kilograms, and also into 162.24 ounces. By integrating these multiple pieces of information, we confirm that the consistent imperial measurement used across the sources is 10.14 pounds.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the object weight given as 4.6 kilograms and search for its conversion into pounds.",
+          "Step 2: Locate the conversion rule where 1 pound equals exactly 0.45359237 kilograms, ensuring the conversion factor is standardized.",
+          "Step 3: Verify that the conversion from 4.6 kilograms to pounds yields 10.14 pounds from one source.",
+          "Step 4: Cross-check that another source further converts 10.14 pounds back into approximately 4.599 kilograms and into 162.24 ounces.",
+          "Last step: Synthesize the information from multiple entities and relationships to conclude that 10.14 pounds is the measurement in the imperial system that consistently represents the object's weight."
+        ],
+        "nodes_used": [
+          "expanded_9",
+          "expanded_26",
+          "expanded_46",
+          "expanded_125",
+          "expanded_126"
+        ],
+        "triples_used": [
+          "(weighs approximately 4.6 kilograms, equivalent_to, 10.14 pounds)",
+          "(10.14 pounds, defined_as, 0.45359237 kilograms)",
+          "(10.14 pounds, equivalent_to, 4.599 kilograms)",
+          "(10.14 pounds, equivalent_to, 162.24 ounces)"
+        ],
+        "source_texts_used": [
+          "Content discussing the conversion of 4.6 kilograms to 10.14 pounds",
+          "Explanation of the pound defined as exactly 0.45359237 kilograms",
+          "Information confirming the equivalence of 10.14 pounds to 4.599 kilograms and 162.24 ounces"
+        ]
+      },
+      "id": "feee7453-bb6d-49ee-ae69-89b43bb35594",
+      "subgraph_id": "5de06e50-6944-4fc8-b9f0-108131f6f48f",
+      "difficulty_level": 3,
+      "original_question": "An object is described as weighing approximately 4.6 kilograms. Considering that the pound is defined as exactly 0.45359237 kilograms and that in multiple independent sources it is stated that 10.14 pounds is equivalent to this object’s weight (with further conversion showing 10.14 pounds equals 4.599 kilograms and 162.24 ounces), which measurement in the imperial system is consistently used to represent the object's weight?",
+      "obfuscated_question": "An object is described as having a mass roughly equivalent to what one might call nearly five kilograms when rounded. Knowing that one of the imperial units of mass is exactly defined by a specific conversion factor (about half a kilogram per unit) and that several independent references equate the object's weight to just a bit more than ten of these particular units (with further conversions indicating an overall mass very close to that slightly under-five‐kilogram measure and an alternative count in a smaller subdivision totaling in the low hundreds), which imperial unit is the consistently employed standard for representing this object's weight?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 6,
+          "num_edges": 7,
+          "density": 0.4666666666666667,
+          "clustering_coefficient": 0.4777777777777778,
+          "avg_degree": 2.3333333333333335,
+          "diameter": 2,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "An object weighs approximately 4.6 kilograms. Using the known conversion relationships where 4.6 kilograms is equivalent to 10.14 pounds and knowing that 10.14 pounds is equivalent to 162.24 ounces, what is the weight of the object in ounces?",
+      "answer": [
+        "162.24 ounces",
+        "162.24oz"
+      ],
+      "reasoning": "The solution requires synthesizing multiple conversion relationships from different parts of the information. First, we identify that an object weighing approximately 4.6 kilograms corresponds to 10.14 pounds. Next, we use the established conversion that 10.14 pounds is equivalent to 162.24 ounces. By logically linking these steps, we conclude that the object weighs 162.24 ounces.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify from the knowledge graph that 'weighs approximately 4.6 kilograms' is equivalent to '10.14 pounds'. Expect to find the conversion factor linking kilograms to pounds.",
+          "Step 2: Locate the conversion stating that '10.14 pounds' is equivalent to '162.24 ounces'. This provides the conversion from pounds to ounces.",
+          "Step 3: Synthesize the two conversion steps to deduce that the weight in ounces is 162.24 ounces for an object weighing approximately 4.6 kilograms."
+        ],
+        "nodes_used": [
+          "expanded_9 (weighs approximately 4.6 kilograms)",
+          "expanded_26 (10.14 pounds)",
+          "expanded_126 (162.24 ounces)"
+        ],
+        "triples_used": [
+          "(weighs approximately 4.6 kilograms, equivalent_to, 10.14 pounds)",
+          "(10.14 pounds, equivalent_to, 162.24 ounces)"
+        ],
+        "source_texts_used": [
+          "Extracted text confirming the equivalence of 4.6 kilograms to 10.14 pounds",
+          "Extracted text stating that 10.14 pounds is equivalent to 162.24 ounces"
+        ]
+      },
+      "id": "8bbaeaa7-b3a2-4a0b-ae8f-a7f1dc65ac5d",
+      "subgraph_id": "5de06e50-6944-4fc8-b9f0-108131f6f48f",
+      "difficulty_level": 3,
+      "original_question": "An object weighs approximately 4.6 kilograms. Using the known conversion relationships where 4.6 kilograms is equivalent to 10.14 pounds and knowing that 10.14 pounds is equivalent to 162.24 ounces, what is the weight of the object in ounces?",
+      "obfuscated_question": "An item has a mass of roughly 4.6 units in a system commonly used outside the imperial framework. Given that this mass converts to a little over 10 units in an imperial measure based on a larger unit, and that this intermediary value translates into a total number of smaller subdivisions—specifically, a number that is just beyond the count of one hundred and sixty of these fractional components—what is the mass of the item when expressed entirely in these smaller units?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 6,
+          "num_edges": 7,
+          "density": 0.4666666666666667,
+          "clustering_coefficient": 0.4777777777777778,
+          "avg_degree": 2.3333333333333335,
+          "diameter": 2,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Considering the multiple design disciplines and processes, which design discipline, characterized as a multidisciplinary field, encompasses branding, is known to have accessibility as one of its properties, and explicitly involves methodologies such as user research, prototyping, and testing?",
+      "answer": [
+        "User Experience Design",
+        "UX Design"
+      ],
+      "reasoning": "The answer is deduced by synthesizing several relationships from the knowledge graph: First, the design discipline that 'encompasses branding' must be found; second, the discipline that 'has property Accessibility' and 'involves user research, prototyping, and testing' must be identified. When these attributes are combined, the discipline that meets all these criteria is User Experience Design. This conclusion is reached by noticing that User Experience Design is a multidisciplinary field, has accessibility as a property, involves a process of user research, prototyping, and testing, and encompasses branding, making it the matching entity.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the discipline that 'encompasses branding'. Expected to find User Experience Design.",
+          "Step 2: Verify which discipline 'has property Accessibility'. Expected to see both User Experience Design and user interface design, but User Experience Design is the one that also involves other criteria.",
+          "Step 3: Check the discipline that 'involves user research, prototyping, and testing'. Expected to directly find User Experience Design.",
+          "Last step: Synthesize these pieces of information to conclude that the answer is User Experience Design, also known as UX Design."
+        ],
+        "nodes_used": [
+          "expanded_104 (User Experience Design)",
+          "expanded_43 (branding)",
+          "expanded_45 (user interface design)"
+        ],
+        "triples_used": [
+          "(User Experience Design, encompasses, branding)",
+          "(User Experience Design, has_property, Accessibility)",
+          "(User Experience Design, involves, user research, prototyping, and testing)"
+        ],
+        "source_texts_used": [
+          "User Experience Design definition text: '...involves user research, prototyping, and testing...'",
+          "Text on branding: '...branding...'",
+          "General notes on accessibility in relation to design disciplines."
+        ]
+      },
+      "id": "ae7e06fc-41b8-4e7b-89b6-b62a108f190f",
+      "subgraph_id": "e2f0d214-fe9c-4b77-bb1a-ce796f75e1af",
+      "difficulty_level": 3,
+      "original_question": "Considering the multiple design disciplines and processes, which design discipline, characterized as a multidisciplinary field, encompasses branding, is known to have accessibility as one of its properties, and explicitly involves methodologies such as user research, prototyping, and testing?",
+      "obfuscated_question": "Considering the myriad realms of creative problem-solving and iterative methodologies, which design specialty—recognized as a confluence of varied fields—incorporates the art of crafting a unique organizational persona and emphasizes principles that ensure products remain user-friendly for a diverse audience, all while systematically engaging in in-depth explorations of human interactions, early-stage model creation, and evaluative trials?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 14,
+          "density": 0.3111111111111111,
+          "clustering_coefficient": 0.37,
+          "avg_degree": 2.8,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "In a creative ecosystem where spiral design is incorporated within a broader visual process, and this process is not only a foundational component in user interface design but also plays a vital role in both branding and product packaging, which design discipline serves as the central link that integrates these multifaceted applications and reinforces the user experience?",
+      "answer": [
+        "graphic design",
+        "GD"
+      ],
+      "reasoning": "To answer the question, one must first recognize that spiral design is utilized in a larger design discipline. Then, by examining the relationships in the knowledge graph, we note that graphic design is used in branding, product packaging, and user interface design, and it is also classified as a Process. This multilayered role, which bridges the creative pattern of spiral design with functional areas like branding and UI design, indicates that graphic design is the pivotal discipline. Synthesizing these relationships, the answer is clearly graphic design.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the connection between spiral design and a broader design discipline – find that spiral design is utilized in graphic design.",
+          "Step 2: Analyze which design discipline is used in related fields such as branding, product packaging, and user interface design, while also being defined as a Process.",
+          "Step 3: Recognize that graphic design fits all these roles based on the relationships (used_in and is_a) provided.",
+          "Last step: Synthesize the information to conclude that graphic design is the central discipline linking the creative and functional aspects described."
+        ],
+        "nodes_used": [
+          "expanded_7 (spiral design)",
+          "expanded_25 (graphic design)",
+          "expanded_43 (branding)",
+          "expanded_124 (Product Packaging)",
+          "expanded_45 (user interface design)",
+          "expanded_103 (Process)"
+        ],
+        "triples_used": [
+          "(spiral design, utilized_in, graphic design)",
+          "(graphic design, used_in, branding)",
+          "(graphic design, used_in, Product Packaging)",
+          "(graphic design, used_in, user interface design)",
+          "(graphic design, is_a, Process)"
+        ],
+        "source_texts_used": [
+          "Definition and Core Principles of Graphic Design",
+          "The Role of Graphic Design in Branding and Marketing",
+          "Definition and Core Principles of User Interface Design"
+        ]
+      },
+      "id": "0464b987-3529-4eb8-b129-d68425b3dfd9",
+      "subgraph_id": "e2f0d214-fe9c-4b77-bb1a-ce796f75e1af",
+      "difficulty_level": 3,
+      "original_question": "In a creative ecosystem where spiral design is incorporated within a broader visual process, and this process is not only a foundational component in user interface design but also plays a vital role in both branding and product packaging, which design discipline serves as the central link that integrates these multifaceted applications and reinforces the user experience?",
+      "obfuscated_question": "In a creatively vibrant ecosystem where a looping design motif is interwoven into an expansive visual strategy, and this strategy not only lays the foundation for crafting interactive digital canvases but also underpins both the cultivation of a brand’s identity and the artful presentation of tangible consumer goods, which design discipline functions as the pivotal nexus that unites these varied applications and elevates the overall user engagement?",
+      "uncertainty_score": 0.6499999999999999,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 14,
+          "density": 0.3111111111111111,
+          "clustering_coefficient": 0.37,
+          "avg_degree": 2.8,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Which visionary architect, known for her fluid and dynamic design style, collaborated with an Italian firm headquartered in Milan and designed a landmark fire station completed in 1993 that is part of a renowned architectural campus?",
+      "answer": [
+        "Zaha Hadid",
+        "Hadid"
+      ],
+      "reasoning": "The reasoning starts by identifying the iconic fire station completed in 1993, recognized as a major contemporary architectural piece on the Vitra Campus. Next, we note that this building was designed by an architect whose innovative and fluid design style is highlighted in the sources. Additionally, this architect is known to have collaborated with Sawaya & Moroni, an Italian design firm headquartered in Milan. By synthesizing these pieces of information, we deduce that the answer is Zaha Hadid.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the structure completed in 1993 that is part of the Vitra Campus (expect to find information about the Vitra Fire Station).",
+          "Step 2: Determine the architect who designed this structure, focusing on descriptions of fluid lines and dynamic forms (found information indicating Zaha Hadid).",
+          "Step 3: Connect the architect to the collaboration with Sawaya & Moroni, which confirms the involvement of Zaha Hadid through her association with the Italian firm.",
+          "Last step: Synthesize these details to conclude that the visionary architect in question is Zaha Hadid."
+        ],
+        "nodes_used": [
+          "expanded_4 (Sawaya & Moroni)",
+          "expanded_20 (Zaha Hadid)",
+          "expanded_73 (Vitra Fire Station)",
+          "expanded_172 (Vitra Campus)"
+        ],
+        "triples_used": [
+          "Sawaya & Moroni collaborated_with Zaha Hadid",
+          "Vitra Fire Station designed_by Zaha Hadid",
+          "Vitra Fire Station completed_in 1993",
+          "Vitra Fire Station part_of Vitra Campus"
+        ],
+        "source_texts_used": [
+          "The overview of Sawaya & Moroni which mentions the collaboration with Zaha Hadid.",
+          "Descriptions of Zaha Hadid’s architectural style and contributions.",
+          "The architectural significance of the Vitra Fire Station, including its completion in 1993 and its location on the Vitra Campus."
+        ]
+      },
+      "id": "ffdbf116-1278-473d-988e-5a6b7f3ae30b",
+      "subgraph_id": "40b05f1d-4514-40c8-aa42-67ae92163ecc",
+      "difficulty_level": 3,
+      "original_question": "Which visionary architect, known for her fluid and dynamic design style, collaborated with an Italian firm headquartered in Milan and designed a landmark fire station completed in 1993 that is part of a renowned architectural campus?",
+      "obfuscated_question": "Which visionary architect, celebrated for her fluid, dynamic design aesthetic, collaborated with a respected Italian firm based in a prominent northern city, and designed a landmark fire station that was completed in the early phase of the final decade of the twentieth century as part of a renowned architectural campus?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 8,
+          "num_edges": 7,
+          "density": 0.25,
+          "clustering_coefficient": 0.0,
+          "avg_degree": 1.75,
+          "diameter": 5,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Which Italian design firm, headquartered in Milan—a city recognized as the economic heart of Italy and home to events like Milan Fashion Week—collaborated with the architect who designed the Vitra Fire Station, a project completed in 1993 and part of the Vitra Campus?",
+      "answer": [
+        "Sawaya & Moroni",
+        "Sawaya and Moroni"
+      ],
+      "reasoning": "The question requires linking multiple pieces of information: first, identifying the city (Milan) as the economic heart of Italy and the host of Milan Fashion Week; second, noting that an Italian design firm headquartered in Milan collaborated with a prominent architect; third, recognizing that the architect in question is Zaha Hadid, known for designing the Vitra Fire Station which was completed in 1993 and is part of the Vitra Campus. By synthesizing these details, the answer is the design firm Sawaya & Moroni.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the city with the properties 'economic heart of Italy' and 'hosts Milan Fashion Week' – find that it is Milan, Italy.",
+          "Step 2: Search for the design firm headquartered in Milan – find Sawaya & Moroni.",
+          "Step 3: Check for collaborations between the design firm and Zaha Hadid – confirm that Sawaya & Moroni collaborated with Zaha Hadid.",
+          "Step 4: Verify that Zaha Hadid designed the Vitra Fire Station, which was completed in 1993 and is part of the Vitra Campus.",
+          "Last step: Synthesize these relationships to conclude that Sawaya & Moroni is the firm that fits all the description in the question."
+        ],
+        "nodes_used": [
+          "expanded_4 (Sawaya & Moroni)",
+          "expanded_19 (Milan, Italy)",
+          "expanded_20 (Zaha Hadid)",
+          "expanded_66 (economic heart of Italy)",
+          "expanded_68 (Milan Fashion Week)",
+          "expanded_73 (Vitra Fire Station)",
+          "expanded_171 (1993)",
+          "expanded_172 (Vitra Campus)"
+        ],
+        "triples_used": [
+          "(Sawaya & Moroni, located_in, Milan, Italy)",
+          "(Sawaya & Moroni, headquartered_in, Milan, Italy)",
+          "(Sawaya & Moroni, collaborated_with, Zaha Hadid)",
+          "(Milan, Italy, has_property, economic heart of Italy)",
+          "(Milan, Italy, hosts, Milan Fashion Week)",
+          "(Vitra Fire Station, designed_by, Zaha Hadid)",
+          "(Vitra Fire Station, completed_in, 1993)",
+          "(Vitra Fire Station, part_of, Vitra Campus)"
+        ],
+        "source_texts_used": [
+          "Overview of Sawaya & Moroni articles describing the firm’s headquarters in Milan and its collaborations with Zaha Hadid.",
+          "Articles on Milan describing the city as the economic heart of Italy and host of Milan Fashion Week.",
+          "Vitra Fire Station texts detailing its design by Zaha Hadid, completion in 1993, and location within the Vitra Campus."
+        ]
+      },
+      "id": "23c49fde-524a-452e-9fba-218354f0a165",
+      "subgraph_id": "40b05f1d-4514-40c8-aa42-67ae92163ecc",
+      "difficulty_level": 3,
+      "original_question": "Which Italian design firm, headquartered in Milan—a city recognized as the economic heart of Italy and home to events like Milan Fashion Week—collaborated with the architect who designed the Vitra Fire Station, a project completed in 1993 and part of the Vitra Campus?",
+      "obfuscated_question": "Which Italian design firm, headquartered in a northern metropolis celebrated as the nation's premier commercial hub and host to internationally renowned style festivities, collaborated with the architect responsible for a famed fire station project—completed in the early 1990s and situated within a celebrated collective of design innovations?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 8,
+          "num_edges": 7,
+          "density": 0.25,
+          "clustering_coefficient": 0.0,
+          "avg_degree": 1.75,
+          "diameter": 5,
+          "connected_components": 1
+        }
+      }
+    }
+  ]
+}

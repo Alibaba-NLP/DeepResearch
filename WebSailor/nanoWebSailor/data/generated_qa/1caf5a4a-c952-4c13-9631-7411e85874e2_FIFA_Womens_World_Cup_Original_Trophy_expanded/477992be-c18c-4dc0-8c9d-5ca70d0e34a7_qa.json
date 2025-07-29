@@ -1,0 +1,70 @@
+{
+  "subgraph_id": "477992be-c18c-4dc0-8c9d-5ca70d0e34a7",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/477992be-c18c-4dc0-8c9d-5ca70d0e34a7.json",
+  "qa_pairs": [
+    {
+      "question": "Considering the evolution of the FIFA Women's World Cup Trophy—from the original design introduced in 1999, which features a spiral design symbolizing growth and dynamism, to its current iteration that is also celebrated for embodying the global nature of the sport—which individual is recognized as the key designer responsible for both the original trophy and its successor, while also founding the firm that handcrafted these prestigious artifacts?",
+      "answer": [
+        "William Sawaya",
+        "Sawaya"
+      ],
+      "reasoning": "The task requires synthesizing multiple pieces of information from the knowledge graph and supporting source texts. First, we note that both the original and the current FIFA Women's World Cup Trophies were designed by the same person, as indicated by multiple relationships (e.g., 'designed_by William Sawaya' for both trophies). In addition, the original trophy is described as a prestigious artifact and is linked to the label of 'designed by William Sawaya'. Furthermore, Sawaya & Moroni, the firm linked with the trophy craftsmanship, was founded by William Sawaya, which reinforces his pivotal role. The spiral design property—symbolizing growth, evolution, and transformation—is featured on the current trophy, and although it is part of its design aesthetics, the common thread in both trophy versions is the involvement of William Sawaya. Thus, reasoning across these entities and relationships leads to the conclusion that William Sawaya is the key individual whose contributions have defined both trophies.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the design relationships in the trophies, noting that both the original and current FIFA Women's World Cup Trophies are 'designed by William Sawaya'.",
+          "Step 2: Recognize that the firm Sawaya & Moroni, implicated in the trophy craftsmanship, was founded by William Sawaya, linking craftsmanship to the design.",
+          "Step 3: Note further that the spiral design present in the current trophy symbolizes growth and is a recurring element, but the designer behind this consistent aesthetic is the same individual.",
+          "Last step: Synthesize the above information to deduce that William Sawaya is responsible for both the artistic and design evolution across the trophies."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2",
+          "expanded_3",
+          "expanded_4",
+          "expanded_7",
+          "expanded_15"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, designed_by, William Sawaya)",
+          "(Current FIFA Women's World Cup Trophy, designed_by, William Sawaya)",
+          "(Sawaya & Moroni, founded_by, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "The original trophy description stating it is a prestigious artifact designed by William Sawaya.",
+          "The details in the current trophy description that mention the spiral design and its symbolic representation of growth and the global nature of the sport, alongside its design attribution.",
+          "The background information on Sawaya & Moroni being founded by William Sawaya."
+        ]
+      },
+      "id": "3d3de992-dfbb-48d6-9819-2aa910720236",
+      "subgraph_id": "477992be-c18c-4dc0-8c9d-5ca70d0e34a7",
+      "difficulty_level": 3,
+      "original_question": "Considering the evolution of the FIFA Women's World Cup Trophy—from the original design introduced in 1999, which features a spiral design symbolizing growth and dynamism, to its current iteration that is also celebrated for embodying the global nature of the sport—which individual is recognized as the key designer responsible for both the original trophy and its successor, while also founding the firm that handcrafted these prestigious artifacts?",
+      "obfuscated_question": "Considering the evolution of the trophy awarded in a major international women's football tournament—from its early incarnation, introduced in the waning years of the past century and fashioned with a spiral motif symbolizing perpetual growth and energy, to its current version celebrated for evoking the sport’s broad cross-border appeal—which forward-thinking craftsman is acknowledged as the principal designer behind both these iterations, having also established the specialized atelier responsible for creating these revered symbols of athletic achievement?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 16,
+          "density": 0.35555555555555557,
+          "clustering_coefficient": 0.5066666666666666,
+          "avg_degree": 3.2,
+          "diameter": 3,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "bfs",
+    "complexity_score": 0.4053333333333333,
+    "topology_features": {
+      "num_nodes": 10,
+      "num_edges": 16,
+      "density": 0.35555555555555557,
+      "clustering_coefficient": 0.5066666666666666,
+      "avg_degree": 3.2,
+      "diameter": 3,
+      "connected_components": 1
+    }
+  }
+}

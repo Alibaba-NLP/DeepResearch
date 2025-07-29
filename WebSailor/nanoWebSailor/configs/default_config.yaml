@@ -1,0 +1,95 @@
+# WebSailor Default Configuration File
+
+# Entity Generator Configuration
+entity_generator:
+  model_name: "gpt-4o"
+  api_key: ""
+  max_tokens: 8124
+  temperature: 0.7
+  storage_path: "../data/generated_entities"
+  min_description_length: 50
+  min_properties: 3
+  
+# Data Synthesis Configuration
+data_synthesis:
+  graph_builder:
+    walk_length: 5
+    num_walks: 100
+    
+  knowledge_graph:
+    min_graph_size: 10
+    max_graph_size: 50
+    density_threshold: 0.3
+    randomization_factor: 0.2
+    
+# Q&A Pair Generation
+qa_generator:
+  generate_model: "o3-mini"
+  max_tokens: 32768
+  temperature: 1.0
+  obfuscation_rate: 0.3
+  log_file: "../log/qa_generator.log"
+
+# Graph Expander Configuration
+graph_expander:
+  max_depth: 5
+  max_branches_per_node: 10
+  min_confidence: 0.85
+  expansion_probability: 0.5
+  max_search_results: 3
+  log_path: "../log/graph_expand.log"
+
+# Wiki Retrieval Configuration
+mock_web_search:
+  filter_model: "gpt-4o"
+  wiki_retrieval_url: "http://10.200.64.10/10-flash-e2e-agent/retrieve"
+  retrieval_method: "llm"
+
+# Subgraph Sampler Configuration
+subgraph_sampler:
+  min_nodes: 4
+  max_nodes: 10
+  num_samples: 30
+  diversity_threshold: 0.1
+  log_file: "../log/sample_subgraph.log"
+  max_attempts_multiplier: 10
+  strategy_weights:
+    random: 0.05
+    bfs: 0.20
+    dfs: 0.20
+    community: 0.15
+    star: 0.10
+    chain: 0.15
+    tree: 0.15
+  fallback_to_random: true
+  require_connected: false
+
+# Triple Extractor Configuration
+triplet_extractor:
+  model_name: "gpt-4o"
+  max_tokens: 8124
+  temperature: 0.2
+  min_confidence: 0.9
+  max_triples_per_text: 10
+  use_validation: true
+  filter_generic: true
+
+memory:
+  max_memories: 1000
+  similarity_threshold: 0.8
+  storage_type: "vector"
+  embedding_model: "text-embedding-ada-002"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_file_size: "10MB"
+  backup_count: 5
+
+# Environment Configuration
+environment:
+  random_seed: 42
+  gpu_enable: true
+  parallel_workers: 4
+  cache_enabled: true

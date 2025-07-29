@@ -1,0 +1,68 @@
+{
+  "subgraph_id": "a49f5980-c1cf-4a6c-b55f-978e4cdcb631",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/a49f5980-c1cf-4a6c-b55f-978e4cdcb631.json",
+  "qa_pairs": [
+    {
+      "question": "Considering the historical lineage and the detailed design relationships of the FIFA Women’s World Cup trophies, which entity is credited with designing both the Original Trophy and its successor, and is also linked to the firm responsible for crafting and manufacturing them?",
+      "answer": [
+        "William Sawaya",
+        "William Sawaya"
+      ],
+      "reasoning": "The problem requires synthesizing multiple relationships: first, the original trophy is explicitly described as being designed by William Sawaya; second, the current trophy, which is the successor of the original, is also designed by William Sawaya. Although the firm Sawaya & Moroni is responsible for crafting and manufacturing both trophies, the design credit consistently goes to William Sawaya. By connecting these relationships, we conclude that William Sawaya is the entity common to both design attributions.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the design information for the FIFA Women's World Cup Original Trophy which attributes its design to William Sawaya.",
+          "Step 2: Identify the design details of the Current FIFA Women's World Cup Trophy, noting that it, too, was designed by William Sawaya.",
+          "Step 3: Recognize that the relationship 'Successor' links the current trophy to the original, reinforcing the lineage and common design feature.",
+          "Step 4: Note that although Sawaya & Moroni is linked to the crafting and manufacturing processes, design is solely credited to William Sawaya.",
+          "Last step: Synthesize the design attribution across the trophies to conclude that William Sawaya is responsible for both."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2 (FIFA Women's World Cup Original Trophy)",
+          "rel_1 (Current FIFA Women's World Cup Trophy)",
+          "expanded_3 (William Sawaya)",
+          "expanded_4 (Sawaya & Moroni)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, designed_by, William Sawaya)",
+          "(Current FIFA Women's World Cup Trophy, designed_by, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "Design and Symbolism of the FIFA Women's World Cup Original Trophy",
+          "Design and Features of the Current FIFA Women's World Cup Trophy"
+        ]
+      },
+      "id": "4d922de3-56fa-4b6f-8fc7-74cca35c9272",
+      "subgraph_id": "a49f5980-c1cf-4a6c-b55f-978e4cdcb631",
+      "difficulty_level": 3,
+      "original_question": "Considering the historical lineage and the detailed design relationships of the FIFA Women’s World Cup trophies, which entity is credited with designing both the Original Trophy and its successor, and is also linked to the firm responsible for crafting and manufacturing them?",
+      "obfuscated_question": "Considering the historical lineage and the detailed design relationships of the FIFA Women’s World Cup trophies, which entity is credited with designing both the Original Trophy and its successor, and is also linked to the firm responsible for crafting and manufacturing them?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 4,
+          "num_edges": 6,
+          "density": 1.0,
+          "clustering_coefficient": 1.0,
+          "avg_degree": 3.0,
+          "diameter": 1,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "star",
+    "complexity_score": 0.7899999999999999,
+    "topology_features": {
+      "num_nodes": 4,
+      "num_edges": 6,
+      "density": 1.0,
+      "clustering_coefficient": 1.0,
+      "avg_degree": 3.0,
+      "diameter": 1,
+      "connected_components": 1
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "subgraph_id": "dfdcdb14-8b66-4079-bcc7-b2642d6b64ad",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/dfdcdb14-8b66-4079-bcc7-b2642d6b64ad.json",
+  "qa_pairs": [
+    {
+      "question": "Which architect, born in a historic city that suffered a Mongol invasion, later designed an opera house that was completed during a major multi-sport event hosted in China?",
+      "answer": [
+        "Zaha Hadid",
+        "Hadid"
+      ],
+      "reasoning": "First, we identify the multi-sport event as the 2010 Asian Games, which was held in China, and note that the Guangzhou Opera House, completed in the same period, is located in China. Next, we determine that the Guangzhou Opera House was designed by an architect. We then look for the architect with a connection to a historically significant city and find that Zaha Hadid was born in Baghdad, Iraq—a city that was sacked by the Mongols. By synthesizing these pieces of information—her birthplace, the historical event associated with that city, and her design of the Guangzhou Opera House completed during the 2010 Asian Games—we conclude that the architect in question is Zaha Hadid.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the 2010 Asian Games as a major multi-sport event hosted in China.",
+          "Step 2: Note that the Guangzhou Opera House was completed during the 2010 Asian Games and is located in China.",
+          "Step 3: Find that the Guangzhou Opera House was designed by Zaha Hadid.",
+          "Step 4: Look into the background of Zaha Hadid to note her birth in Baghdad, Iraq, a city with historical significance.",
+          "Step 5: Recognize that Baghdad, Iraq was sacked by the Mongols, linking her origin to a major historical event.",
+          "Last step: Synthesize the above data to conclude that the architect is Zaha Hadid."
+        ],
+        "nodes_used": [
+          "expanded_20 (Zaha Hadid)",
+          "expanded_31 (2010 Asian Games)",
+          "expanded_76 (Guangzhou Opera House)",
+          "expanded_69 (Baghdad, Iraq)",
+          "expanded_168 (Mongols)"
+        ],
+        "triples_used": [
+          "(2010 Asian Games, located_in, China)",
+          "(Guangzhou Opera House, completed_in, 2010 Asian Games)",
+          "(Guangzhou Opera House, designed_by, Zaha Hadid)",
+          "(Zaha Hadid, born_in, Baghdad, Iraq)",
+          "(Baghdad, Iraq, sacked_by, Mongols)"
+        ],
+        "source_texts_used": [
+          "Architectural Marvel of Guangzhou Opera House",
+          "Zaha Hadid: Pioneering Architect of the 21st Century",
+          "Historical Significance of Baghdad"
+        ]
+      },
+      "id": "57c776a3-449d-4764-a640-0b9ddb9921dd",
+      "subgraph_id": "dfdcdb14-8b66-4079-bcc7-b2642d6b64ad",
+      "difficulty_level": 3,
+      "original_question": "Which architect, born in a historic city that suffered a Mongol invasion, later designed an opera house that was completed during a major multi-sport event hosted in China?",
+      "obfuscated_question": "Which architect, born in an ancient city that once endured an assault by nomadic conquerors from a vast Eurasian steppe, later designed an opera venue that was completed during a sweeping international sports celebration hosted by a renowned Eastern civilization celebrated for its millennia-old cultural legacy?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 10,
+          "density": 0.2222222222222222,
+          "clustering_coefficient": 0.2333333333333333,
+          "avg_degree": 2.0,
+          "diameter": 4,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "bfs",
+    "complexity_score": 0.21999999999999997,
+    "topology_features": {
+      "num_nodes": 10,
+      "num_edges": 10,
+      "density": 0.2222222222222222,
+      "clustering_coefficient": 0.2333333333333333,
+      "avg_degree": 2.0,
+      "diameter": 4,
+      "connected_components": 1
+    }
+  }
+}

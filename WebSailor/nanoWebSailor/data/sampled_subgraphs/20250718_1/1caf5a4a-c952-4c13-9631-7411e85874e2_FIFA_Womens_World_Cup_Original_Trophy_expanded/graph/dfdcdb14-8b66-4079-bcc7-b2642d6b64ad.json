@@ -1,0 +1,306 @@
+{
+  "id": "dfdcdb14-8b66-4079-bcc7-b2642d6b64ad",
+  "nodes": {
+    "expanded_12": {
+      "id": "expanded_12",
+      "label": "China",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_20": {
+      "id": "expanded_20",
+      "label": "Zaha Hadid",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_31": {
+      "id": "expanded_31",
+      "label": "2010 Asian Games",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_69": {
+      "id": "expanded_69",
+      "label": "Baghdad, Iraq",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_71": {
+      "id": "expanded_71",
+      "label": "Rem Koolhaas",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_75": {
+      "id": "expanded_75",
+      "label": "Heydar Aliyev Center",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_76": {
+      "id": "expanded_76",
+      "label": "Guangzhou Opera House",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    },
+    "expanded_164": {
+      "id": "expanded_164",
+      "label": "Abbasid Caliphate",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_166": {
+      "id": "expanded_166",
+      "label": "central Iraq",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_168": {
+      "id": "expanded_168",
+      "label": "Mongols",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "e4c040f8-fe47-4f43-863e-6a082d4f5e60",
+      "source": "expanded_20",
+      "target": "expanded_69",
+      "relation_type": "born_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid, born on October 31, 1950, in Baghdad, Iraq, was a visionary architect whose innovative designs reshaped the landscape of contemporary architecture. She was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Hadid's work is characterized by its futuristic forms, fluid lines, and dynamic structures, which often defy traditional architectural norms. Her architectural philosophy was deeply influenced by her studies at the Architectural Association School of Architecture in London, where she was mentored by Rem Koolhaas and Elia Zenghelis. Hadid's projects, such as the Vitra Fire Station in Germany and the MAXXI Museum in Rome, showcase her ability to blend bold aesthetics with functional design. Her legacy continues to inspire architects worldwide, making her a pivotal figure in the evolution of modern architecture.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is renowned for its avant-garde approach, characterized by sweeping curves, fragmented geometry, and a sense of movement. Her designs often incorporate advanced digital technology and materials, allowing for the creation of complex, organic forms that challenge conventional architectural boundaries. One of her most notable innovations is the use of parametric design, which involves using algorithms to generate intricate structures that are both aesthetically striking and structurally sound. Hadid's projects, such as the Heydar Aliyev Center in Baku and the Guangzhou Opera House in China, exemplify her commitment to pushing the limits of architectural design. Her work not only redefines the visual language of architecture but also addresses the functional needs of urban environments, making her a pioneer in integrating technology with artistic vision.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Impact on Global Architecture and Design\",\n            \"content\": \"Zaha Hadid's influence extends far beyond her individual projects, as she played a crucial role in shaping the global architectural discourse. Her firm, Zaha Hadid Architects, continues to operate under the leadership of Patrik Schumacher, perpetuating her innovative spirit and design ethos. Hadid's impact is evident in the way contemporary architecture embraces fluidity, complexity, and experimentation. Her work has inspired a new generation of architects to explore unconventional forms and sustainable solutions. Beyond architecture, Hadid's design philosophy has permeated other fields, including fashion, furniture, and urban planning. Her collaborations with brands like Chanel and Adidas demonstrate her ability to translate architectural principles into diverse contexts. Zaha Hadid's legacy is one of breaking barriers and redefining possibilities, leaving an indelible mark on the world of design and architecture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "a23e4d25-d8d1-4362-900c-5332cf6bb294",
+      "source": "expanded_20",
+      "target": "expanded_71",
+      "relation_type": "mentored_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid, born on October 31, 1950, in Baghdad, Iraq, was a visionary architect whose innovative designs reshaped the landscape of contemporary architecture. She was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Hadid's work is characterized by its futuristic forms, fluid lines, and dynamic structures, which often defy traditional architectural norms. Her architectural philosophy was deeply influenced by her studies at the Architectural Association School of Architecture in London, where she was mentored by Rem Koolhaas and Elia Zenghelis. Hadid's projects, such as the Vitra Fire Station in Germany and the MAXXI Museum in Rome, showcase her ability to blend bold aesthetics with functional design. Her legacy continues to inspire architects worldwide, making her a pivotal figure in the evolution of modern architecture.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is renowned for its avant-garde approach, characterized by sweeping curves, fragmented geometry, and a sense of movement. Her designs often incorporate advanced digital technology and materials, allowing for the creation of complex, organic forms that challenge conventional architectural boundaries. One of her most notable innovations is the use of parametric design, which involves using algorithms to generate intricate structures that are both aesthetically striking and structurally sound. Hadid's projects, such as the Heydar Aliyev Center in Baku and the Guangzhou Opera House in China, exemplify her commitment to pushing the limits of architectural design. Her work not only redefines the visual language of architecture but also addresses the functional needs of urban environments, making her a pioneer in integrating technology with artistic vision.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Impact on Global Architecture and Design\",\n            \"content\": \"Zaha Hadid's influence extends far beyond her individual projects, as she played a crucial role in shaping the global architectural discourse. Her firm, Zaha Hadid Architects, continues to operate under the leadership of Patrik Schumacher, perpetuating her innovative spirit and design ethos. Hadid's impact is evident in the way contemporary architecture embraces fluidity, complexity, and experimentation. Her work has inspired a new generation of architects to explore unconventional forms and sustainable solutions. Beyond architecture, Hadid's design philosophy has permeated other fields, including fashion, furniture, and urban planning. Her collaborations with brands like Chanel and Adidas demonstrate her ability to translate architectural principles into diverse contexts. Zaha Hadid's legacy is one of breaking barriers and redefining possibilities, leaving an indelible mark on the world of design and architecture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "03c69217-6365-42cb-8fc4-2e01319e07f7",
+      "source": "expanded_20",
+      "target": "expanded_75",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid, born on October 31, 1950, in Baghdad, Iraq, was a visionary architect whose innovative designs reshaped the landscape of contemporary architecture. She was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Hadid's work is characterized by its futuristic forms, fluid lines, and dynamic structures, which often defy traditional architectural norms. Her architectural philosophy was deeply influenced by her studies at the Architectural Association School of Architecture in London, where she was mentored by Rem Koolhaas and Elia Zenghelis. Hadid's projects, such as the Vitra Fire Station in Germany and the MAXXI Museum in Rome, showcase her ability to blend bold aesthetics with functional design. Her legacy continues to inspire architects worldwide, making her a pivotal figure in the evolution of modern architecture.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is renowned for its avant-garde approach, characterized by sweeping curves, fragmented geometry, and a sense of movement. Her designs often incorporate advanced digital technology and materials, allowing for the creation of complex, organic forms that challenge conventional architectural boundaries. One of her most notable innovations is the use of parametric design, which involves using algorithms to generate intricate structures that are both aesthetically striking and structurally sound. Hadid's projects, such as the Heydar Aliyev Center in Baku and the Guangzhou Opera House in China, exemplify her commitment to pushing the limits of architectural design. Her work not only redefines the visual language of architecture but also addresses the functional needs of urban environments, making her a pioneer in integrating technology with artistic vision.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Impact on Global Architecture and Design\",\n            \"content\": \"Zaha Hadid's influence extends far beyond her individual projects, as she played a crucial role in shaping the global architectural discourse. Her firm, Zaha Hadid Architects, continues to operate under the leadership of Patrik Schumacher, perpetuating her innovative spirit and design ethos. Hadid's impact is evident in the way contemporary architecture embraces fluidity, complexity, and experimentation. Her work has inspired a new generation of architects to explore unconventional forms and sustainable solutions. Beyond architecture, Hadid's design philosophy has permeated other fields, including fashion, furniture, and urban planning. Her collaborations with brands like Chanel and Adidas demonstrate her ability to translate architectural principles into diverse contexts. Zaha Hadid's legacy is one of breaking barriers and redefining possibilities, leaving an indelible mark on the world of design and architecture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "09a15b38-98b9-4bca-a455-2125bae6c97d",
+      "source": "expanded_20",
+      "target": "expanded_76",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid, born on October 31, 1950, in Baghdad, Iraq, was a visionary architect whose innovative designs reshaped the landscape of contemporary architecture. She was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Hadid's work is characterized by its futuristic forms, fluid lines, and dynamic structures, which often defy traditional architectural norms. Her architectural philosophy was deeply influenced by her studies at the Architectural Association School of Architecture in London, where she was mentored by Rem Koolhaas and Elia Zenghelis. Hadid's projects, such as the Vitra Fire Station in Germany and the MAXXI Museum in Rome, showcase her ability to blend bold aesthetics with functional design. Her legacy continues to inspire architects worldwide, making her a pivotal figure in the evolution of modern architecture.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is renowned for its avant-garde approach, characterized by sweeping curves, fragmented geometry, and a sense of movement. Her designs often incorporate advanced digital technology and materials, allowing for the creation of complex, organic forms that challenge conventional architectural boundaries. One of her most notable innovations is the use of parametric design, which involves using algorithms to generate intricate structures that are both aesthetically striking and structurally sound. Hadid's projects, such as the Heydar Aliyev Center in Baku and the Guangzhou Opera House in China, exemplify her commitment to pushing the limits of architectural design. Her work not only redefines the visual language of architecture but also addresses the functional needs of urban environments, making her a pioneer in integrating technology with artistic vision.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Impact on Global Architecture and Design\",\n            \"content\": \"Zaha Hadid's influence extends far beyond her individual projects, as she played a crucial role in shaping the global architectural discourse. Her firm, Zaha Hadid Architects, continues to operate under the leadership of Patrik Schumacher, perpetuating her innovative spirit and design ethos. Hadid's impact is evident in the way contemporary architecture embraces fluidity, complexity, and experimentation. Her work has inspired a new generation of architects to explore unconventional forms and sustainable solutions. Beyond architecture, Hadid's design philosophy has permeated other fields, including fashion, furniture, and urban planning. Her collaborations with brands like Chanel and Adidas demonstrate her ability to translate architectural principles into diverse contexts. Zaha Hadid's legacy is one of breaking barriers and redefining possibilities, leaving an indelible mark on the world of design and architecture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "85b82697-6fe2-4ed8-b566-a653a4dd860b",
+      "source": "expanded_20",
+      "target": "expanded_76",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid was an Iraqi-British architect renowned for her groundbreaking and innovative designs that transformed the landscape of modern architecture. Born on October 31, 1950, in Baghdad, Iraq, Hadid was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Her work is characterized by fluid forms, dynamic curves, and the use of innovative materials and construction techniques. Hadid's architectural philosophy was deeply influenced by her background in mathematics and her interest in the avant-garde movements of the early 20th century, such as Russian Constructivism. She was a leading figure in the deconstructivist movement, which sought to disrupt traditional architectural forms and conventions. Her notable works include the London Aquatics Centre for the 2012 Olympics, the Guangzhou Opera House in China, and the Heydar Aliyev Center in Baku, Azerbaijan. Each of these projects exemplifies her ability to blend form and function in a way that challenges the viewer's perception of space and structure. Hadid's legacy continues to influence architects and designers worldwide, as her firm, Zaha Hadid Architects, remains at the forefront of architectural innovation.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is often described as futuristic, characterized by curvilinear forms and a sense of fluidity that defies conventional architectural norms. Her designs often incorporate complex geometries and innovative materials, pushing the boundaries of what is structurally possible. Hadid's approach to architecture was deeply rooted in her academic background; she studied mathematics at the American University of Beirut before attending the Architectural Association School of Architecture in London, where she was influenced by the radical ideas of her professors, including Rem Koolhaas. Hadid's work is known for its deconstructivist elements, a movement that emerged in the late 20th century, which seeks to fragment and distort traditional architectural forms. Her buildings often feature sweeping curves, sharp angles, and a sense of movement, as seen in projects like the MAXXI Museum in Rome and the Vitra Fire Station in Germany. Hadid also embraced digital technology and parametric design, which allowed her to create complex, organic forms that were previously unimaginable. Her innovative use of technology and materials has had a lasting impact on the field of architecture, inspiring a new generation of architects to explore the possibilities of digital design.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Influence and Legacy in Contemporary Architecture\",\n            \"content\": \"Zaha Hadid's influence on contemporary architecture is profound and far-reaching. As the first woman to win the Pritzker Architecture Prize, she broke barriers in a male-dominated field and paved the way for future generations of female architects. Her work is celebrated for its boldness and originality, challenging traditional notions of space and form. Hadid's projects are not only architectural feats but also cultural landmarks that have redefined the cities in which they are located. For instance, the Heydar Aliyev Center in Baku is not only an architectural marvel but also a symbol of Azerbaijan's modernization and cultural renaissance. Hadid's impact extends beyond her buildings; she was also a prominent educator and mentor, teaching at institutions such as Harvard University and the University of Applied Arts in Vienna. Her firm, Zaha Hadid Architects, continues to be a leader in the field, known for its commitment to innovation and sustainability. The firm's projects span the globe, from the Middle East to Asia and Europe, each bearing the signature style of Hadid's visionary approach. Her legacy is also preserved through numerous awards and honors, including the Royal Gold Medal from the Royal Institute of British Architects, which she received in 2016, becoming the first woman to be awarded the prestigious honor in her own right.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "696c01ea-8e09-4975-a081-5feec534edfb",
+      "source": "expanded_20",
+      "target": "expanded_75",
+      "relation_type": "created_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Zaha Hadid: Pioneering Architect of the 21st Century\",\n            \"content\": \"Zaha Hadid was an Iraqi-British architect renowned for her groundbreaking and innovative designs that transformed the landscape of modern architecture. Born on October 31, 1950, in Baghdad, Iraq, Hadid was the first woman to receive the Pritzker Architecture Prize in 2004, often referred to as the Nobel Prize of architecture. Her work is characterized by fluid forms, dynamic curves, and the use of innovative materials and construction techniques. Hadid's architectural philosophy was deeply influenced by her background in mathematics and her interest in the avant-garde movements of the early 20th century, such as Russian Constructivism. She was a leading figure in the deconstructivist movement, which sought to disrupt traditional architectural forms and conventions. Her notable works include the London Aquatics Centre for the 2012 Olympics, the Guangzhou Opera House in China, and the Heydar Aliyev Center in Baku, Azerbaijan. Each of these projects exemplifies her ability to blend form and function in a way that challenges the viewer's perception of space and structure. Hadid's legacy continues to influence architects and designers worldwide, as her firm, Zaha Hadid Architects, remains at the forefront of architectural innovation.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Architectural Style and Innovations of Zaha Hadid\",\n            \"content\": \"Zaha Hadid's architectural style is often described as futuristic, characterized by curvilinear forms and a sense of fluidity that defies conventional architectural norms. Her designs often incorporate complex geometries and innovative materials, pushing the boundaries of what is structurally possible. Hadid's approach to architecture was deeply rooted in her academic background; she studied mathematics at the American University of Beirut before attending the Architectural Association School of Architecture in London, where she was influenced by the radical ideas of her professors, including Rem Koolhaas. Hadid's work is known for its deconstructivist elements, a movement that emerged in the late 20th century, which seeks to fragment and distort traditional architectural forms. Her buildings often feature sweeping curves, sharp angles, and a sense of movement, as seen in projects like the MAXXI Museum in Rome and the Vitra Fire Station in Germany. Hadid also embraced digital technology and parametric design, which allowed her to create complex, organic forms that were previously unimaginable. Her innovative use of technology and materials has had a lasting impact on the field of architecture, inspiring a new generation of architects to explore the possibilities of digital design.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Zaha Hadid's Influence and Legacy in Contemporary Architecture\",\n            \"content\": \"Zaha Hadid's influence on contemporary architecture is profound and far-reaching. As the first woman to win the Pritzker Architecture Prize, she broke barriers in a male-dominated field and paved the way for future generations of female architects. Her work is celebrated for its boldness and originality, challenging traditional notions of space and form. Hadid's projects are not only architectural feats but also cultural landmarks that have redefined the cities in which they are located. For instance, the Heydar Aliyev Center in Baku is not only an architectural marvel but also a symbol of Azerbaijan's modernization and cultural renaissance. Hadid's impact extends beyond her buildings; she was also a prominent educator and mentor, teaching at institutions such as Harvard University and the University of Applied Arts in Vienna. Her firm, Zaha Hadid Architects, continues to be a leader in the field, known for its commitment to innovation and sustainability. The firm's projects span the globe, from the Middle East to Asia and Europe, each bearing the signature style of Hadid's visionary approach. Her legacy is also preserved through numerous awards and honors, including the Royal Gold Medal from the Royal Institute of British Architects, which she received in 2016, becoming the first woman to be awarded the prestigious honor in her own right.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "4a98ce3d-4429-45b6-a96e-b40822b78fe8",
+      "source": "expanded_31",
+      "target": "expanded_12",
+      "relation_type": "located_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Overview and Significance of the 2010 Asian Games\",\n            \"content\": \"The 2010 Asian Games, officially known as the XVI Asiad, were a multi-sport event held in Guangzhou, China, from November 12 to November 27, 2010. This edition of the Asian Games was significant as it was the second time China hosted the event, the first being in Beijing in 1990. The Games featured 42 sports and 476 events, making it the largest Asian Games in history at the time. Approximately 9,704 athletes from 45 National Olympic Committees participated, showcasing the diverse sporting talents across Asia. The event was organized by the Olympic Council of Asia (OCA) and was a major milestone in promoting sports and cultural exchange in the region. The Games were also notable for introducing new sports such as cricket, dance sport, and dragon boat racing, reflecting the evolving sports landscape in Asia. The opening and closing ceremonies were held at the Haixinsha Island, with the iconic Canton Tower serving as a backdrop, symbolizing Guangzhou's modernity and cultural heritage.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Infrastructure and Legacy of the 2010 Asian Games\",\n            \"content\": \"The 2010 Asian Games left a significant infrastructural legacy in Guangzhou, transforming the city into a modern sports hub. The Games prompted the development of numerous state-of-the-art facilities, including the Guangzhou Olympic Sports Center, which served as the main venue. The construction of the Asian Games Town, a comprehensive complex that housed the Athletes' Village, Media Village, and Technical Officials' Village, was a major urban development project. These facilities were designed with sustainability in mind, incorporating green technologies and efficient resource management systems. The Games also accelerated the improvement of Guangzhou's transportation infrastructure, with expansions to the metro system and the construction of new highways and bridges. The legacy of the 2010 Asian Games is evident in Guangzhou's enhanced global profile as a destination for international sporting events and its improved urban infrastructure, which continues to benefit residents and visitors alike.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Cultural Impact and Highlights of the 2010 Asian Games\",\n            \"content\": \"The 2010 Asian Games were not only a sporting spectacle but also a cultural celebration that highlighted the rich diversity of Asian cultures. The Games' mascot, Le Yangyang, a goat, was chosen to represent the host city’s nickname, 'City of Goats,' and symbolized good luck and prosperity. The cultural program included a series of events and exhibitions that showcased traditional Chinese arts, music, and dance, fostering cultural exchange among participating nations. The opening ceremony was a grand affair, featuring a blend of traditional Chinese elements and modern technology, with performances that depicted China's history and cultural achievements. The Games also emphasized the theme of 'Thrilling Games, Harmonious Asia,' promoting unity and friendship among Asian countries. The cultural impact of the 2010 Asian Games extended beyond the event itself, contributing to a greater understanding and appreciation of Asian cultures and fostering a spirit of camaraderie among the diverse nations of the continent.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "3bf1204e-043a-4c2a-b0ef-8ab862f76ce7",
+      "source": "expanded_69",
+      "target": "expanded_164",
+      "relation_type": "founded_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Historical Significance of Baghdad\",\n            \"content\": \"Baghdad, the capital city of Iraq, holds a prominent place in the annals of history due to its strategic location and cultural heritage. Founded in the 8th century by the Abbasid Caliphate, it quickly became a leading center of learning, commerce, and culture in the Islamic world. The city was meticulously planned by the Abbasid caliph Al-Mansur in 762 CE, designed as a circular city, which was a unique architectural feat at the time. Baghdad's Golden Age occurred during the 9th and 10th centuries when it was the largest city in the world, surpassing even Constantinople in size and influence. It was during this period that the House of Wisdom was established, a major intellectual center where scholars of various cultures and religions came together to study and translate works from Greek, Persian, Indian, and other traditions into Arabic. This era of enlightenment contributed significantly to the fields of mathematics, astronomy, medicine, and philosophy. However, Baghdad's prosperity was disrupted in 1258 when it was sacked by the Mongols, leading to a decline from which it took centuries to recover. Despite this, Baghdad remains a city of great historical importance, reflecting the rich tapestry of its past.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Geographical and Demographic Overview of Baghdad\",\n            \"content\": \"Baghdad is situated in central Iraq along the Tigris River, which bisects the city into two parts: Karkh on the west bank and Rusafa on the east bank. This strategic location has historically made Baghdad a hub for trade and cultural exchange, linking the Persian Gulf with the broader Middle Eastern region. The city's climate is characterized by a hot desert climate, with extremely hot summers and mild, wet winters. As of the latest estimates, Baghdad is home to approximately 7 million people, making it the largest city in Iraq and one of the largest in the Arab world. The population is predominantly Arab, with significant Kurdish, Turkmen, and Assyrian minorities. The city is a melting pot of cultures and religions, with Islam being the predominant religion, practiced by both Sunni and Shia Muslims. Baghdad's demographic composition has been shaped by various historical events, including wars, migrations, and political changes, which have influenced its social and cultural landscape. Despite challenges such as infrastructure damage and security issues, Baghdad continues to be a vibrant city with a dynamic population.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Modern-Day Baghdad: Challenges and Developments\",\n            \"content\": \"In contemporary times, Baghdad faces a myriad of challenges and opportunities as it seeks to rebuild and modernize after decades of conflict and instability. The city has been significantly affected by the Iran-Iraq War, the Gulf War, the 2003 U.S.-led invasion, and the subsequent insurgency and sectarian violence. These events have left a mark on Baghdad's infrastructure, economy, and social fabric. However, efforts are underway to revitalize the city and improve the quality of life for its residents. Reconstruction projects are focused on rebuilding roads, bridges, and public buildings, as well as enhancing essential services such as electricity and water supply. The government, along with international organizations, is working to restore Baghdad's educational and healthcare systems, which are crucial for the city's development. Additionally, there is a growing emphasis on preserving Baghdad's rich cultural heritage, with initiatives aimed at restoring historical sites and promoting tourism. Despite the ongoing challenges, including political instability and security concerns, Baghdad's resilience and the determination of its people continue to drive the city's progress. The future of Baghdad hinges on its ability to navigate these complexities and harness its potential as a cultural and economic center in the region.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "db6dc22b-9681-4c78-a664-c718d835d8b2",
+      "source": "expanded_69",
+      "target": "expanded_166",
+      "relation_type": "located_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Historical Significance of Baghdad\",\n            \"content\": \"Baghdad, the capital city of Iraq, holds a prominent place in the annals of history due to its strategic location and cultural heritage. Founded in the 8th century by the Abbasid Caliphate, it quickly became a leading center of learning, commerce, and culture in the Islamic world. The city was meticulously planned by the Abbasid caliph Al-Mansur in 762 CE, designed as a circular city, which was a unique architectural feat at the time. Baghdad's Golden Age occurred during the 9th and 10th centuries when it was the largest city in the world, surpassing even Constantinople in size and influence. It was during this period that the House of Wisdom was established, a major intellectual center where scholars of various cultures and religions came together to study and translate works from Greek, Persian, Indian, and other traditions into Arabic. This era of enlightenment contributed significantly to the fields of mathematics, astronomy, medicine, and philosophy. However, Baghdad's prosperity was disrupted in 1258 when it was sacked by the Mongols, leading to a decline from which it took centuries to recover. Despite this, Baghdad remains a city of great historical importance, reflecting the rich tapestry of its past.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Geographical and Demographic Overview of Baghdad\",\n            \"content\": \"Baghdad is situated in central Iraq along the Tigris River, which bisects the city into two parts: Karkh on the west bank and Rusafa on the east bank. This strategic location has historically made Baghdad a hub for trade and cultural exchange, linking the Persian Gulf with the broader Middle Eastern region. The city's climate is characterized by a hot desert climate, with extremely hot summers and mild, wet winters. As of the latest estimates, Baghdad is home to approximately 7 million people, making it the largest city in Iraq and one of the largest in the Arab world. The population is predominantly Arab, with significant Kurdish, Turkmen, and Assyrian minorities. The city is a melting pot of cultures and religions, with Islam being the predominant religion, practiced by both Sunni and Shia Muslims. Baghdad's demographic composition has been shaped by various historical events, including wars, migrations, and political changes, which have influenced its social and cultural landscape. Despite challenges such as infrastructure damage and security issues, Baghdad continues to be a vibrant city with a dynamic population.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Modern-Day Baghdad: Challenges and Developments\",\n            \"content\": \"In contemporary times, Baghdad faces a myriad of challenges and opportunities as it seeks to rebuild and modernize after decades of conflict and instability. The city has been significantly affected by the Iran-Iraq War, the Gulf War, the 2003 U.S.-led invasion, and the subsequent insurgency and sectarian violence. These events have left a mark on Baghdad's infrastructure, economy, and social fabric. However, efforts are underway to revitalize the city and improve the quality of life for its residents. Reconstruction projects are focused on rebuilding roads, bridges, and public buildings, as well as enhancing essential services such as electricity and water supply. The government, along with international organizations, is working to restore Baghdad's educational and healthcare systems, which are crucial for the city's development. Additionally, there is a growing emphasis on preserving Baghdad's rich cultural heritage, with initiatives aimed at restoring historical sites and promoting tourism. Despite the ongoing challenges, including political instability and security concerns, Baghdad's resilience and the determination of its people continue to drive the city's progress. The future of Baghdad hinges on its ability to navigate these complexities and harness its potential as a cultural and economic center in the region.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "137f4f96-5d04-4df8-b373-e2b4d0f3c865",
+      "source": "expanded_69",
+      "target": "expanded_168",
+      "relation_type": "sacked_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Historical Significance of Baghdad\",\n            \"content\": \"Baghdad, the capital city of Iraq, holds a prominent place in the annals of history due to its strategic location and cultural heritage. Founded in the 8th century by the Abbasid Caliphate, it quickly became a leading center of learning, commerce, and culture in the Islamic world. The city was meticulously planned by the Abbasid caliph Al-Mansur in 762 CE, designed as a circular city, which was a unique architectural feat at the time. Baghdad's Golden Age occurred during the 9th and 10th centuries when it was the largest city in the world, surpassing even Constantinople in size and influence. It was during this period that the House of Wisdom was established, a major intellectual center where scholars of various cultures and religions came together to study and translate works from Greek, Persian, Indian, and other traditions into Arabic. This era of enlightenment contributed significantly to the fields of mathematics, astronomy, medicine, and philosophy. However, Baghdad's prosperity was disrupted in 1258 when it was sacked by the Mongols, leading to a decline from which it took centuries to recover. Despite this, Baghdad remains a city of great historical importance, reflecting the rich tapestry of its past.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Geographical and Demographic Overview of Baghdad\",\n            \"content\": \"Baghdad is situated in central Iraq along the Tigris River, which bisects the city into two parts: Karkh on the west bank and Rusafa on the east bank. This strategic location has historically made Baghdad a hub for trade and cultural exchange, linking the Persian Gulf with the broader Middle Eastern region. The city's climate is characterized by a hot desert climate, with extremely hot summers and mild, wet winters. As of the latest estimates, Baghdad is home to approximately 7 million people, making it the largest city in Iraq and one of the largest in the Arab world. The population is predominantly Arab, with significant Kurdish, Turkmen, and Assyrian minorities. The city is a melting pot of cultures and religions, with Islam being the predominant religion, practiced by both Sunni and Shia Muslims. Baghdad's demographic composition has been shaped by various historical events, including wars, migrations, and political changes, which have influenced its social and cultural landscape. Despite challenges such as infrastructure damage and security issues, Baghdad continues to be a vibrant city with a dynamic population.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Modern-Day Baghdad: Challenges and Developments\",\n            \"content\": \"In contemporary times, Baghdad faces a myriad of challenges and opportunities as it seeks to rebuild and modernize after decades of conflict and instability. The city has been significantly affected by the Iran-Iraq War, the Gulf War, the 2003 U.S.-led invasion, and the subsequent insurgency and sectarian violence. These events have left a mark on Baghdad's infrastructure, economy, and social fabric. However, efforts are underway to revitalize the city and improve the quality of life for its residents. Reconstruction projects are focused on rebuilding roads, bridges, and public buildings, as well as enhancing essential services such as electricity and water supply. The government, along with international organizations, is working to restore Baghdad's educational and healthcare systems, which are crucial for the city's development. Additionally, there is a growing emphasis on preserving Baghdad's rich cultural heritage, with initiatives aimed at restoring historical sites and promoting tourism. Despite the ongoing challenges, including political instability and security concerns, Baghdad's resilience and the determination of its people continue to drive the city's progress. The future of Baghdad hinges on its ability to navigate these complexities and harness its potential as a cultural and economic center in the region.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "97e3e749-2900-4e25-9ba7-4639cee496d8",
+      "source": "expanded_76",
+      "target": "expanded_12",
+      "relation_type": "located_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Architectural Marvel of Guangzhou Opera House\",\n            \"content\": \"The Guangzhou Opera House, located in the heart of Guangzhou, China, is a stunning example of modern architectural design. Designed by the renowned architect Zaha Hadid, the opera house was completed in 2010 and has since become a landmark of the city. The building's design is inspired by the concept of two pebbles on the bank of the Pearl River, which is reflected in its fluid, organic shapes and the seamless integration with the surrounding landscape. The opera house covers an area of 70,000 square meters and consists of two main structures: the main auditorium, which seats 1,800 people, and a smaller multifunctional hall with a capacity of 400. The exterior is clad in a combination of glass and steel, creating a dynamic interplay of light and shadow. The interior features state-of-the-art acoustics and stage facilities, making it one of the most advanced performance venues in the world. The Guangzhou Opera House is not only a cultural hub but also a testament to innovative design and engineering.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Cultural Significance and Events at Guangzhou Opera House\",\n            \"content\": \"Since its opening, the Guangzhou Opera House has played a pivotal role in the cultural landscape of Guangzhou and the broader region. It hosts a diverse array of performances, including opera, ballet, classical music concerts, and contemporary theater. The venue has attracted international attention, drawing performers and audiences from around the globe. Notable performances have included productions by the Mariinsky Ballet, the Vienna Philharmonic Orchestra, and the Royal Shakespeare Company. The opera house also serves as a platform for local artists and cultural exchange, fostering a vibrant arts scene in Guangzhou. In addition to performances, the venue offers educational programs, workshops, and tours, aiming to engage and inspire the community. The Guangzhou Opera House is a symbol of the city's commitment to cultural development and international collaboration, enhancing its reputation as a global city.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical Context and Development of Guangzhou Opera House\",\n            \"content\": \"The development of the Guangzhou Opera House was part of a broader initiative to transform Guangzhou into a cultural and economic hub in southern China. The project was initiated by the Guangzhou Municipal Government in the early 2000s, with the aim of creating a world-class cultural facility that would elevate the city's international profile. The selection of Zaha Hadid as the architect was a strategic decision, as her innovative designs were expected to attract global attention. Construction began in 2005 and faced several challenges, including technical difficulties related to the complex geometry of the design and the need to ensure high acoustic standards. Despite these challenges, the project was completed in 2010, marking a significant milestone in Guangzhou's urban development. The opera house is part of the Zhujiang New Town development, which includes other cultural institutions such as the Guangdong Museum and the Guangzhou Library, creating a vibrant cultural district. The Guangzhou Opera House stands as a testament to the city's ambition and its embrace of contemporary architecture and culture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "35e9d9f8-0d96-4a65-a028-e7ec48abcfa2",
+      "source": "expanded_76",
+      "target": "expanded_20",
+      "relation_type": "designed_by",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Architectural Marvel of Guangzhou Opera House\",\n            \"content\": \"The Guangzhou Opera House, located in the heart of Guangzhou, China, is a stunning example of modern architectural design. Designed by the renowned architect Zaha Hadid, the opera house was completed in 2010 and has since become a landmark of the city. The building's design is inspired by the concept of two pebbles on the bank of the Pearl River, which is reflected in its fluid, organic shapes and the seamless integration with the surrounding landscape. The opera house covers an area of 70,000 square meters and consists of two main structures: the main auditorium, which seats 1,800 people, and a smaller multifunctional hall with a capacity of 400. The exterior is clad in a combination of glass and steel, creating a dynamic interplay of light and shadow. The interior features state-of-the-art acoustics and stage facilities, making it one of the most advanced performance venues in the world. The Guangzhou Opera House is not only a cultural hub but also a testament to innovative design and engineering.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Cultural Significance and Events at Guangzhou Opera House\",\n            \"content\": \"Since its opening, the Guangzhou Opera House has played a pivotal role in the cultural landscape of Guangzhou and the broader region. It hosts a diverse array of performances, including opera, ballet, classical music concerts, and contemporary theater. The venue has attracted international attention, drawing performers and audiences from around the globe. Notable performances have included productions by the Mariinsky Ballet, the Vienna Philharmonic Orchestra, and the Royal Shakespeare Company. The opera house also serves as a platform for local artists and cultural exchange, fostering a vibrant arts scene in Guangzhou. In addition to performances, the venue offers educational programs, workshops, and tours, aiming to engage and inspire the community. The Guangzhou Opera House is a symbol of the city's commitment to cultural development and international collaboration, enhancing its reputation as a global city.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical Context and Development of Guangzhou Opera House\",\n            \"content\": \"The development of the Guangzhou Opera House was part of a broader initiative to transform Guangzhou into a cultural and economic hub in southern China. The project was initiated by the Guangzhou Municipal Government in the early 2000s, with the aim of creating a world-class cultural facility that would elevate the city's international profile. The selection of Zaha Hadid as the architect was a strategic decision, as her innovative designs were expected to attract global attention. Construction began in 2005 and faced several challenges, including technical difficulties related to the complex geometry of the design and the need to ensure high acoustic standards. Despite these challenges, the project was completed in 2010, marking a significant milestone in Guangzhou's urban development. The opera house is part of the Zhujiang New Town development, which includes other cultural institutions such as the Guangdong Museum and the Guangzhou Library, creating a vibrant cultural district. The Guangzhou Opera House stands as a testament to the city's ambition and its embrace of contemporary architecture and culture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "3c6e1b86-50db-4921-8826-5b0cea88402d",
+      "source": "expanded_76",
+      "target": "expanded_31",
+      "relation_type": "completed_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Architectural Marvel of Guangzhou Opera House\",\n            \"content\": \"The Guangzhou Opera House, located in the heart of Guangzhou, China, is a stunning example of modern architectural design. Designed by the renowned architect Zaha Hadid, the opera house was completed in 2010 and has since become a landmark of the city. The building's design is inspired by the concept of two pebbles on the bank of the Pearl River, which is reflected in its fluid, organic shapes and the seamless integration with the surrounding landscape. The opera house covers an area of 70,000 square meters and consists of two main structures: the main auditorium, which seats 1,800 people, and a smaller multifunctional hall with a capacity of 400. The exterior is clad in a combination of glass and steel, creating a dynamic interplay of light and shadow. The interior features state-of-the-art acoustics and stage facilities, making it one of the most advanced performance venues in the world. The Guangzhou Opera House is not only a cultural hub but also a testament to innovative design and engineering.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Cultural Significance and Events at Guangzhou Opera House\",\n            \"content\": \"Since its opening, the Guangzhou Opera House has played a pivotal role in the cultural landscape of Guangzhou and the broader region. It hosts a diverse array of performances, including opera, ballet, classical music concerts, and contemporary theater. The venue has attracted international attention, drawing performers and audiences from around the globe. Notable performances have included productions by the Mariinsky Ballet, the Vienna Philharmonic Orchestra, and the Royal Shakespeare Company. The opera house also serves as a platform for local artists and cultural exchange, fostering a vibrant arts scene in Guangzhou. In addition to performances, the venue offers educational programs, workshops, and tours, aiming to engage and inspire the community. The Guangzhou Opera House is a symbol of the city's commitment to cultural development and international collaboration, enhancing its reputation as a global city.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical Context and Development of Guangzhou Opera House\",\n            \"content\": \"The development of the Guangzhou Opera House was part of a broader initiative to transform Guangzhou into a cultural and economic hub in southern China. The project was initiated by the Guangzhou Municipal Government in the early 2000s, with the aim of creating a world-class cultural facility that would elevate the city's international profile. The selection of Zaha Hadid as the architect was a strategic decision, as her innovative designs were expected to attract global attention. Construction began in 2005 and faced several challenges, including technical difficulties related to the complex geometry of the design and the need to ensure high acoustic standards. Despite these challenges, the project was completed in 2010, marking a significant milestone in Guangzhou's urban development. The opera house is part of the Zhujiang New Town development, which includes other cultural institutions such as the Guangdong Museum and the Guangzhou Library, creating a vibrant cultural district. The Guangzhou Opera House stands as a testament to the city's ambition and its embrace of contemporary architecture and culture.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    }
+  ],
+  "strategy": "bfs",
+  "complexity_score": 0.21999999999999997,
+  "topology_features": {
+    "num_nodes": 10,
+    "num_edges": 10,
+    "density": 0.2222222222222222,
+    "clustering_coefficient": 0.2333333333333333,
+    "avg_degree": 2.0,
+    "diameter": 4,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 10,
+    "num_edges": 10,
+    "density": 0.2222222222222222,
+    "clustering_coefficient": 0.2333333333333333,
+    "avg_degree": 2.0,
+    "diameter": 4,
+    "connected_components": 1
+  }
+}

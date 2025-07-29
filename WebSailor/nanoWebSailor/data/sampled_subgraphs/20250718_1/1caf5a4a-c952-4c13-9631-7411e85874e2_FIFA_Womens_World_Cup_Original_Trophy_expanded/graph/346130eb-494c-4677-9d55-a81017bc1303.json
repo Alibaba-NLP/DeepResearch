@@ -1,0 +1,201 @@
+{
+  "id": "346130eb-494c-4677-9d55-a81017bc1303",
+  "nodes": {
+    "1caf5a4a-c952-4c13-9631-7411e85874e2": {
+      "id": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "label": "FIFA Women's World Cup Original Trophy",
+      "entity_type": "artifact",
+      "domain": "sports",
+      "properties": {
+        "Material": "Gold-plated sterling silver",
+        "Designer": "William Sawaya",
+        "Inaugural Year": "1991"
+      },
+      "features": {
+        "Unique Design": "The trophy features a spiral design with a golden football at the top, symbolizing the dynamic nature and elegance of women’s football.",
+        "Historical Significance": "This trophy was the first to be awarded in the inaugural FIFA Women's World Cup, held in China in 1991, marking a significant milestone in the recognition of women's football globally."
+      },
+      "metadata": {}
+    },
+    "rel_1": {
+      "id": "rel_1",
+      "label": "Current FIFA Women's World Cup Trophy",
+      "entity_type": "related_entity",
+      "domain": "sports",
+      "properties": {},
+      "features": {},
+      "metadata": {}
+    },
+    "expanded_5": {
+      "id": "expanded_5",
+      "label": "1998",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_33": {
+      "id": "expanded_33",
+      "label": "marble base",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 4
+      }
+    },
+    "expanded_51": {
+      "id": "expanded_51",
+      "label": "names of winning teams",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 5
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "3325485b-e99e-4a3a-9dc9-2b2bf87959fa",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "rel_1",
+      "relation_type": "Successor",
+      "properties": {
+        "description": "The original trophy was replaced by a new design introduced in 1999, which is currently used for the FIFA Women's World Cup."
+      },
+      "weight": 1.0,
+      "confidence": 1.0,
+      "metadata": {}
+    },
+    {
+      "id": "b3994704-0327-4ff6-b51e-da47fa7d40be",
+      "source": "rel_1",
+      "target": "expanded_5",
+      "relation_type": "unveiled_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "94dc0f68-d3c5-49f0-9c22-0dbb07b106b7",
+      "source": "rel_1",
+      "target": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "relation_type": "part_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy is a symbol of excellence and achievement in women's football. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. It stands at 47 centimeters tall and weighs approximately 4.6 kilograms. The trophy is made from gold-plated sterling silver and features a spiral design that represents the athleticism, dynamism, and elegance of women's football. At the top of the spiral is a football, symbolizing the global nature of the sport. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's design is both modern and timeless, reflecting the growing prestige and popularity of the Women's World Cup. It is awarded to the winning team of the FIFA Women's World Cup, held every four years, and is a coveted prize that signifies the pinnacle of success in international women's football.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that mirrors the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, and the trophy has since become an iconic symbol of the tournament. Initially, the trophy design was different, but in 1998, FIFA introduced the current design to better reflect the spirit and prestige of the competition. The trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, and Japan. Each winning team has its name engraved on the base of the trophy, creating a legacy of champions. The introduction of the current trophy design coincided with a period of significant growth in women's football, with increased media coverage, sponsorship, and fan engagement. The trophy not only represents sporting excellence but also the progress and recognition of women's sports worldwide.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Impact of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance in the world of sports, particularly in promoting and elevating women's football. As the ultimate prize in international women's football, it represents not only victory but also the culmination of years of hard work, dedication, and teamwork. The trophy has played a crucial role in inspiring young female athletes around the world to",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "18112315-9ff9-4187-85b4-cdef58431163",
+      "source": "rel_1",
+      "target": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "relation_type": "part_of",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The current FIFA Women's World Cup Trophy is a symbol of excellence in women's football, representing the pinnacle of success for national teams around the world. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was first introduced for the 1999 FIFA Women's World Cup. Standing at 47 centimeters tall and weighing approximately 4.6 kilograms, the trophy is made of sterling silver and 23-karat yellow and white gold. Its design features a spiral band that wraps around a football at the top, symbolizing the athleticism, dynamism, and elegance of women's football. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's aesthetic is both modern and timeless, capturing the spirit and energy of the sport while honoring the achievements of the world's best female footballers.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the evolution and growing recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991, but the current trophy design was not introduced until the 1999 tournament, hosted by the United States. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy in 1999 coincided with a landmark moment in women's sports, as the tournament gained unprecedented attention and popularity, particularly in the host nation. The trophy's design was intended to capture the dynamic and progressive nature of women's football, and it has since become an iconic symbol of the sport. Over the years, the trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, Japan, and Norway, each of whom has contributed to the growth and development of the sport.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Symbolism of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance not only as a physical award but also as a symbol of the progress and achievements in women's football. It represents the culmination of years of dedication, teamwork, and excellence for the winning team, serving as a testament to their hard work and skill. Beyond its role as a trophy, it embodies the broader movement for gender equality in sports, highlighting the strides made in providing women with equal opportunities to compete at the highest levels. The trophy's presence at the tournament serves as a reminder of the global reach and impact of women's football, inspiring young girls and women around the world to pursue their passion for the sport. Each time the trophy is lifted, it reinforces the message that women's football is a vital and vibrant part of the global sports landscape, deserving of recognition and celebration. The trophy's symbolism extends beyond the field, as it encourages continued efforts to support and promote women's sports at all levels.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "0b04020c-d272-4c8b-9122-a2756d5c176b",
+      "source": "rel_1",
+      "target": "expanded_33",
+      "relation_type": "has_property",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Features of the Current FIFA Women's World Cup Trophy\",\n            \"content\": \"The current FIFA Women's World Cup Trophy is a symbol of excellence in women's football, representing the pinnacle of success for national teams around the world. Designed by William Sawaya and handcrafted by Milanese specialists Sawaya & Moroni, the trophy was first introduced for the 1999 FIFA Women's World Cup. Standing at 47 centimeters tall and weighing approximately 4.6 kilograms, the trophy is made of sterling silver and 23-karat yellow and white gold. Its design features a spiral band that wraps around a football at the top, symbolizing the athleticism, dynamism, and elegance of women's football. The base of the trophy is made of marble, adding to its grandeur and stability. The trophy's aesthetic is both modern and timeless, capturing the spirit and energy of the sport while honoring the achievements of the world's best female footballers.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the evolution and growing recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991, but the current trophy design was not introduced until the 1999 tournament, hosted by the United States. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy in 1999 coincided with a landmark moment in women's sports, as the tournament gained unprecedented attention and popularity, particularly in the host nation. The trophy's design was intended to capture the dynamic and progressive nature of women's football, and it has since become an iconic symbol of the sport. Over the years, the trophy has been awarded to some of the most successful teams in women's football history, including the United States, Germany, Japan, and Norway, each of whom has contributed to the growth and development of the sport.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Significance and Symbolism of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy holds immense significance not only as a physical award but also as a symbol of the progress and achievements in women's football. It represents the culmination of years of dedication, teamwork, and excellence for the winning team, serving as a testament to their hard work and skill. Beyond its role as a trophy, it embodies the broader movement for gender equality in sports, highlighting the strides made in providing women with equal opportunities to compete at the highest levels. The trophy's presence at the tournament serves as a reminder of the global reach and impact of women's football, inspiring young girls and women around the world to pursue their passion for the sport. Each time the trophy is lifted, it reinforces the message that women's football is a vital and vibrant part of the global sports landscape, deserving of recognition and celebration. The trophy's symbolism extends beyond the field, as it encourages continued efforts to support and promote women's sports at all levels.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "a6c5c49a-e787-4da8-99df-92c1167b9d53",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_5",
+      "relation_type": "unveiled_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and manufactured by Milan-based Sawaya & Moroni, the trophy was unveiled in 1998. It stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The design of the trophy is both elegant and symbolic, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and growth of women's football globally. The ball at the top signifies the sport itself, while the overall upward movement of the design symbolizes the aspirations and achievements of female footballers worldwide. The trophy's base is engraved with the names of the winning teams, creating a historical record of success in the tournament.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that reflects the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but the original trophy was introduced later in 1998, ahead of the 1999 tournament in the United States. Prior to the introduction of this trophy, the winners of the 1991 and 1995 tournaments were awarded a different trophy, which was more simplistic in design. The introduction of the new trophy in 1998 marked a significant moment in the recognition and celebration of women's football, as it provided a unique and prestigious symbol for the competition. The trophy has since been awarded to the champions of each Women's World Cup, with the United States, Germany, Japan, and Norway among the nations that have lifted it. The trophy's introduction and continued use underscore FIFA's commitment to promoting and supporting women's football globally.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy: Custodianship and Legacy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is not only a symbol of victory but also a piece of art that carries a legacy of excellence in women's football. The trophy is kept by FIFA and is not permanently awarded to the winning team. Instead, the champions receive a replica trophy, which they can keep as a memento of their triumph. This custodianship ensures that the original trophy remains a part of FIFA's heritage collection, preserving its condition and significance for future generations. The legacy of the trophy is further enriched by its role in promoting gender equality and inspiring young female athletes worldwide. Each tournament and each victory adds to the narrative of women's football, with the trophy serving as a tangible reminder of the progress and achievements made in the sport. The trophy's presence at the Women's World Cup finals and its presentation to the winning team is a moment of immense pride and celebration, highlighting the dedication, skill, and teamwork required to reach the pinnacle of international football.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "8374ff44-bc59-4882-908d-6947e7c74fe9",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_5",
+      "relation_type": "introduced_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and manufactured by Milan-based Sawaya & Moroni, the trophy was unveiled in 1998. It stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The design of the trophy is both elegant and symbolic, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and growth of women's football globally. The ball at the top signifies the sport itself, while the overall upward movement of the design symbolizes the aspirations and achievements of female footballers worldwide. The trophy's base is engraved with the names of the winning teams, creating a historical record of success in the tournament.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that reflects the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but the original trophy was introduced later in 1998, ahead of the 1999 tournament in the United States. Prior to the introduction of this trophy, the winners of the 1991 and 1995 tournaments were awarded a different trophy, which was more simplistic in design. The introduction of the new trophy in 1998 marked a significant moment in the recognition and celebration of women's football, as it provided a unique and prestigious symbol for the competition. The trophy has since been awarded to the champions of each Women's World Cup, with the United States, Germany, Japan, and Norway among the nations that have lifted it. The trophy's introduction and continued use underscore FIFA's commitment to promoting and supporting women's football globally.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy: Custodianship and Legacy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is not only a symbol of victory but also a piece of art that carries a legacy of excellence in women's football. The trophy is kept by FIFA and is not permanently awarded to the winning team. Instead, the champions receive a replica trophy, which they can keep as a memento of their triumph. This custodianship ensures that the original trophy remains a part of FIFA's heritage collection, preserving its condition and significance for future generations. The legacy of the trophy is further enriched by its role in promoting gender equality and inspiring young female athletes worldwide. Each tournament and each victory adds to the narrative of women's football, with the trophy serving as a tangible reminder of the progress and achievements made in the sport. The trophy's presence at the Women's World Cup finals and its presentation to the winning team is a moment of immense pride and celebration, highlighting the dedication, skill, and teamwork required to reach the pinnacle of international football.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "6bd40223-8a1b-405d-80c7-6016b2b89217",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_51",
+      "relation_type": "engraved_with",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winners of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and manufactured by Milan-based Sawaya & Moroni, the trophy was unveiled in 1998. It stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The design of the trophy is both elegant and symbolic, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and growth of women's football globally. The ball at the top signifies the sport itself, while the overall upward movement of the design symbolizes the aspirations and achievements of female footballers worldwide. The trophy's base is engraved with the names of the winning teams, creating a historical record of success in the tournament.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy has a rich history that reflects the evolution of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but the original trophy was introduced later in 1998, ahead of the 1999 tournament in the United States. Prior to the introduction of this trophy, the winners of the 1991 and 1995 tournaments were awarded a different trophy, which was more simplistic in design. The introduction of the new trophy in 1998 marked a significant moment in the recognition and celebration of women's football, as it provided a unique and prestigious symbol for the competition. The trophy has since been awarded to the champions of each Women's World Cup, with the United States, Germany, Japan, and Norway among the nations that have lifted it. The trophy's introduction and continued use underscore FIFA's commitment to promoting and supporting women's football globally.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy: Custodianship and Legacy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is not only a symbol of victory but also a piece of art that carries a legacy of excellence in women's football. The trophy is kept by FIFA and is not permanently awarded to the winning team. Instead, the champions receive a replica trophy, which they can keep as a memento of their triumph. This custodianship ensures that the original trophy remains a part of FIFA's heritage collection, preserving its condition and significance for future generations. The legacy of the trophy is further enriched by its role in promoting gender equality and inspiring young female athletes worldwide. Each tournament and each victory adds to the narrative of women's football, with the trophy serving as a tangible reminder of the progress and achievements made in the sport. The trophy's presence at the Women's World Cup finals and its presentation to the winning team is a moment of immense pride and celebration, highlighting the dedication, skill, and teamwork required to reach the pinnacle of international football.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "5666ff89-1b3a-4e61-882a-b271e1099cb7",
+      "source": "1caf5a4a-c952-4c13-9631-7411e85874e2",
+      "target": "expanded_5",
+      "relation_type": "unveiled_in",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Design and Symbolism of the FIFA Women's World Cup Original Trophy\",\n            \"content\": \"The FIFA Women's World Cup Original Trophy is a prestigious artifact awarded to the winning team of the FIFA Women's World Cup, symbolizing the pinnacle of achievement in women's international football. Designed by William Sawaya and crafted by Milanese specialists Sawaya & Moroni, the trophy was unveiled in 1998. The design is a testament to elegance and modernity, featuring a spiral band that wraps around a football at the top. This spiral represents the athleticism, dynamism, and grace of the sport, while the ball symbolizes the global nature of football. The trophy stands 47 centimeters tall and weighs approximately 4.6 kilograms, crafted from sterling silver and 23-karat yellow and white gold. The base of the trophy is made of a semi-precious mineral called sodalite, which adds to its aesthetic appeal. The trophy's design is not only a celebration of the sport but also a tribute to the skill and dedication of female athletes worldwide.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Background and Evolution of the FIFA Women's World Cup Trophy\",\n            \"content\": \"The FIFA Women's World Cup Trophy has a rich history that reflects the growth and recognition of women's football on the global stage. The inaugural FIFA Women's World Cup was held in 1991 in China, but it wasn't until the 1999 tournament in the United States that the current trophy design was introduced. Prior to this, the trophy awarded was a simpler design, reflecting the nascent stage of the competition. The introduction of the new trophy design in 1999 coincided with a landmark tournament that significantly boosted the profile of women's football, particularly in the United States, where the final was played in front of a record-breaking crowd of over 90,000 spectators at the Rose Bowl in Pasadena, California. This event marked a turning point, showcasing the potential and popularity of women's football. Since then, the trophy has been awarded to the champions of each subsequent Women's World Cup, serving as a symbol of excellence and a source of inspiration for aspiring female footballers around the world.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"The FIFA Women's World Cup Trophy and Its Role in Promoting Gender Equality in Sports\",\n            \"content\": \"The FIFA Women's World Cup Trophy is more than just a symbol of victory; it plays a significant role in promoting gender equality in sports. As the most prestigious award in women's football, the trophy represents the achievements and progress of female athletes in a historically male-dominated sport. The visibility and recognition that come with winning the trophy have helped to elevate the status of women's football globally, encouraging more investment, media coverage, and participation at all levels. The Women's World Cup has become a platform for advocating gender equality, with FIFA and other organizations using the tournament to highlight issues such as equal pay, representation, and opportunities for women in sports. The trophy, therefore, is not just an artifact but a catalyst for change, inspiring future generations of female athletes to pursue their dreams and challenge societal norms. By celebrating the achievements of women in football, the FIFA Women's World Cup Trophy contributes to the broader movement towards gender equality in sports and beyond.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    }
+  ],
+  "strategy": "dfs",
+  "complexity_score": 0.3433333333333333,
+  "topology_features": {
+    "num_nodes": 5,
+    "num_edges": 5,
+    "density": 0.5,
+    "clustering_coefficient": 0.3333333333333333,
+    "avg_degree": 2.0,
+    "diameter": 3,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 5,
+    "num_edges": 5,
+    "density": 0.5,
+    "clustering_coefficient": 0.3333333333333333,
+    "avg_degree": 2.0,
+    "diameter": 3,
+    "connected_components": 1
+  }
+}

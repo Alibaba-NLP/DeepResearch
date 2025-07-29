@@ -1,0 +1,119 @@
+{
+  "subgraph_id": "bec42a4d-45fe-400d-b022-d432fa31f86a",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/bec42a4d-45fe-400d-b022-d432fa31f86a.json",
+  "qa_pairs": [
+    {
+      "question": "Which individual played a pivotal role in the creation of both the original and current FIFA Women's World Cup Trophies, not only by designing them but also by founding the firm responsible for their craftsmanship?",
+      "answer": [
+        "William Sawaya",
+        "Sawaya"
+      ],
+      "reasoning": "First, we note that the original trophy was designed by an individual who later also designed the current trophy, establishing a consistent creative signature across both artifacts. Additionally, this individual founded the design firm responsible for crafting these trophies. By linking the design roles of both trophies with the founding role of the firm, we can deduce that the answer is William Sawaya.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the designer of the FIFA Women's World Cup Original Trophy from its properties and relationships, which points to an individual.",
+          "Step 2: Check the design details and relationships of the Current FIFA Women's World Cup Trophy to see if the same individual is credited.",
+          "Step 3: Investigate the founding and creation roles of Sawaya & Moroni to confirm the common factor responsible for both design and manufacturing.",
+          "Last step: Synthesize the information from the original trophy, current trophy, and the founding of the firm to conclude that the individual is William Sawaya."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2 (FIFA Women's World Cup Original Trophy)",
+          "rel_1 (Current FIFA Women's World Cup Trophy)",
+          "expanded_3 (William Sawaya)",
+          "expanded_4 (Sawaya & Moroni)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, designed_by, William Sawaya)",
+          "(Current FIFA Women's World Cup Trophy, designed_by, William Sawaya)",
+          "(Sawaya & Moroni, founded_by, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "The original trophy text stating it is designed by William Sawaya and crafted by Sawaya & Moroni.",
+          "The current trophy design text which also mentions that it is designed by William Sawaya and handcrafted by Sawaya & Moroni.",
+          "The design firm information linking William Sawaya as a founder of Sawaya & Moroni."
+        ]
+      },
+      "id": "7be7f169-60ee-4bfa-b266-42417f3f4b6d",
+      "subgraph_id": "bec42a4d-45fe-400d-b022-d432fa31f86a",
+      "difficulty_level": 3,
+      "original_question": "Which individual played a pivotal role in the creation of both the original and current FIFA Women's World Cup Trophies, not only by designing them but also by founding the firm responsible for their craftsmanship?",
+      "obfuscated_question": "Which individual played a pivotal role in the creation of both the original and current FIFA Women's World Cup Trophies, not only by designing them but also by founding the firm responsible for their craftsmanship?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 9,
+          "num_edges": 11,
+          "density": 0.3055555555555556,
+          "clustering_coefficient": 0.3333333333333333,
+          "avg_degree": 2.4444444444444446,
+          "diameter": 6,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Which design firm not only crafted the FIFA Women's World Cup Original Trophy but also collaborated with the renowned architect born in Fumel, France, thereby linking the trophy’s artistic heritage with contemporary design innovation?",
+      "answer": [
+        "Sawaya & Moroni",
+        "Sawaya and Moroni"
+      ],
+      "reasoning": "The reasoning involves multiple steps: First, we identify the firm responsible for crafting the FIFA Women's World Cup Original Trophy, which is noted to be Sawaya & Moroni. Next, we note that this firm also collaborated with a renowned architect. By checking the related relationships, we find that Sawaya & Moroni worked with Jean Nouvel. Additionally, Jean Nouvel was born in Fumel, France. Combining these details shows that the firm linking the trophy’s creation and the notable architectural collaboration is Sawaya & Moroni.",
+      "reference": {
+        "search_path": [
+          "Step 1: Search for the entity that crafted the FIFA Women's World Cup Original Trophy. Expect to find that it is crafted by Sawaya & Moroni.",
+          "Step 2: Look for information linking the design firm to a renowned architect. Expect to confirm that Sawaya & Moroni collaborated with Jean Nouvel.",
+          "Step 3: Verify the birthplace of Jean Nouvel by checking details about his origin in Fumel, France.",
+          "Last step: Synthesize the information from these steps to conclude that the design firm is Sawaya & Moroni."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2",
+          "expanded_4",
+          "expanded_21",
+          "expanded_78"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, crafted_by, Sawaya & Moroni)",
+          "(Sawaya & Moroni, collaborated_with, Jean Nouvel)",
+          "(Jean Nouvel, born_in, Fumel, France)"
+        ],
+        "source_texts_used": [
+          "Design and Symbolism of the FIFA Women's World Cup Original Trophy",
+          "Overview of Sawaya & Moroni",
+          "Jean Nouvel: A Visionary Architect",
+          "Geographical and Demographic Overview of Fumel, France"
+        ]
+      },
+      "id": "3ce3c715-65dc-49a7-825f-ad9e1e755f90",
+      "subgraph_id": "bec42a4d-45fe-400d-b022-d432fa31f86a",
+      "difficulty_level": 3,
+      "original_question": "Which design firm not only crafted the FIFA Women's World Cup Original Trophy but also collaborated with the renowned architect born in Fumel, France, thereby linking the trophy’s artistic heritage with contemporary design innovation?",
+      "obfuscated_question": "Which innovative creative consultancy not only engineered the gleaming accolade—originally conceived as a distinguished prize for a globally celebrated women's sporting event, featuring an opulent metallic finish and the artistic vision of a renowned designer—but also partnered with an acclaimed architectural visionary born in a modest settlement of southwestern Gaul, thus blending a storied legacy of ornamental excellence with modern design innovation?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 9,
+          "num_edges": 11,
+          "density": 0.3055555555555556,
+          "clustering_coefficient": 0.3333333333333333,
+          "avg_degree": 2.4444444444444446,
+          "diameter": 6,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 2,
+    "strategy": "chain",
+    "complexity_score": 0.29833333333333334,
+    "topology_features": {
+      "num_nodes": 9,
+      "num_edges": 11,
+      "density": 0.3055555555555556,
+      "clustering_coefficient": 0.3333333333333333,
+      "avg_degree": 2.4444444444444446,
+      "diameter": 6,
+      "connected_components": 1
+    }
+  }
+}

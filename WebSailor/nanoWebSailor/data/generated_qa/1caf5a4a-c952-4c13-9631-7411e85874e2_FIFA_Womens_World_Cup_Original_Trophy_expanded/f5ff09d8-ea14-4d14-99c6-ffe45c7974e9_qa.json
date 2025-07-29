@@ -1,0 +1,70 @@
+{
+  "subgraph_id": "f5ff09d8-ea14-4d14-99c6-ffe45c7974e9",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/f5ff09d8-ea14-4d14-99c6-ffe45c7974e9.json",
+  "qa_pairs": [
+    {
+      "question": "The FIFA Women's World Cup trophies have undergone changes in their designs and materials over the years. Considering that the Original Trophy (introduced in 1999) was made of 'sterling silver and gold' and the current trophy is described in similar terms, by synthesizing the known properties of sterling silver (specifically that 92.5% pure silver is known as sterling silver and exhibits properties of ductility and is measured in karats), which material is explicitly used in the construction of the current FIFA Women’s World Cup Trophy?",
+      "answer": [
+        "gold-plated sterling silver",
+        "gold plated sterling silver"
+      ],
+      "reasoning": "First, we note that the Original Trophy was made of 'sterling silver and gold' and has a successor, the current trophy. Then, through the properties provided, we see that 92.5% pure silver is defined as sterling silver, and this term is used as part of the material composition of the current trophy. Additionally, the current trophy is explicitly stated to be made of 'gold-plated sterling silver'. The relationship between the alloy’s properties (ductility and measurement by karats) and its composition confirms that the material used in the current trophy is indeed gold-plated sterling silver. Hence, synthesizing information across multiple nodes and relationships confirms the answer.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the material composition of the FIFA Women's World Cup Original Trophy from the knowledge graph (made of 'sterling silver and gold').",
+          "Step 2: Locate the information for the Current FIFA Women's World Cup Trophy, which indicates it is made of 'gold-plated sterling silver', and note that it is the successor of the original trophy.",
+          "Step 3: Investigate the properties of 'sterling silver and gold' by reviewing the property that 92.5% pure silver is considered sterling silver and is measured by karats as well as its ductility.",
+          "Step 4: Synthesize the data to confirm that since 92.5% pure silver (sterling silver) is a defining component and it is cast/gilded, the current trophy’s material is confirmed as 'gold-plated sterling silver'."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2 (FIFA Women's World Cup Original Trophy)",
+          "rel_1 (Current FIFA Women's World Cup Trophy)",
+          "expanded_55 (92.5% pure silver)"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, made_of, sterling silver and gold)",
+          "(FIFA Women's World Cup Original Trophy, Successor, Current FIFA Women's World Cup Trophy)",
+          "(Current FIFA Women's World Cup Trophy, made_of, gold-plated sterling silver)",
+          "(sterling silver and gold, has_property, 92.5% pure silver)",
+          "(92.5% pure silver, is_a, gold-plated sterling silver)"
+        ],
+        "source_texts_used": [
+          "Design and Features of the Current FIFA Women's World Cup Trophy",
+          "Historical Background and Evolution of the FIFA Women's World Cup Trophy",
+          "Understanding Sterling Silver and Gold: Composition and Properties"
+        ]
+      },
+      "id": "7139f2f9-1efd-4a00-8791-a6c481186722",
+      "subgraph_id": "f5ff09d8-ea14-4d14-99c6-ffe45c7974e9",
+      "difficulty_level": 3,
+      "original_question": "The FIFA Women's World Cup trophies have undergone changes in their designs and materials over the years. Considering that the Original Trophy (introduced in 1999) was made of 'sterling silver and gold' and the current trophy is described in similar terms, by synthesizing the known properties of sterling silver (specifically that 92.5% pure silver is known as sterling silver and exhibits properties of ductility and is measured in karats), which material is explicitly used in the construction of the current FIFA Women’s World Cup Trophy?",
+      "obfuscated_question": "In the history of the global women's football tournament, the championship awards have evolved over time. Given that the inaugural cup—introduced in the waning years of the 20th century—was fashioned from a highly refined silver alloy paired with a classic, lustrous yellow precious metal, and knowing that the current award is described in a comparable manner, by synthesizing the known characteristics of that high-purity silver (notably recognized for its nearly nine-tenths content and ductile properties measured in karats), which distinct material is explicitly incorporated in the construction of the present-day trophy?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 10,
+          "num_edges": 11,
+          "density": 0.24444444444444444,
+          "clustering_coefficient": 0.15,
+          "avg_degree": 2.2,
+          "diameter": 5,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "tree",
+    "complexity_score": 0.19933333333333333,
+    "topology_features": {
+      "num_nodes": 10,
+      "num_edges": 11,
+      "density": 0.24444444444444444,
+      "clustering_coefficient": 0.15,
+      "avg_degree": 2.2,
+      "diameter": 5,
+      "connected_components": 1
+    }
+  }
+}

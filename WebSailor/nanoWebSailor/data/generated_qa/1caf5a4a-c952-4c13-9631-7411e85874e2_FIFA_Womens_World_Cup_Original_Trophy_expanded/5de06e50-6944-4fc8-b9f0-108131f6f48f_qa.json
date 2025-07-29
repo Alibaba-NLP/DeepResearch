@@ -1,0 +1,117 @@
+{
+  "subgraph_id": "5de06e50-6944-4fc8-b9f0-108131f6f48f",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/5de06e50-6944-4fc8-b9f0-108131f6f48f.json",
+  "qa_pairs": [
+    {
+      "question": "An object is described as weighing approximately 4.6 kilograms. Considering that the pound is defined as exactly 0.45359237 kilograms and that in multiple independent sources it is stated that 10.14 pounds is equivalent to this object’s weight (with further conversion showing 10.14 pounds equals 4.599 kilograms and 162.24 ounces), which measurement in the imperial system is consistently used to represent the object's weight?",
+      "answer": [
+        "10.14 pounds",
+        "10.14 lb"
+      ],
+      "reasoning": "The problem requires synthesizing information from several sources. First, we note the object's weight is given as approximately 4.6 kilograms. One source explicitly converts this to 10.14 pounds. Another confirms that 10.14 pounds is defined using the exact conversion factor, 0.45359237 kilograms per pound, and further converts 10.14 pounds back into a metric value of 4.599 kilograms, and also into 162.24 ounces. By integrating these multiple pieces of information, we confirm that the consistent imperial measurement used across the sources is 10.14 pounds.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the object weight given as 4.6 kilograms and search for its conversion into pounds.",
+          "Step 2: Locate the conversion rule where 1 pound equals exactly 0.45359237 kilograms, ensuring the conversion factor is standardized.",
+          "Step 3: Verify that the conversion from 4.6 kilograms to pounds yields 10.14 pounds from one source.",
+          "Step 4: Cross-check that another source further converts 10.14 pounds back into approximately 4.599 kilograms and into 162.24 ounces.",
+          "Last step: Synthesize the information from multiple entities and relationships to conclude that 10.14 pounds is the measurement in the imperial system that consistently represents the object's weight."
+        ],
+        "nodes_used": [
+          "expanded_9",
+          "expanded_26",
+          "expanded_46",
+          "expanded_125",
+          "expanded_126"
+        ],
+        "triples_used": [
+          "(weighs approximately 4.6 kilograms, equivalent_to, 10.14 pounds)",
+          "(10.14 pounds, defined_as, 0.45359237 kilograms)",
+          "(10.14 pounds, equivalent_to, 4.599 kilograms)",
+          "(10.14 pounds, equivalent_to, 162.24 ounces)"
+        ],
+        "source_texts_used": [
+          "Content discussing the conversion of 4.6 kilograms to 10.14 pounds",
+          "Explanation of the pound defined as exactly 0.45359237 kilograms",
+          "Information confirming the equivalence of 10.14 pounds to 4.599 kilograms and 162.24 ounces"
+        ]
+      },
+      "id": "feee7453-bb6d-49ee-ae69-89b43bb35594",
+      "subgraph_id": "5de06e50-6944-4fc8-b9f0-108131f6f48f",
+      "difficulty_level": 3,
+      "original_question": "An object is described as weighing approximately 4.6 kilograms. Considering that the pound is defined as exactly 0.45359237 kilograms and that in multiple independent sources it is stated that 10.14 pounds is equivalent to this object’s weight (with further conversion showing 10.14 pounds equals 4.599 kilograms and 162.24 ounces), which measurement in the imperial system is consistently used to represent the object's weight?",
+      "obfuscated_question": "An object is described as having a mass roughly equivalent to what one might call nearly five kilograms when rounded. Knowing that one of the imperial units of mass is exactly defined by a specific conversion factor (about half a kilogram per unit) and that several independent references equate the object's weight to just a bit more than ten of these particular units (with further conversions indicating an overall mass very close to that slightly under-five‐kilogram measure and an alternative count in a smaller subdivision totaling in the low hundreds), which imperial unit is the consistently employed standard for representing this object's weight?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 6,
+          "num_edges": 7,
+          "density": 0.4666666666666667,
+          "clustering_coefficient": 0.4777777777777778,
+          "avg_degree": 2.3333333333333335,
+          "diameter": 2,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "An object weighs approximately 4.6 kilograms. Using the known conversion relationships where 4.6 kilograms is equivalent to 10.14 pounds and knowing that 10.14 pounds is equivalent to 162.24 ounces, what is the weight of the object in ounces?",
+      "answer": [
+        "162.24 ounces",
+        "162.24oz"
+      ],
+      "reasoning": "The solution requires synthesizing multiple conversion relationships from different parts of the information. First, we identify that an object weighing approximately 4.6 kilograms corresponds to 10.14 pounds. Next, we use the established conversion that 10.14 pounds is equivalent to 162.24 ounces. By logically linking these steps, we conclude that the object weighs 162.24 ounces.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify from the knowledge graph that 'weighs approximately 4.6 kilograms' is equivalent to '10.14 pounds'. Expect to find the conversion factor linking kilograms to pounds.",
+          "Step 2: Locate the conversion stating that '10.14 pounds' is equivalent to '162.24 ounces'. This provides the conversion from pounds to ounces.",
+          "Step 3: Synthesize the two conversion steps to deduce that the weight in ounces is 162.24 ounces for an object weighing approximately 4.6 kilograms."
+        ],
+        "nodes_used": [
+          "expanded_9 (weighs approximately 4.6 kilograms)",
+          "expanded_26 (10.14 pounds)",
+          "expanded_126 (162.24 ounces)"
+        ],
+        "triples_used": [
+          "(weighs approximately 4.6 kilograms, equivalent_to, 10.14 pounds)",
+          "(10.14 pounds, equivalent_to, 162.24 ounces)"
+        ],
+        "source_texts_used": [
+          "Extracted text confirming the equivalence of 4.6 kilograms to 10.14 pounds",
+          "Extracted text stating that 10.14 pounds is equivalent to 162.24 ounces"
+        ]
+      },
+      "id": "8bbaeaa7-b3a2-4a0b-ae8f-a7f1dc65ac5d",
+      "subgraph_id": "5de06e50-6944-4fc8-b9f0-108131f6f48f",
+      "difficulty_level": 3,
+      "original_question": "An object weighs approximately 4.6 kilograms. Using the known conversion relationships where 4.6 kilograms is equivalent to 10.14 pounds and knowing that 10.14 pounds is equivalent to 162.24 ounces, what is the weight of the object in ounces?",
+      "obfuscated_question": "An item has a mass of roughly 4.6 units in a system commonly used outside the imperial framework. Given that this mass converts to a little over 10 units in an imperial measure based on a larger unit, and that this intermediary value translates into a total number of smaller subdivisions—specifically, a number that is just beyond the count of one hundred and sixty of these fractional components—what is the mass of the item when expressed entirely in these smaller units?",
+      "uncertainty_score": 0.6000000000000001,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 6,
+          "num_edges": 7,
+          "density": 0.4666666666666667,
+          "clustering_coefficient": 0.4777777777777778,
+          "avg_degree": 2.3333333333333335,
+          "diameter": 2,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 2,
+    "strategy": "star",
+    "complexity_score": 0.40111111111111114,
+    "topology_features": {
+      "num_nodes": 6,
+      "num_edges": 7,
+      "density": 0.4666666666666667,
+      "clustering_coefficient": 0.4777777777777778,
+      "avg_degree": 2.3333333333333335,
+      "diameter": 2,
+      "connected_components": 1
+    }
+  }
+}

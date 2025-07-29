@@ -1,0 +1,66 @@
+{
+  "subgraph_id": "401eb89c-ff3c-4ba6-bdc3-bb47c8d84e20",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/401eb89c-ff3c-4ba6-bdc3-bb47c8d84e20.json",
+  "qa_pairs": [
+    {
+      "question": "The current FIFA Women's World Cup Trophy is made of a material that is widely popular in the jewelry market for its luxurious appearance, yet its fabrication involves a specific chemical process. Based on the composition and production methods of this material, what is the primary process used to create it?",
+      "answer": [
+        "electroplating",
+        "Electroplating"
+      ],
+      "reasoning": "To answer this question, one must first recognize that the trophy is made of gold-plated sterling silver. Then, by understanding the production process of gold-plated sterling silver—which involves applying a thin layer of gold onto sterling silver via an electric current—the solver identifies that the key process responsible for this fabrication is electroplating. This reasoning synthesizes information from two interconnected sources: details about the trophy's material and the process by which gold-plated sterling silver is made.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify that the current FIFA Women's World Cup Trophy is made of gold-plated sterling silver, as mentioned in its design description.",
+          "Step 2: Locate information on gold-plated sterling silver to understand its composition and the processes involved in its production.",
+          "Step 3: Notice that the production of gold-plated sterling silver involves a distinct process where a thin layer of gold is applied to sterling silver using electricity.",
+          "Last step: Conclude that the process is electroplating, which is the direct method used to produce gold-plated sterling silver."
+        ],
+        "nodes_used": [
+          "rel_1",
+          "expanded_6",
+          "expanded_22"
+        ],
+        "triples_used": [
+          "(Current FIFA Women's World Cup Trophy, made_of, gold-plated sterling silver)",
+          "(gold-plated sterling silver, created_by, electroplating)"
+        ],
+        "source_texts_used": [
+          "Design and Features of the Current FIFA Women's World Cup Trophy (detailing that the trophy is made from gold-plated sterling silver)",
+          "Definition and Composition of Gold-Plated Sterling Silver (explaining that the gold plating process is performed by electroplating)"
+        ]
+      },
+      "id": "ca84d44a-8702-4d1b-9c03-2fd072fbfd27",
+      "subgraph_id": "401eb89c-ff3c-4ba6-bdc3-bb47c8d84e20",
+      "difficulty_level": 3,
+      "original_question": "The current FIFA Women's World Cup Trophy is made of a material that is widely popular in the jewelry market for its luxurious appearance, yet its fabrication involves a specific chemical process. Based on the composition and production methods of this material, what is the primary process used to create it?",
+      "obfuscated_question": "The reigning emblem of a distinguished international championship for female teams is fashioned from a substance highly prized in the luxury adornment market for its brilliant luster, though its creation requires a unique chemical transformation. Drawing on the material’s properties and the methods used in its production, what is the principal process involved in its fabrication?",
+      "uncertainty_score": 0.35,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 5,
+          "num_edges": 4,
+          "density": 0.4,
+          "clustering_coefficient": 0.0,
+          "avg_degree": 1.6,
+          "diameter": 2,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "star",
+    "complexity_score": 0.16799999999999998,
+    "topology_features": {
+      "num_nodes": 5,
+      "num_edges": 4,
+      "density": 0.4,
+      "clustering_coefficient": 0.0,
+      "avg_degree": 1.6,
+      "diameter": 2,
+      "connected_components": 1
+    }
+  }
+}

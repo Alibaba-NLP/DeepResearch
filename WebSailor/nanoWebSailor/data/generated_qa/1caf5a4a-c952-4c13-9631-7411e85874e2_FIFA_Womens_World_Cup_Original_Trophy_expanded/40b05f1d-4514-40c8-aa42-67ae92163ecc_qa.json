@@ -1,0 +1,129 @@
+{
+  "subgraph_id": "40b05f1d-4514-40c8-aa42-67ae92163ecc",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/40b05f1d-4514-40c8-aa42-67ae92163ecc.json",
+  "qa_pairs": [
+    {
+      "question": "Which visionary architect, known for her fluid and dynamic design style, collaborated with an Italian firm headquartered in Milan and designed a landmark fire station completed in 1993 that is part of a renowned architectural campus?",
+      "answer": [
+        "Zaha Hadid",
+        "Hadid"
+      ],
+      "reasoning": "The reasoning starts by identifying the iconic fire station completed in 1993, recognized as a major contemporary architectural piece on the Vitra Campus. Next, we note that this building was designed by an architect whose innovative and fluid design style is highlighted in the sources. Additionally, this architect is known to have collaborated with Sawaya & Moroni, an Italian design firm headquartered in Milan. By synthesizing these pieces of information, we deduce that the answer is Zaha Hadid.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the structure completed in 1993 that is part of the Vitra Campus (expect to find information about the Vitra Fire Station).",
+          "Step 2: Determine the architect who designed this structure, focusing on descriptions of fluid lines and dynamic forms (found information indicating Zaha Hadid).",
+          "Step 3: Connect the architect to the collaboration with Sawaya & Moroni, which confirms the involvement of Zaha Hadid through her association with the Italian firm.",
+          "Last step: Synthesize these details to conclude that the visionary architect in question is Zaha Hadid."
+        ],
+        "nodes_used": [
+          "expanded_4 (Sawaya & Moroni)",
+          "expanded_20 (Zaha Hadid)",
+          "expanded_73 (Vitra Fire Station)",
+          "expanded_172 (Vitra Campus)"
+        ],
+        "triples_used": [
+          "Sawaya & Moroni collaborated_with Zaha Hadid",
+          "Vitra Fire Station designed_by Zaha Hadid",
+          "Vitra Fire Station completed_in 1993",
+          "Vitra Fire Station part_of Vitra Campus"
+        ],
+        "source_texts_used": [
+          "The overview of Sawaya & Moroni which mentions the collaboration with Zaha Hadid.",
+          "Descriptions of Zaha Hadid’s architectural style and contributions.",
+          "The architectural significance of the Vitra Fire Station, including its completion in 1993 and its location on the Vitra Campus."
+        ]
+      },
+      "id": "ffdbf116-1278-473d-988e-5a6b7f3ae30b",
+      "subgraph_id": "40b05f1d-4514-40c8-aa42-67ae92163ecc",
+      "difficulty_level": 3,
+      "original_question": "Which visionary architect, known for her fluid and dynamic design style, collaborated with an Italian firm headquartered in Milan and designed a landmark fire station completed in 1993 that is part of a renowned architectural campus?",
+      "obfuscated_question": "Which visionary architect, celebrated for her fluid, dynamic design aesthetic, collaborated with a respected Italian firm based in a prominent northern city, and designed a landmark fire station that was completed in the early phase of the final decade of the twentieth century as part of a renowned architectural campus?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 8,
+          "num_edges": 7,
+          "density": 0.25,
+          "clustering_coefficient": 0.0,
+          "avg_degree": 1.75,
+          "diameter": 5,
+          "connected_components": 1
+        }
+      }
+    },
+    {
+      "question": "Which Italian design firm, headquartered in Milan—a city recognized as the economic heart of Italy and home to events like Milan Fashion Week—collaborated with the architect who designed the Vitra Fire Station, a project completed in 1993 and part of the Vitra Campus?",
+      "answer": [
+        "Sawaya & Moroni",
+        "Sawaya and Moroni"
+      ],
+      "reasoning": "The question requires linking multiple pieces of information: first, identifying the city (Milan) as the economic heart of Italy and the host of Milan Fashion Week; second, noting that an Italian design firm headquartered in Milan collaborated with a prominent architect; third, recognizing that the architect in question is Zaha Hadid, known for designing the Vitra Fire Station which was completed in 1993 and is part of the Vitra Campus. By synthesizing these details, the answer is the design firm Sawaya & Moroni.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify the city with the properties 'economic heart of Italy' and 'hosts Milan Fashion Week' – find that it is Milan, Italy.",
+          "Step 2: Search for the design firm headquartered in Milan – find Sawaya & Moroni.",
+          "Step 3: Check for collaborations between the design firm and Zaha Hadid – confirm that Sawaya & Moroni collaborated with Zaha Hadid.",
+          "Step 4: Verify that Zaha Hadid designed the Vitra Fire Station, which was completed in 1993 and is part of the Vitra Campus.",
+          "Last step: Synthesize these relationships to conclude that Sawaya & Moroni is the firm that fits all the description in the question."
+        ],
+        "nodes_used": [
+          "expanded_4 (Sawaya & Moroni)",
+          "expanded_19 (Milan, Italy)",
+          "expanded_20 (Zaha Hadid)",
+          "expanded_66 (economic heart of Italy)",
+          "expanded_68 (Milan Fashion Week)",
+          "expanded_73 (Vitra Fire Station)",
+          "expanded_171 (1993)",
+          "expanded_172 (Vitra Campus)"
+        ],
+        "triples_used": [
+          "(Sawaya & Moroni, located_in, Milan, Italy)",
+          "(Sawaya & Moroni, headquartered_in, Milan, Italy)",
+          "(Sawaya & Moroni, collaborated_with, Zaha Hadid)",
+          "(Milan, Italy, has_property, economic heart of Italy)",
+          "(Milan, Italy, hosts, Milan Fashion Week)",
+          "(Vitra Fire Station, designed_by, Zaha Hadid)",
+          "(Vitra Fire Station, completed_in, 1993)",
+          "(Vitra Fire Station, part_of, Vitra Campus)"
+        ],
+        "source_texts_used": [
+          "Overview of Sawaya & Moroni articles describing the firm’s headquarters in Milan and its collaborations with Zaha Hadid.",
+          "Articles on Milan describing the city as the economic heart of Italy and host of Milan Fashion Week.",
+          "Vitra Fire Station texts detailing its design by Zaha Hadid, completion in 1993, and location within the Vitra Campus."
+        ]
+      },
+      "id": "23c49fde-524a-452e-9fba-218354f0a165",
+      "subgraph_id": "40b05f1d-4514-40c8-aa42-67ae92163ecc",
+      "difficulty_level": 3,
+      "original_question": "Which Italian design firm, headquartered in Milan—a city recognized as the economic heart of Italy and home to events like Milan Fashion Week—collaborated with the architect who designed the Vitra Fire Station, a project completed in 1993 and part of the Vitra Campus?",
+      "obfuscated_question": "Which Italian design firm, headquartered in a northern metropolis celebrated as the nation's premier commercial hub and host to internationally renowned style festivities, collaborated with the architect responsible for a famed fire station project—completed in the early 1990s and situated within a celebrated collective of design innovations?",
+      "uncertainty_score": 0.5,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 8,
+          "num_edges": 7,
+          "density": 0.25,
+          "clustering_coefficient": 0.0,
+          "avg_degree": 1.75,
+          "diameter": 5,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 2,
+    "strategy": "dfs",
+    "complexity_score": 0.1275,
+    "topology_features": {
+      "num_nodes": 8,
+      "num_edges": 7,
+      "density": 0.25,
+      "clustering_coefficient": 0.0,
+      "avg_degree": 1.75,
+      "diameter": 5,
+      "connected_components": 1
+    }
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "id": "5de06e50-6944-4fc8-b9f0-108131f6f48f",
+  "nodes": {
+    "expanded_9": {
+      "id": "expanded_9",
+      "label": "weighs approximately 4.6 kilograms",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 2
+      }
+    },
+    "expanded_26": {
+      "id": "expanded_26",
+      "label": "10.14 pounds",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_27": {
+      "id": "expanded_27",
+      "label": "base unit of mass",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 3
+      }
+    },
+    "expanded_46": {
+      "id": "expanded_46",
+      "label": "0.45359237 kilograms",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 4
+      }
+    },
+    "expanded_125": {
+      "id": "expanded_125",
+      "label": "4.599 kilograms",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    },
+    "expanded_126": {
+      "id": "expanded_126",
+      "label": "162.24 ounces",
+      "entity_type": "expanded_entity",
+      "domain": "general",
+      "properties": {},
+      "features": {},
+      "metadata": {
+        "expansion_depth": 6
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "3840445a-090e-4187-bd02-af5794263a3a",
+      "source": "expanded_9",
+      "target": "expanded_26",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding Weight: The Significance of 4.6 Kilograms\",\n            \"content\": \"Weight is a fundamental property of matter, representing the force exerted by gravity on an object. When we refer to an object that 'weighs approximately 4.6 kilograms,' we are discussing its mass in relation to the gravitational pull of the Earth. In the International System of Units (SI), the kilogram is the base unit of mass, and it is widely used in scientific, commercial, and everyday contexts. The weight of 4.6 kilograms is equivalent to approximately 10.14 pounds in the imperial system, which is often used in countries like the United States. This weight is significant in various contexts. For instance, in the realm of consumer products, many household items, such as small appliances, kitchen gadgets, or even certain types of sports equipment, might weigh around 4.6 kilograms. In the context of biology, certain animals or newborns of larger species might also weigh around this amount. Understanding the weight of 4.6 kilograms helps in various practical applications, from shipping and logistics to health and fitness, where precise weight measurements are crucial.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Role of 4.6 Kilograms in Scientific and Industrial Applications\",\n            \"content\": \"In scientific and industrial settings, precise weight measurements are crucial for accuracy and efficiency. A weight of approximately 4.6 kilograms can be significant in various fields. In chemistry and laboratory environments, precise measurements of substances are essential for experiments and reactions. A sample weighing 4.6 kilograms might be used in large-scale experiments or industrial processes where bulk quantities are required. In manufacturing, understanding the weight of components is vital for quality control and product design. For example, a machine part or a batch of raw materials might weigh around 4.6 kilograms, and this information would be crucial for engineers and designers to ensure compatibility and functionality. Moreover, in the context of logistics and transportation, knowing the weight of packages and goods is essential for calculating shipping costs and determining the appropriate mode of transport. The weight of 4.6 kilograms might fall within a specific category for postal services or freight companies, affecting pricing and handling procedures. Thus, the weight of 4.6 kilograms plays a significant role in various scientific and industrial applications, highlighting the importance of precision and standardization in weight measurement.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"4.6 Kilograms in Everyday Life: Practical Examples and Implications\",\n            \"content\": \"In everyday life, the weight of 4.6 kilograms can be encountered in numerous contexts, affecting how we interact with objects and manage tasks. For instance, in the kitchen, a bag of flour or sugar might weigh around 4.6 kilograms, which is a manageable weight for most people to handle when cooking or baking. This weight is also common in the context of fitness and exercise. Dumbbells or kettlebells weighing approximately 4.6 kilograms are often used in strength training routines, providing a moderate level of resistance suitable for beginners or those focusing on endurance. In the realm of consumer electronics, certain laptops or desktop computers might weigh around 4.6 kilograms, influencing their portability and ease of use. Additionally, in the context of travel, luggage weight is a critical consideration. A suitcase weighing 4.6 kilograms when empty allows for more packing flexibility while staying within airline weight limits. Understanding the implications of this weight in everyday scenarios helps individuals make informed decisions about purchasing, handling, and utilizing various products and services. It also underscores the importance of weight as a practical consideration in daily activities and consumer choices.\",\n            \"relevance_score\": 0.8\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "68cccaa2-f1f4-427a-bd01-496722804efe",
+      "source": "expanded_9",
+      "target": "expanded_27",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding Weight: The Significance of 4.6 Kilograms\",\n            \"content\": \"Weight is a fundamental property of matter, representing the force exerted by gravity on an object. When we refer to an object that 'weighs approximately 4.6 kilograms,' we are discussing its mass in relation to the gravitational pull of the Earth. In the International System of Units (SI), the kilogram is the base unit of mass, and it is widely used in scientific, commercial, and everyday contexts. The weight of 4.6 kilograms is equivalent to approximately 10.14 pounds in the imperial system, which is often used in countries like the United States. This weight is significant in various contexts. For instance, in the realm of consumer products, many household items, such as small appliances, kitchen gadgets, or even certain types of sports equipment, might weigh around 4.6 kilograms. In the context of biology, certain animals or newborns of larger species might also weigh around this amount. Understanding the weight of 4.6 kilograms helps in various practical applications, from shipping and logistics to health and fitness, where precise weight measurements are crucial.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Role of 4.6 Kilograms in Scientific and Industrial Applications\",\n            \"content\": \"In scientific and industrial settings, precise weight measurements are crucial for accuracy and efficiency. A weight of approximately 4.6 kilograms can be significant in various fields. In chemistry and laboratory environments, precise measurements of substances are essential for experiments and reactions. A sample weighing 4.6 kilograms might be used in large-scale experiments or industrial processes where bulk quantities are required. In manufacturing, understanding the weight of components is vital for quality control and product design. For example, a machine part or a batch of raw materials might weigh around 4.6 kilograms, and this information would be crucial for engineers and designers to ensure compatibility and functionality. Moreover, in the context of logistics and transportation, knowing the weight of packages and goods is essential for calculating shipping costs and determining the appropriate mode of transport. The weight of 4.6 kilograms might fall within a specific category for postal services or freight companies, affecting pricing and handling procedures. Thus, the weight of 4.6 kilograms plays a significant role in various scientific and industrial applications, highlighting the importance of precision and standardization in weight measurement.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"4.6 Kilograms in Everyday Life: Practical Examples and Implications\",\n            \"content\": \"In everyday life, the weight of 4.6 kilograms can be encountered in numerous contexts, affecting how we interact with objects and manage tasks. For instance, in the kitchen, a bag of flour or sugar might weigh around 4.6 kilograms, which is a manageable weight for most people to handle when cooking or baking. This weight is also common in the context of fitness and exercise. Dumbbells or kettlebells weighing approximately 4.6 kilograms are often used in strength training routines, providing a moderate level of resistance suitable for beginners or those focusing on endurance. In the realm of consumer electronics, certain laptops or desktop computers might weigh around 4.6 kilograms, influencing their portability and ease of use. Additionally, in the context of travel, luggage weight is a critical consideration. A suitcase weighing 4.6 kilograms when empty allows for more packing flexibility while staying within airline weight limits. Understanding the implications of this weight in everyday scenarios helps individuals make informed decisions about purchasing, handling, and utilizing various products and services. It also underscores the importance of weight as a practical consideration in daily activities and consumer choices.\",\n            \"relevance_score\": 0.8\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "9649b96f-5ea0-466d-b353-196c8d2ffe4e",
+      "source": "expanded_9",
+      "target": "expanded_26",
+      "relation_type": "equivalent_to",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding Weight Measurements: The Significance of 4.6 Kilograms\",\n            \"content\": \"Weight is a fundamental concept in physics and everyday life, representing the force exerted by gravity on an object. The metric system, widely used across the globe, measures weight in kilograms. When an object weighs approximately 4.6 kilograms, it is equivalent to 4600 grams or about 10.14 pounds in the imperial system. This weight is often encountered in various contexts, such as the average weight of a newborn baby, which typically ranges from 2.5 to 4.5 kilograms. In the realm of consumer products, a 4.6-kilogram item might include a small household appliance like a vacuum cleaner or a medium-sized laptop bag filled with essential items. Understanding the weight of 4.6 kilograms is crucial for logistics, as it affects shipping costs and handling requirements. In scientific research, precise weight measurements are vital for experiments and data accuracy. Thus, the weight of 4.6 kilograms plays a significant role in both practical applications and scientific endeavors.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"The Role of Weight in Physics: Exploring 4.6 Kilograms\",\n            \"content\": \"In physics, weight is defined as the force exerted on an object due to gravity. It is calculated as the mass of the object multiplied by the acceleration due to gravity (9.81 m/s² on Earth). Therefore, an object with a mass of 4.6 kilograms would exert a force of approximately 45.126 newtons on the Earth's surface. This weight measurement is crucial in various scientific and engineering fields. For instance, in mechanical engineering, understanding the weight of components is essential for designing structures and machines that can withstand specific loads. In the field of aerodynamics, the weight of an object affects its lift and drag, influencing the design and performance of aircraft. Additionally, in space exploration, precise weight measurements are critical for calculating fuel requirements and ensuring the safe landing of spacecraft. The weight of 4.6 kilograms, while seemingly modest, can have significant implications in these advanced scientific applications, demonstrating the importance of accurate weight measurement in physics.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Cultural Perspectives on Weight: The Case of 4.6 Kilograms\",\n            \"content\": \"Throughout history, the concept of weight has been integral to trade, science, and daily life. Ancient civilizations, such as the Egyptians and Mesopotamians, developed early systems of weight measurement to facilitate trade and commerce. The metric system, introduced during the French Revolution, standardized weight measurements, making the kilogram the base unit. A weight of 4.6 kilograms, while specific, can be contextualized within these historical developments. In cultural contexts, weight often symbolizes value and worth. For example, gold and other precious metals are traditionally weighed to determine their market value. In modern society, weight plays a role in health and wellness, with body weight being a key indicator of health status. The weight of 4.6 kilograms can also be significant in cultural practices, such as the weight of ceremonial objects or traditional foods. Understanding the historical and cultural significance of weight helps us appreciate its role in shaping human civilization and its continued importance in contemporary society.\",\n            \"relevance_score\": 0.8\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "bb86c01b-c677-4ee5-b941-50191c66eb8d",
+      "source": "expanded_26",
+      "target": "expanded_27",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding the Weight Measurement: Pounds\",\n            \"content\": \"The pound is a unit of mass or weight in a number of different systems, including English units, Imperial units, and United States customary units. The international avoirdupois pound, the most commonly used today, is legally defined as exactly 0.45359237 kilograms. Historically, the pound has had various definitions, and the term itself derives from the Latin 'libra,' which was a unit of weight used in ancient Rome. The pound has been used in the UK and its former colonies, including the United States, where it remains a standard unit of measurement for weight. The term 'pound' is often abbreviated as 'lb,' which comes from the Roman word 'libra.' In the context of 10.14 pounds, this measurement can be used to describe the weight of various objects, such as a medium-sized dog, a large watermelon, or a small piece of luggage. Understanding the pound as a unit of measurement is crucial for various applications, including cooking, shipping, and personal health management.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Conversion and Usage of 10.14 Pounds in Different Systems\",\n            \"content\": \"The weight of 10.14 pounds can be converted into other units of mass, such as kilograms, ounces, and grams, depending on the system of measurement being used. In the metric system, which is widely used around the world, 10.14 pounds is approximately 4.6 kilograms. This conversion is based on the international definition of the pound, where 1 pound equals 0.45359237 kilograms. In terms of ounces, which are also part of the avoirdupois system, 10.14 pounds is equivalent to 162.24 ounces, since there are 16 ounces in a pound. For those using the metric system, 10.14 pounds converts to about 4600 grams. The ability to convert between these units is essential in international trade, scientific research, and everyday life, where different regions may use different systems of measurement. For example, in the culinary world, recipes may need to be adjusted depending on the units used in the country of origin. Similarly, in the shipping industry, understanding these conversions ensures accurate billing and logistics planning.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Practical Applications of Measuring 10.14 Pounds\",\n            \"content\": \"In practical terms, 10.14 pounds can represent a variety of objects and scenarios in daily life. For instance, when considering luggage for air travel, many airlines have weight restrictions for carry-on and checked baggage. A suitcase weighing 10.14 pounds would be considered quite light, making it suitable for carry-on in most airlines where the limit is often around 22 pounds (10 kilograms). In the context of personal health, a weight loss or gain of 10.14 pounds can be significant, depending on an individual's starting weight and health goals. For example, in fitness programs, tracking weight changes in pounds is common, and a change of 10.14 pounds can indicate substantial progress. Additionally, in the context of shipping and logistics, understanding the weight of packages is crucial for determining shipping costs and methods. A package weighing 10.14 pounds might be shipped using standard ground services, which are often more cost-effective than air freight for heavier items. Overall, the measurement of 10.14 pounds is versatile and applicable across various domains, highlighting the importance of understanding and using weight measurements accurately.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "f238af28-01c0-4d4b-a730-1377c769805d",
+      "source": "expanded_26",
+      "target": "expanded_46",
+      "relation_type": "defined_as",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding the Weight Measurement: Pounds\",\n            \"content\": \"The pound is a unit of mass or weight in a number of different systems, including English units, Imperial units, and United States customary units. The international avoirdupois pound, the most commonly used today, is legally defined as exactly 0.45359237 kilograms. Historically, the pound has had various definitions, and the term itself derives from the Latin 'libra,' which was a unit of weight used in ancient Rome. The pound has been used in the UK and its former colonies, including the United States, where it remains a standard unit of measurement for weight. The term 'pound' is often abbreviated as 'lb,' which comes from the Roman word 'libra.' In the context of 10.14 pounds, this measurement can be used to describe the weight of various objects, such as a medium-sized dog, a large watermelon, or a small piece of luggage. Understanding the pound as a unit of measurement is crucial for various applications, including cooking, shipping, and personal health management.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Conversion and Usage of 10.14 Pounds in Different Systems\",\n            \"content\": \"The weight of 10.14 pounds can be converted into other units of mass, such as kilograms, ounces, and grams, depending on the system of measurement being used. In the metric system, which is widely used around the world, 10.14 pounds is approximately 4.6 kilograms. This conversion is based on the international definition of the pound, where 1 pound equals 0.45359237 kilograms. In terms of ounces, which are also part of the avoirdupois system, 10.14 pounds is equivalent to 162.24 ounces, since there are 16 ounces in a pound. For those using the metric system, 10.14 pounds converts to about 4600 grams. The ability to convert between these units is essential in international trade, scientific research, and everyday life, where different regions may use different systems of measurement. For example, in the culinary world, recipes may need to be adjusted depending on the units used in the country of origin. Similarly, in the shipping industry, understanding these conversions ensures accurate billing and logistics planning.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Practical Applications of Measuring 10.14 Pounds\",\n            \"content\": \"In practical terms, 10.14 pounds can represent a variety of objects and scenarios in daily life. For instance, when considering luggage for air travel, many airlines have weight restrictions for carry-on and checked baggage. A suitcase weighing 10.14 pounds would be considered quite light, making it suitable for carry-on in most airlines where the limit is often around 22 pounds (10 kilograms). In the context of personal health, a weight loss or gain of 10.14 pounds can be significant, depending on an individual's starting weight and health goals. For example, in fitness programs, tracking weight changes in pounds is common, and a change of 10.14 pounds can indicate substantial progress. Additionally, in the context of shipping and logistics, understanding the weight of packages is crucial for determining shipping costs and methods. A package weighing 10.14 pounds might be shipped using standard ground services, which are often more cost-effective than air freight for heavier items. Overall, the measurement of 10.14 pounds is versatile and applicable across various domains, highlighting the importance of understanding and using weight measurements accurately.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "f40c6231-cec5-4a6d-9e44-60159660c34c",
+      "source": "expanded_9",
+      "target": "expanded_26",
+      "relation_type": "equivalent_to",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding the Weight: 4.6 Kilograms in Context\",\n            \"content\": \"The weight of 4.6 kilograms is a measurement that can be contextualized in various domains, including science, everyday life, and industry. In the metric system, which is used globally, kilograms are the standard unit of mass. A kilogram is defined as the mass of the International Prototype of the Kilogram, a platinum-iridium alloy cylinder stored in France. Weighing approximately 4.6 kilograms is equivalent to about 10.14 pounds in the imperial system, which is still used in some countries like the United States for certain applications. This weight is slightly heavier",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "cc1318ae-d213-4044-9d2f-9149073c448d",
+      "source": "expanded_46",
+      "target": "expanded_27",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Definition and Significance of 0.45359237 Kilograms\",\n            \"content\": \"The value 0.45359237 kilograms is significant because it represents the exact conversion factor from pounds to kilograms. Specifically, one pound is defined as exactly 0.45359237 kilograms. This definition is part of the International System of Units (SI), which is the modern form of the metric system and the most widely used system of measurement. The kilogram itself is the base unit of mass in the SI system. The precision of this conversion factor is crucial for scientific calculations, engineering, and commerce, ensuring consistency and accuracy across various applications. The adoption of this exact value was part of a broader effort to standardize measurements globally, facilitating international trade and scientific collaboration.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Historical Context of the Kilogram-Pound Conversion\",\n            \"content\": \"The conversion factor of 0.45359237 kilograms per pound has its roots in the history of measurement systems. The pound, originally a unit of mass in the imperial system, has been used in various forms for centuries. The need for a precise conversion to the metric system became evident as international trade expanded and scientific research required standardized units. In 1959, an international agreement among English-speaking nations established the pound as exactly 0.45359237 kilograms. This agreement was part of a larger movement towards metrication, which aimed to unify measurement systems worldwide. The historical context of this conversion highlights the evolution of measurement systems and the ongoing efforts to harmonize them for global consistency.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Applications and Implications of Using 0.45359237 Kilograms\",\n            \"content\": \"The use of 0.45359237 kilograms as the conversion factor for pounds has wide-ranging applications in various fields. In engineering and manufacturing, precise measurements are critical for designing and producing components that meet exact specifications. In the field of medicine, accurate weight measurements are essential for dosing medications and assessing patient health. The conversion factor also plays a crucial role in international trade, where goods are often weighed and priced in different units. Furthermore, the precision of this conversion factor ensures that scientific research, which often relies on accurate measurements, can be conducted consistently across different countries. The implications of this conversion extend to education, where understanding the relationship between pounds and kilograms is part of the curriculum in many countries, promoting a better understanding of measurement systems and their importance in daily life.\",\n            \"relevance_score\": 0.88\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "9d967d00-4148-47f0-95d3-f5ab7abd04a6",
+      "source": "expanded_26",
+      "target": "expanded_125",
+      "relation_type": "equivalent_to",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding the Weight: 10.14 Pounds\",\n            \"content\": \"The term '10.14 pounds' refers to a specific measurement of weight or mass. In the Imperial system, which is commonly used in the United States, a pound is a unit of mass or weight. It is defined as exactly 0.45359237 kilograms in the International System of Units (SI). Therefore, 10.14 pounds is equivalent to approximately 4.599 kilograms. This conversion is crucial for scientific, industrial, and everyday applications where precise measurements are necessary. The pound is subdivided into 16 ounces, making 10.14 pounds equal to 162.24 ounces. Understanding these conversions is essential for fields such as cooking, shipping, and manufacturing, where weight measurements are frequently required.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Applications and Contexts of Using 10.14 Pounds\",\n            \"content\": \"The weight of 10.14 pounds can be encountered in various contexts and applications. For instance, in the culinary world, recipes might call for ingredients measured in pounds, and a cook might need to measure out 10.14 pounds of flour or sugar for a large batch of baked goods. In the context of shipping and logistics, understanding the weight of packages is crucial for determining shipping costs and methods. A package weighing 10.14 pounds might fall into a specific weight category that affects how it is handled and transported. Additionally, in the fitness industry, weights and dumbbells are often measured in pounds, and 10.14 pounds could represent the weight of a specific piece of equipment used for strength training. This weight is also relevant in the context of personal health, where individuals might track their body weight in pounds, and a change of 10.14 pounds could signify significant progress in a weight loss or gain journey.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of the Pound as a Unit of Measurement\",\n            \"content\": \"The pound as a unit of measurement has a rich historical and cultural background. Originating from the Roman 'libra,' the pound has been used for centuries across various cultures and regions. The abbreviation 'lb' for pound is derived from the Roman libra, which was a unit of weight. Over time, the pound evolved and was standardized in different countries, leading to variations such as the avoirdupois pound, which is the most commonly used today. The avoirdupois system, which includes the pound, was developed in France and England during the Middle Ages and became widely adopted due to its practicality in trade and commerce. The pound has played a significant role in the development of trade and economic systems, as it provided a standardized unit for measuring goods. Understanding the historical context of the pound helps appreciate its continued relevance in modern times, where it remains a key unit of measurement in countries like the United States and the United Kingdom.\",\n            \"relevance_score\": 0.8\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "28da15a9-b077-47d1-a610-9a87172332c3",
+      "source": "expanded_26",
+      "target": "expanded_126",
+      "relation_type": "equivalent_to",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding the Weight: 10.14 Pounds\",\n            \"content\": \"The term '10.14 pounds' refers to a specific measurement of weight or mass. In the Imperial system, which is commonly used in the United States, a pound is a unit of mass or weight. It is defined as exactly 0.45359237 kilograms in the International System of Units (SI). Therefore, 10.14 pounds is equivalent to approximately 4.599 kilograms. This conversion is crucial for scientific, industrial, and everyday applications where precise measurements are necessary. The pound is subdivided into 16 ounces, making 10.14 pounds equal to 162.24 ounces. Understanding these conversions is essential for fields such as cooking, shipping, and manufacturing, where weight measurements are frequently required.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Applications and Contexts of Using 10.14 Pounds\",\n            \"content\": \"The weight of 10.14 pounds can be encountered in various contexts and applications. For instance, in the culinary world, recipes might call for ingredients measured in pounds, and a cook might need to measure out 10.14 pounds of flour or sugar for a large batch of baked goods. In the context of shipping and logistics, understanding the weight of packages is crucial for determining shipping costs and methods. A package weighing 10.14 pounds might fall into a specific weight category that affects how it is handled and transported. Additionally, in the fitness industry, weights and dumbbells are often measured in pounds, and 10.14 pounds could represent the weight of a specific piece of equipment used for strength training. This weight is also relevant in the context of personal health, where individuals might track their body weight in pounds, and a change of 10.14 pounds could signify significant progress in a weight loss or gain journey.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of the Pound as a Unit of Measurement\",\n            \"content\": \"The pound as a unit of measurement has a rich historical and cultural background. Originating from the Roman 'libra,' the pound has been used for centuries across various cultures and regions. The abbreviation 'lb' for pound is derived from the Roman libra, which was a unit of weight. Over time, the pound evolved and was standardized in different countries, leading to variations such as the avoirdupois pound, which is the most commonly used today. The avoirdupois system, which includes the pound, was developed in France and England during the Middle Ages and became widely adopted due to its practicality in trade and commerce. The pound has played a significant role in the development of trade and economic systems, as it provided a standardized unit for measuring goods. Understanding the historical context of the pound helps appreciate its continued relevance in modern times, where it remains a key unit of measurement in countries like the United States and the United Kingdom.\",\n            \"relevance_score\": 0.8\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.95,
+      "metadata": {}
+    },
+    {
+      "id": "5b788921-cd67-4147-883b-594900f665a4",
+      "source": "expanded_26",
+      "target": "expanded_46",
+      "relation_type": "defined_as",
+      "properties": {
+        "source_text": "{\n    \"results\": [\n        {\n            \"title\": \"Understanding the Weight: 10.14 Pounds\",\n            \"content\": \"The term '10.14 pounds' refers to a specific measurement of weight or mass. In the Imperial system, which is commonly used in the United States, a pound is a unit of mass or weight. It is defined as exactly 0.45359237 kilograms in the International System of Units (SI). Therefore, 10.14 pounds is equivalent to approximately 4.599 kilograms. This conversion is crucial for scientific, industrial, and everyday applications where precise measurements are necessary. The pound is subdivided into 16 ounces, making 10.14 pounds equal to 162.24 ounces. Understanding these conversions is essential for fields such as cooking, shipping, and manufacturing, where weight measurements are frequently required.\",\n            \"relevance_score\": 0.9\n        },\n        {\n            \"title\": \"Applications and Contexts of Using 10.14 Pounds\",\n            \"content\": \"The weight of 10.14 pounds can be encountered in various contexts and applications. For instance, in the culinary world, recipes might call for ingredients measured in pounds, and a cook might need to measure out 10.14 pounds of flour or sugar for a large batch of baked goods. In the context of shipping and logistics, understanding the weight of packages is crucial for determining shipping costs and methods. A package weighing 10.14 pounds might fall into a specific weight category that affects how it is handled and transported. Additionally, in the fitness industry, weights and dumbbells are often measured in pounds, and 10.14 pounds could represent the weight of a specific piece of equipment used for strength training. This weight is also relevant in the context of personal health, where individuals might track their body weight in pounds, and a change of 10.14 pounds could signify significant progress in a weight loss or gain journey.\",\n            \"relevance_score\": 0.85\n        },\n        {\n            \"title\": \"Historical and Cultural Significance of the Pound as a Unit of Measurement\",\n            \"content\": \"The pound as a unit of measurement has a rich historical and cultural background. Originating from the Roman 'libra,' the pound has been used for centuries across various cultures and regions. The abbreviation 'lb' for pound is derived from the Roman libra, which was a unit of weight. Over time, the pound evolved and was standardized in different countries, leading to variations such as the avoirdupois pound, which is the most commonly used today. The avoirdupois system, which includes the pound, was developed in France and England during the Middle Ages and became widely adopted due to its practicality in trade and commerce. The pound has played a significant role in the development of trade and economic systems, as it provided a standardized unit for measuring goods. Understanding the historical context of the pound helps appreciate its continued relevance in modern times, where it remains a key unit of measurement in countries like the United States and the United Kingdom.\",\n            \"relevance_score\": 0.8\n        }\n    ]\n}\n```",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    },
+    {
+      "id": "9a309c51-db9a-407f-8964-5cdfa283d6ce",
+      "source": "expanded_46",
+      "target": "expanded_27",
+      "relation_type": "is_a",
+      "properties": {
+        "source_text": "```json\n{\n    \"results\": [\n        {\n            \"title\": \"Definition and Conversion of 0.45359237 Kilograms\",\n            \"content\": \"The value 0.453",
+        "extraction_method": "llm_triplet"
+      },
+      "weight": 1.0,
+      "confidence": 0.9,
+      "metadata": {}
+    }
+  ],
+  "strategy": "star",
+  "complexity_score": 0.40111111111111114,
+  "topology_features": {
+    "num_nodes": 6,
+    "num_edges": 7,
+    "density": 0.4666666666666667,
+    "clustering_coefficient": 0.4777777777777778,
+    "avg_degree": 2.3333333333333335,
+    "diameter": 2,
+    "connected_components": 1
+  },
+  "statistics": {
+    "num_nodes": 6,
+    "num_edges": 7,
+    "density": 0.4666666666666667,
+    "clustering_coefficient": 0.4777777777777778,
+    "avg_degree": 2.3333333333333335,
+    "diameter": 2,
+    "connected_components": 1
+  }
+}

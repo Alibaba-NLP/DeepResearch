@@ -1,0 +1,67 @@
+{
+  "subgraph_id": "346130eb-494c-4677-9d55-a81017bc1303",
+  "source_file": "/Users/evan/Desktop/work/wind/项目/webSailor/data/sampled_subgraphs/20250718_1/1caf5a4a-c952-4c13-9631-7411e85874e2_FIFA_Womens_World_Cup_Original_Trophy_expanded/graph/346130eb-494c-4677-9d55-a81017bc1303.json",
+  "qa_pairs": [
+    {
+      "question": "Both the FIFA Women's World Cup Original Trophy and the Current FIFA Women's World Cup Trophy were unveiled in 1998. Considering that these two trophies have distinct design features, which trophy is specifically known for having the names of winning teams engraved on it, and who was its designer?",
+      "answer": [
+        "FIFA Women's World Cup Original Trophy",
+        "Original Trophy"
+      ],
+      "reasoning": "Step-by-step reasoning: First, we note that both trophies share the same unveiling year (1998). Then, by examining the properties of each trophy, we observe that the Original Trophy is described as being engraved with the names of winning teams. Additionally, it is noted that it was designed by William Sawaya. The Current Trophy, while having features such as a marble base, does not have this engraving property. Thus, synthesizing these pieces of information leads to the conclusion that the trophy known for having the winning teams’ names engraved and designed by William Sawaya is the FIFA Women's World Cup Original Trophy.",
+      "reference": {
+        "search_path": [
+          "Step 1: Identify that both trophies were unveiled in 1998 from the given knowledge graph.",
+          "Step 2: Check the properties of the FIFA Women's World Cup Original Trophy to find that it is engraved with the names of winning teams.",
+          "Step 3: Verify the designer information for the Original Trophy (William Sawaya).",
+          "Step 4: Compare the design features with the Current Trophy (which is mentioned to have a marble base but no engraving property).",
+          "Last step: Synthesize the information to conclude that the Original Trophy is the one with the engraved names of winning teams and was designed by William Sawaya."
+        ],
+        "nodes_used": [
+          "1caf5a4a-c952-4c13-9631-7411e85874e2",
+          "rel_1"
+        ],
+        "triples_used": [
+          "(FIFA Women's World Cup Original Trophy, engraved_with, names of winning teams)",
+          "(FIFA Women's World Cup Original Trophy, unveiled_in, 1998)",
+          "(FIFA Women's World Cup Original Trophy, Designer, William Sawaya)"
+        ],
+        "source_texts_used": [
+          "Original trophy details: 'Gold-plated sterling silver' and 'Designer: William Sawaya' with engraving of winning teams.",
+          "The knowledge graph relation associating the Original Trophy with the engraved names."
+        ]
+      },
+      "id": "9d527e96-b6b9-451f-99c8-2cdad2ea165f",
+      "subgraph_id": "346130eb-494c-4677-9d55-a81017bc1303",
+      "difficulty_level": 3,
+      "original_question": "Both the FIFA Women's World Cup Original Trophy and the Current FIFA Women's World Cup Trophy were unveiled in 1998. Considering that these two trophies have distinct design features, which trophy is specifically known for having the names of winning teams engraved on it, and who was its designer?",
+      "obfuscated_question": "In the later years of the twentieth century, two prominent celebratory emblems were revealed for an international sporting event—one, a legacy artifact fashioned from a lustrous, precious metal alloy by a celebrated artisan, and the other, its modern counterpart with a refreshed design. Given their distinct aesthetic features, which of these commemorative pieces is uniquely recognized for bearing the engraved names of victorious groups, and who is the creative mind behind its design?",
+      "uncertainty_score": 0.6499999999999999,
+      "metadata": {
+        "topology_features": {
+          "num_nodes": 5,
+          "num_edges": 5,
+          "density": 0.5,
+          "clustering_coefficient": 0.3333333333333333,
+          "avg_degree": 2.0,
+          "diameter": 3,
+          "connected_components": 1
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "num_qa_pairs": 1,
+    "strategy": "dfs",
+    "complexity_score": 0.3433333333333333,
+    "topology_features": {
+      "num_nodes": 5,
+      "num_edges": 5,
+      "density": 0.5,
+      "clustering_coefficient": 0.3333333333333333,
+      "avg_degree": 2.0,
+      "diameter": 3,
+      "connected_components": 1
+    }
+  }
+}
