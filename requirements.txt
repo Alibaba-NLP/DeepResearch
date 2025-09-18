@@ -186,3 +186,5 @@ xgrammar==0.1.21
 xlsxwriter==3.2.8
 yarl==1.20.1
 zipp==3.23.0
+defusedxml
+defusedxml
