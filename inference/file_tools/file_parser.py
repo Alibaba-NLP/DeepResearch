@@ -8,7 +8,7 @@ from pathlib import Path
 
 from typing import Any, Dict, List, Optional, Union
 from collections import Counter
-import xml.etree.ElementTree as ET
+from defusedxml import ElementTree as ET
 from pandas import Timestamp
 from datetime import datetime
 from pandas.api.types import is_datetime64_any_dtype
