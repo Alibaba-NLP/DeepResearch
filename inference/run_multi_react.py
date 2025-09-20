@@ -36,19 +36,19 @@ if __name__ == "__main__":
         exit(1)
 
     model_name = os.path.basename(model.rstrip('/'))
-    
+
     model_dir = os.path.join(output_base, f"{model_name}_sglang")
     dataset_dir = os.path.join(model_dir, args.dataset)
- 
+
     os.makedirs(dataset_dir, exist_ok=True)
-    
+
     print(f"Model name: {model_name}")
-    print(f"Data set name: {args.dataset}")
+    print(f"Data set path: {args.dataset}")
     print(f"Output directory: {dataset_dir}")
     print(f"Number of rollouts: {roll_out_count}")
     print(f"Data splitting: {worker_split}/{total_splits}")
 
-    data_filepath = f"eval_data/{args.dataset}.jsonl"
+    data_filepath = f"{args.dataset}"
     try:
         if data_filepath.endswith(".json"):
             with open(data_filepath, "r", encoding="utf-8") as f:
@@ -75,10 +75,10 @@ if __name__ == "__main__":
     items_per_split = math.ceil(total_items / total_splits)
     start_idx = (worker_split - 1) * items_per_split
     end_idx = min(worker_split * items_per_split, total_items)
-    
+
     # Split the dataset
     items = items[start_idx:end_idx]
-    
+
     print(f"Total items in dataset: {total_items}")
     print(f"Processing items {start_idx} to {end_idx-1} ({len(items)} items)")
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         output_files = {i: os.path.join(dataset_dir, f"iter{i}_split{worker_split}of{total_splits}.jsonl") for i in range(1, roll_out_count + 1)}
     else:
         output_files = {i: os.path.join(dataset_dir, f"iter{i}.jsonl") for i in range(1, roll_out_count + 1)}
-    
+
     processed_queries_per_rollout = {}
 
     for rollout_idx in range(1, roll_out_count + 1):
