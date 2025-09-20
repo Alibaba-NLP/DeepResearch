@@ -9,6 +9,60 @@ from datetime import datetime
 from react_agent import MultiTurnReactAgent
 import time
 import math
+import signal
+import sys
+import atexit
+from pathlib import Path
+
+# Global variables for cleanup
+executor = None
+vllm_state_file = None
+
+def cleanup_resources():
+    """Cleanup resources and VLLM processes."""
+    print("\nCleaning up resources...")
+
+    # Cancel running tasks
+    if executor:
+        try:
+            print("Shutting down thread pool executor...")
+            executor.shutdown(wait=False, cancel_futures=True)
+        except Exception as e:
+            print(f"Error shutting down executor: {e}")
+
+    # Clean up VLLM processes if we started them
+    global vllm_state_file
+    if vllm_state_file and vllm_state_file.exists():
+        try:
+            script_dir = Path(__file__).parent
+            vllm_manager = script_dir / "vllm_manager.py"
+            if vllm_manager.exists():
+                import subprocess
+                print("Cleaning up VLLM processes...")
+                subprocess.run([
+                    sys.executable, str(vllm_manager), "cleanup",
+                    "--state-file", str(vllm_state_file)
+                ], check=False)
+            else:
+                print("VLLM manager not found, trying fallback cleanup...")
+                import subprocess
+                subprocess.run(["pkill", "-f", "vllm serve"], check=False)
+                subprocess.run(["pkill", "-f", "vllm.entrypoints.openai.api_server"], check=False)
+        except Exception as e:
+            print(f"Error during VLLM cleanup: {e}")
+
+    print("Cleanup completed")
+
+def signal_handler(signum, frame):
+    """Handle interrupt signals gracefully."""
+    print(f"\nReceived signal {signum}, initiating graceful shutdown...")
+    cleanup_resources()
+    sys.exit(128 + signum)
+
+# Register cleanup and signal handlers
+atexit.register(cleanup_resources)
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -22,7 +76,13 @@ if __name__ == "__main__":
     parser.add_argument("--roll_out_count", type=int, default=3)
     parser.add_argument("--total_splits", type=int, default=1)
     parser.add_argument("--worker_split", type=int, default=1)
+    parser.add_argument("--cleanup-on-exit", action="store_true", default=True,
+                       help="Cleanup VLLM processes on exit (default: True)")
     args = parser.parse_args()
+
+    # Initialize VLLM state file path
+    script_dir = Path(__file__).parent
+    vllm_state_file = script_dir / "vllm_processes.json"
 
     model = args.model
     output_base = args.output
@@ -36,12 +96,12 @@ if __name__ == "__main__":
         exit(1)
 
     model_name = os.path.basename(model.rstrip('/'))
-    
+
     model_dir = os.path.join(output_base, f"{model_name}_sglang")
     dataset_dir = os.path.join(model_dir, args.dataset)
- 
+
     os.makedirs(dataset_dir, exist_ok=True)
-    
+
     print(f"Model name: {model_name}")
     print(f"Data set name: {args.dataset}")
     print(f"Output directory: {dataset_dir}")
@@ -75,10 +135,10 @@ if __name__ == "__main__":
     items_per_split = math.ceil(total_items / total_splits)
     start_idx = (worker_split - 1) * items_per_split
     end_idx = min(worker_split * items_per_split, total_items)
-    
+
     # Split the dataset
     items = items[start_idx:end_idx]
-    
+
     print(f"Total items in dataset: {total_items}")
     print(f"Processing items {start_idx} to {end_idx-1} ({len(items)} items)")
 
@@ -87,7 +147,7 @@ if __name__ == "__main__":
         output_files = {i: os.path.join(dataset_dir, f"iter{i}_split{worker_split}of{total_splits}.jsonl") for i in range(1, roll_out_count + 1)}
     else:
         output_files = {i: os.path.join(dataset_dir, f"iter{i}.jsonl") for i in range(1, roll_out_count + 1)}
-    
+
     processed_queries_per_rollout = {}
 
     for rollout_idx in range(1, roll_out_count + 1):
@@ -171,7 +231,11 @@ if __name__ == "__main__":
 
         write_locks = {i: threading.Lock() for i in range(1, roll_out_count + 1)}
 
-        with ThreadPoolExecutor(max_workers=args.max_workers) as executor:
+        # Set global executor for cleanup
+        global executor
+        executor = ThreadPoolExecutor(max_workers=args.max_workers)
+
+        try:
             future_to_task = {
                 executor.submit(
                     test_agent._run,
@@ -224,6 +288,28 @@ if __name__ == "__main__":
                         with open(output_file, "a", encoding="utf-8") as f:
                             f.write(json.dumps(error_result, ensure_ascii=False) + "\n")
 
-        print("\nAll tasks completed!")
+            print("\nAll tasks completed!")
+
+        except KeyboardInterrupt:
+            print("\nKeyboard interrupt received, canceling tasks...")
+            # Cancel all futures
+            for future in future_to_task:
+                future.cancel()
+            raise
+        except Exception as e:
+            print(f"\nError during task execution: {e}")
+            # Cancel all futures
+            for future in future_to_task:
+                future.cancel()
+            raise
+        finally:
+            # Clean shutdown of executor
+            if executor:
+                try:
+                    executor.shutdown(wait=True, cancel_futures=True)
+                except Exception as e:
+                    print(f"Error shutting down executor: {e}")
+                finally:
+                    executor = None
 
     print(f"\nAll {roll_out_count} rollouts completed!")
