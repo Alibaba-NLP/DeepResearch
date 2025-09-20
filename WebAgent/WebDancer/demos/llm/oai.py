@@ -32,9 +32,21 @@ class TextChatAtOAI(BaseFnCallModel):
         api_base = api_base or cfg.get('model_server')
         api_base = (api_base or '').strip()
 
+        # Better API key handling - don't use 'EMPTY' as default
         api_key = cfg.get('api_key')
-        api_key = api_key or os.getenv('OPENAI_API_KEY')
-        api_key = (api_key or 'EMPTY').strip()
+        if not api_key:
+            api_key = os.getenv('OPENAI_API_KEY')
+        
+        # Check if we have a valid API key
+        if not api_key or api_key.strip() == '' or api_key.strip().upper() == 'EMPTY':
+            raise ValueError(
+                "OpenAI API key is required but not found. Please:\n"
+                "1. Set the OPENAI_API_KEY environment variable, OR\n"
+                "2. Pass 'api_key' in the configuration.\n"
+                "Example: export OPENAI_API_KEY='your-key-here'"
+            )
+        
+        api_key = api_key.strip()
 
         if openai.__version__.startswith('0.'):
             if api_base:

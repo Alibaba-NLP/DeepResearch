@@ -26,7 +26,12 @@ from file_tools.idp import IDP
 
 # Configuration constants
 PARSER_SUPPORTED_FILE_TYPES = ['pdf', 'docx', 'pptx', 'txt', 'html', 'csv', 'tsv', 'xlsx', 'xls', 'doc', 'zip', '.mp4', '.mov', '.mkv', '.webm', '.mp3', '.wav']
-USE_IDP = os.getenv("USE_IDP", True)
+def str_to_bool(value):
+    """Convert string to boolean, handling common true/false representations"""
+    if isinstance(value, bool):
+        return value
+    return str(value).lower() in ('true', '1', 'yes', 'on')
+USE_IDP = str_to_bool(os.getenv("USE_IDP", "True"))
 IDP_TIMEOUT = 150000
 ENABLE_CSI = False
 PARAGRAPH_SPLIT_SYMBOL = '\n'
