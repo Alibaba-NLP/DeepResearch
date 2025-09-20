@@ -17,7 +17,7 @@
 🤗 <a href="https://huggingface.co/Alibaba-NLP/Tongyi-DeepResearch-30B-A3B" target="_blank">HuggingFace</a> ｜
 <img src="./assets/tongyi.png" width="14px" style="display:inline;"> <a href="https://modelscope.cn/models/iic/Tongyi-DeepResearch-30B-A3B" target="_blank">ModelScope</a>
 <p align="center">
-<a href="https://trendshift.io/repositories/14217" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14217" 
+<a href="https://trendshift.io/repositories/14217" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14217"
 alt="Alibaba-NLP%2FWebAgent | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 # Introduction
@@ -66,7 +66,7 @@ This guide provides instructions for setting up the environment and running infe
 
 ```bash
 # Example with Conda
-conda create -n react_infer_env python=3.10.0 
+conda create -n react_infer_env python=3.10.0
 conda activate react_infer_env
 ```
 
@@ -77,7 +77,29 @@ Install the required dependencies:
 pip install -r requirements.txt
 ```
 
-### 3. Prepare Evaluation Data
+### 3. Environment Configuration
+
+Configure your API keys and settings by copying the example environment file:
+
+```bash
+# Copy the example environment file
+cp .env.example .env
+```
+
+Edit the `.env` file and provide your actual API keys and configuration values:
+
+- **SERPER_KEY_ID**: Get your key from [Serper.dev](https://serper.dev/) for web search and Google Scholar
+- **JINA_API_KEYS**: Get your key from [Jina.ai](https://jina.ai/) for web page reading
+- **API_KEY/API_BASE**: OpenAI-compatible API for page summarization from [OpenAI](https://platform.openai.com/)
+- **DASHSCOPE_API_KEY**: Get your key from [Dashscope](https://dashscope.aliyun.com/) for file parsing
+- **SANDBOX_FUSION_ENDPOINT**: Python interpreter sandbox endpoints (see [SandboxFusion](https://github.com/bytedance/SandboxFusion))
+- **MODEL_PATH**: Path to your model weights
+- **DATASET**: Name of your evaluation dataset
+- **OUTPUT_PATH**: Directory for saving results
+
+> **Note**: The `.env` file is gitignored, so your secrets will not be committed to the repository.
+
+# 3. Prepare Evaluation Data
 - Create a folder named `eval_data/` in the project root.
 - Place your QA file in **JSONL** format inside this directory, e.g. `eval_data/example.jsonl`.
 - Each line must be a JSON object that includes **both** of the following keys:

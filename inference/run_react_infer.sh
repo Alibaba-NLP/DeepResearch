@@ -1,70 +1,26 @@
 #!/bin/bash
 
-export TORCHDYNAMO_VERBOSE=1
-export TORCHDYNAMO_DISABLE=1
-export NCCL_IB_TC=16
-export NCCL_IB_SL=5
-export NCCL_IB_GID_INDEX=3
-export NCCL_SOCKET_IFNAME=eth
-export NCCL_DEBUG=INFO
-export NCCL_IB_HCA=mlx5
-export NCCL_IB_TIMEOUT=22
-export NCCL_IB_QPS_PER_CONNECTION=8
-export NCCL_MIN_NCHANNELS=4
-export NCCL_NET_PLUGIN=none
-export GLOO_SOCKET_IFNAME=eth0
-export QWEN_DOC_PARSER_USE_IDP=false
-export QWEN_IDP_ENABLE_CSI=false
-export NLP_WEB_SEARCH_ONLY_CACHE=false
-export NLP_WEB_SEARCH_ENABLE_READPAGE=false
-export NLP_WEB_SEARCH_ENABLE_SFILTER=false
-export QWEN_SEARCH_ENABLE_CSI=false
-export SPECIAL_CODE_MODE=false
-export PYTHONDONTWRITEBYTECODE=1
+# Load environment variables from .env file
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ENV_FILE="$SCRIPT_DIR/../.env"
 
-##############hyperparams################
-export MODEL_PATH=/your/model/path
-export DATASET=your_dataset_name
-export OUTPUT_PATH=/your/output/path
-export ROLLOUT_COUNT=3 # eval avg@3
-export TEMPERATURE=0.85 
-export PRESENCE_PENALTY=1.1
-export MAX_WORKERS=30
+if [ ! -f "$ENV_FILE" ]; then
+    echo "Error: .env file not found at $ENV_FILE"
+    echo "Please copy .env.example to .env and configure your settings:"
+    echo "  cp .env.example .env"
+    exit 1
+fi
 
+echo "Loading environment variables from .env file..."
+set -a  # automatically export all variables
+source "$ENV_FILE"
+set +a  # stop automatically exporting
 
-## serper key for search&google scholar
-## https://serper.dev/
-export SERPER_KEY_ID=your_key
-
-## jina key for read page
-## https://jina.ai/
-export JINA_API_KEYS=your_key
-
-## summary model api for page summary in visit tool
-## https://platform.openai.com/
-export API_KEY=your_key
-export API_BASE=your_api_base
-export SUMMARY_MODEL_NAME=your_summary_model_name
-
-## dashscope key for file parser
-## https://dashscope.aliyun.com/
-export DASHSCOPE_API_KEY=your_key  # support：qwen-omni-turbo，qwen-plus-latest
-export DASHSCOPE_API_BASE=your_api_base
-export VIDEO_MODEL_NAME=your_video_model_name
-export VIDEO_ANALYSIS_MODEL_NAME=your_analysis_model_name
-
-# code sandbox ip for python interperter
-# example for ENDPOINTS_STRING "http://22.16.67.220:8080,http://22.16.78.153:8080,http://22.17.10.216:8080,http://22.14.58.9:8080,http://22.16.14.3:8080,http://22.17.26.164:8080,http://22.16.245.207:8080"
-# we use sandbox_fusion: https://github.com/bytedance/SandboxFusion
-ENDPOINTS_STRING="your_sandbox_endpoint"
-export SANDBOX_FUSION_ENDPOINT="$ENDPOINTS_STRING"
-export TORCH_COMPILE_CACHE_DIR="./cache"
-
-# IDP service is used for file parsing. If set to false, rule-based parsing is used. You can add an IDP key and set USE_IDP=True to use a more powerful file parsing tool.
-# https://help.aliyun.com/zh/document-mind/developer-reference/use-idp-llm-to-complete-document-summary
-export USE_IDP=False
-export IDP_KEY_ID=your_idp_key_id
-export IDP_KEY_SECRET=your_idp_key_secret
+# Validate critical variables
+if [ "$MODEL_PATH" = "/your/model/path" ] || [ -z "$MODEL_PATH" ]; then
+    echo "Error: MODEL_PATH not configured in .env file"
+    exit 1
+fi
 
 ######################################
 ### 1. start server           ###
@@ -99,7 +55,7 @@ echo "Waiting for servers to start..."
 
 while true; do
     all_ready=true
-    
+
     for port in "${main_ports[@]}"; do
         if [ "${server_status[$port]}" = "false" ]; then
             if curl -s -f http://localhost:$port/v1/models > /dev/null 2>&1; then
@@ -110,27 +66,27 @@ while true; do
             fi
         fi
     done
-    
+
     if [ "$all_ready" = "true" ]; then
         echo "All servers are ready for inference!"
         break
     fi
-    
+
     current_time=$(date +%s)
     elapsed=$((current_time - start_time))
     if [ $elapsed -gt $timeout ]; then
         echo -e "\nError: Server startup timeout after ${timeout} seconds"
-        
+
         for port in "${main_ports[@]}"; do
             if [ "${server_status[$port]}" = "false" ]; then
                 echo "Main model server (port $port) failed to start"
             fi
         done
 
-        
+
         exit 1
     fi
-    
+
     printf 'Waiting for servers to start .....'
     sleep 10
 done
