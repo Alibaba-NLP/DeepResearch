@@ -28,11 +28,12 @@ alt="Alibaba-NLP%2FWebAgent | Trendshift" style="width: 250px; height: 55px;" wi
 - [**WebShaper**](WebShaper) (Preprint 2025) - WebShaper: Agentically Data Synthesizing via Information-Seeking
   Formalization
 - [**WebSailor**](WebSailor) (Preprint 2025) - WebSailor: Navigating Super-human Reasoning for Web Agent
-- [**WebDancer**](WebDancer) (Preprint 2025) - WebDancer: Towards Autonomous Information Seeking Agency
+- [**WebDancer**](WebDancer) (NeurIPS 2025) - WebDancer: Towards Autonomous Information Seeking Agency
 - [**WebWalker**](WebWalker) (ACL 2025) - WebWalker: Benchmarking LLMs in Web Traversal
 
 ## 📰 News and Updates
 
+- `2025.09.19` 🎉🎉🎉**WebDancer** is accepted by NeurIPS 2025.
 - `2025.08.28` 🔥🔥🔥[**WebShaper-32B**](https://huggingface.co/Alibaba-NLP/WebShaper-32B) is released.
 - `2025.08.26` 🔥🔥🔥[**WebSailor-32B**](https://huggingface.co/Alibaba-NLP/WebSailor-32B) and [**WebSailor-7B**](https://huggingface.co/Alibaba-NLP/WebSailor-7B) is released.
 - `2025.08.07` 🔥🔥🔥We release **WebWatcher**: Breaking New Frontier of Vision-Language Deep Research Agent.
@@ -41,8 +42,8 @@ alt="Alibaba-NLP%2FWebAgent | Trendshift" style="width: 250px; height: 55px;" wi
 - `2025.07.03` 🔥🔥🔥We release **WebSailor**, an agentic search model specialized in performing extremely complex information seeking tasks, achieving open-source SOTA on some of the most difficult browsing benchmarks. **WebSailor** topped the HuggingFace [daily papers](https://huggingface.co/papers/2507.02592).
 - `2025.06.23` 🔥🔥🔥The model, interactive demo, and some of the data of **WebDancer** have been open-sourced. You're welcome to try them out! You can deploy it with one click using <img src="./assets/aliyun.png" width="14px" style="display:inline;"> [Alibaba Cloud's FunctionAI](https://functionai.console.aliyun.com/template-detail?template=Alibaba-NLP-WebDancer-32B) in ten minutes!
 - `2025.05.29` 🔥🔥🔥We release **WebDancer**, a native agentic search model towards autonomous information seeking agency and _Deep Research_-like model.
-- `2025.05.15` **WebWalker** is accepted by ACL 2025 main conference.
-- `2025.01.14` We release **WebWalker**, a benchmark for LLMs in web traversal and a multi-agent framework for information seeking.
+- `2025.05.15` 🎉🎉🎉**WebWalker** is accepted by ACL 2025 main conference.
+- `2025.01.14` 🔥🔥🔥We release **WebWalker**, a benchmark for LLMs in web traversal and a multi-agent framework for information seeking.
 
 |                                Model                                | Release Date | Max Length |                   Tool List                    |
 | :-----------------------------------------------------------------: | :----------: | :--------: | :--------------------------------------------: |

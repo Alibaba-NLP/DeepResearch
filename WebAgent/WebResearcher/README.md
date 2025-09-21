@@ -6,8 +6,7 @@
 </p>
 
 ![version](https://img.shields.io/badge/version-1.0.0-blue)
-[![arXiv](https://img.shields.io/badge/arXiv-2509.XXXXX-b31b1b.svg)](https://arxiv.org/abs/2509.XXXXX) <!-- Placeholder link -->
-[![GitHub](https://img.shields.io/badge/github-Alibaba--NLP/WebAgent-green)](https://github.com/Alibaba-NLP/WebAgent)
+[![arXiv](https://img.shields.io/badge/arXiv-2509.13309-b31b1b.svg)](https://arxiv.org/abs/2509.13309) <!-- Placeholder link -->
 
 
 ## 🥇 Introduction
@@ -23,89 +22,6 @@
 
 - To fuel our agent, we developed a **Scalable Data Synthesis Engine** that programmatically generates large-scale, high-quality, HLE-style datasets. This data powers a specialized multi-stage training pipeline, including Rejection-based Fine-Tuning (RFT) and Reinforcement Learning with Verifiable Rewards (RLVR), to instill robust tool use and sharpen logical deduction.
 
-- Published in the paper [WebResearcher](https://arxiv.org/abs/2509.XXXXX), WebResearcher sets a new standard for open-source research agents, demonstrating substantial gains over prior paradigms, particularly in complex reasoning tasks.
-
-## 🚀 Performance Highlights
-
-1.  **New State-of-the-Art on Complex Reasoning:** WebResearcher achieves exceptional performance on challenging benchmarks. On **HLE**, our 30B model scores **32.0**, significantly outperforming prior open-source and even many proprietary systems.
-
-    <!-- <p align="center">
-      <img src="./assets/hle_results_placeholder.png" alt="HLE Results" width="80%"/>
-    </p> -->
-
-2.  **Dominance Across General Web Search:** Evaluated on a suite of general web search benchmarks, **WebResearcher-30B** consistently outperforms much larger models, including WebSailor-72B and other strong baselines on benchmarks like GAIA, BrowseComp, and Xbench-DeepSearch. This highlights the superior efficiency and effectiveness of our iterative paradigm.
-
-    <!-- <p align="center">
-      <img src="./assets/general_search_results_placeholder.png" alt="General Search Results" width="80%"/>
-    </p> -->
-
-3.  **Superior Scalability and Efficiency:** Our model, **WebResearcher-30B**, delivers an exceptional performance-to-efficiency trade-off. Despite being substantially smaller, it surpasses the performance of previous 72B-scale agents, demonstrating the power of our architecture and training methodology.
-
-## 🔧 Quick Start
-
-### Step 0: Set Up the Environment
-
-```bash
-conda create -n iter-research python=3.11
-conda activate iter-research
-pip install -r requirements.txt
-```
-
-### Step 1: Download the WebResearcher Model
-
-You can download the WebResearcher models from Hugging Face:
-- [🤗 WebResearcher-30B](https://huggingface.co/Alibaba-NLP/WebResearcher-30B) <!-- Placeholder link -->
-
-
-You will also need the summary model used by the `Visit` tool:
-- [🤗 Qwen2.5-72B-Instruct](https://huggingface.co/Qwen/Qwen2.5-72B-Instruct)
-
-### Step 2: Prepare the Evaluation Datasets
-
-Download the official benchmarks and place them in the `data/` folder, ensuring they follow the required JSONL format.
-- `hle.jsonl`
-- `gaia.jsonl`
-- `browsecomp_en.jsonl`
-- `browsecomp_zh.jsonl`
-- `xbench_deepsearch.jsonl`
-...and others.
-
-### Step 3: Inference with Test-Time Scaling (TTS)
-
-We provide an example script for evaluation at `scripts/test.sh`. Our inference process uses **Test-Time Scaling (TTS)** with `last-k-fusion`, where `n` parallel rollouts are generated and the final `k` steps of each are fed to a **Fusion Agent** to synthesize the final answer.
-
-**Please update the script with your model paths and API keys.**
-
-```bash
-#!/bin/bash
-
-# Specify model paths
-AGENT_MODEL_PATH="/path/to/WebResearcher-30B"
-SUMMARY_MODEL_PATH="/path/to/Qwen2.5-72B-Instruct"
-FUSION_MODEL_PATH="/path/to/WebResearcher-30B" # Fusion agent can be the same as the agent
-
-# Specify dataset and output
-DATASET_NAME="gaia"
-OUTPUT_DIR="results/gaia_results"
-
-# API Keys for tools
-# The agent uses Search (Google), Scholar, and Visit (Jina) tools
-export GOOGLE_API_KEY="YOUR_GOOGLE_API_KEY"
-export JINA_API_KEY="YOUR_JINA_API_KEY"
-
-# Run inference with n=3 rollouts and k=2 last steps for fusion
-python run_inference.py \
-    --agent_model_path $AGENT_MODEL_PATH \
-    --summary_model_path $SUMMARY_MODEL_PATH \
-    --fusion_model_path $FUSION_MODEL_PATH \
-    --dataset_path data/${DATASET_NAME}.jsonl \
-    --output_dir $OUTPUT_DIR \
-    --num_rollouts 3 \
-    --fusion_last_k 2
-
-# Run evaluation script on the generated results
-python evaluate.py --results_file ${OUTPUT_DIR}/predictions.jsonl
-```
 
 ## The WebResearcher Paradigm
 

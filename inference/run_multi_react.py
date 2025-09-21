@@ -103,12 +103,12 @@ if __name__ == "__main__":
     os.makedirs(dataset_dir, exist_ok=True)
 
     print(f"Model name: {model_name}")
-    print(f"Data set name: {args.dataset}")
+    print(f"Data set path: {args.dataset}")
     print(f"Output directory: {dataset_dir}")
     print(f"Number of rollouts: {roll_out_count}")
     print(f"Data splitting: {worker_split}/{total_splits}")
 
-    data_filepath = f"eval_data/{args.dataset}.jsonl"
+    data_filepath = f"{args.dataset}"
     try:
         if data_filepath.endswith(".json"):
             with open(data_filepath, "r", encoding="utf-8") as f:
