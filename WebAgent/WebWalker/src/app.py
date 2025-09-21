@@ -6,7 +6,7 @@ from qwen_agent.tools.base import BaseTool, register_tool
 import re
 import json
 import asyncio
-from utils import *
+from utils import process_url, get_info, get_content_between_a_b
 import base64
 from PIL import Image
 from bs4 import BeautifulSoup

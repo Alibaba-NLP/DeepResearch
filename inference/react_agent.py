@@ -19,7 +19,7 @@ from tool_file import *
 from tool_scholar import *
 from tool_python import *
 from tool_search import *
-from tool_visit import *
+from tool_visit import Visit
 
 OBS_START = '<tool_response>'
 OBS_END = '\n</tool_response>'

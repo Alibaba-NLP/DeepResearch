@@ -7,7 +7,7 @@ import json
 import concurrent 
 from tqdm import tqdm 
 from transformers import AutoTokenizer 
-from prompt import * 
+from prompt import JUDGE_PROMPT_GAIA, JUDGE_PROMPT_XBENCH, JUDGE_PROMPT_BROWSECOMP_OFFICIAL 
 import traceback
 import tiktoken
 import time

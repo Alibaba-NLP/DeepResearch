@@ -9,7 +9,7 @@ from qwen_agent.tools import BaseTool
 from qwen_agent.utils.utils import format_as_text_message, merge_generate_cfgs
 from openai import OpenAI
 import time
-from prompts import *
+from prompts import STSTEM_CRITIIC_INFORMATION, STSTEM_CRITIIC_ANSWER, SYSTEM_EXPLORER
 
 
 TOOL_DESC = (
