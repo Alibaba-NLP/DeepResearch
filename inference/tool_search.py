@@ -96,7 +96,7 @@ class Search(BaseTool):
 
             content = f"A Google search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
             return content
-        except:
+        except Exception:
             return f"No results found for '{query}'. Try with a more general query."
 
 
@@ -108,7 +108,7 @@ class Search(BaseTool):
     def call(self, params: Union[str, dict], **kwargs) -> str:
         try:
             query = params["query"]
-        except:
+        except Exception:
             return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
         
         if isinstance(query, str):

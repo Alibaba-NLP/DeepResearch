@@ -59,7 +59,7 @@ class Visit(BaseTool):
         try:
             url = params["url"]
             goal = params["goal"]
-        except:
+        except Exception:
             return "[Visit] Invalid request format: Input must be a JSON object containing 'url' and 'goal' fields"
 
         start_time = time.time()
@@ -109,7 +109,7 @@ class Visit(BaseTool):
                 if content:
                     try:
                         json.loads(content)
-                    except:
+                    except Exception:
                         # extract json from string 
                         left = content.find('{')
                         right = content.rfind('}') 
@@ -221,7 +221,7 @@ class Visit(BaseTool):
                 try:
                     raw = json.loads(raw)
                     break
-                except:
+                except Exception:
                     raw = summary_page_func(messages, max_retries=max_retries)
                     parse_retry_times += 1
             

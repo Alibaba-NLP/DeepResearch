@@ -1,0 +1,1 @@
+Fix remaining E722 ruff errors
