@@ -61,7 +61,7 @@ class MultiTurnReactAgent(FnCallAgent):
             except Exception as e:
                 if attempt == (max_tries - 1):
                     print(f"SGLang server error {e}")
-                    return "SGLang server error"
+                    return f"SGLang server error"
                 continue
         
         return "SGLang server empty response"
@@ -69,7 +69,7 @@ class MultiTurnReactAgent(FnCallAgent):
     def count_tokens(self, messages, model="gpt-4o"):
         try: 
             tokenizer = AutoTokenizer.from_pretrained(self.llm_local_path) 
-        except Exception: 
+        except: 
             tokenizer = tiktoken.encoding_for_model(model)
         
         full_message = [Message(**x) for x in messages]

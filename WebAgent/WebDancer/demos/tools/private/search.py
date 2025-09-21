@@ -30,7 +30,7 @@ class Search(BaseTool):
         try:
             params = self._verify_json_format_args(params)
             query = params["query"][:MAX_MULTIQUERY_NUM]
-        except Exception:
+        except:
             return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
 
         if isinstance(query, str):
@@ -57,9 +57,9 @@ class Search(BaseTool):
                 response = requests.post(url, headers=headers, data=json.dumps(data))
                 results = response.json()
                 break
-            except Exception:
+            except Exception as e:
                 if i == 4:
-                    return "Google search Timeout, return None, Please try again later."
+                    return f"Google search Timeout, return None, Please try again later."
                 continue
     
         if response.status_code != 200:

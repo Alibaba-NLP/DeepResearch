@@ -3,10 +3,11 @@ import os
 import json5
 from agent import WebWalker
 from qwen_agent.tools.base import BaseTool, register_tool
+import os
 import re
 import json
 import asyncio
-from utils import process_url, get_info, get_content_between_a_b
+from utils import *
 import base64
 from PIL import Image
 from bs4 import BeautifulSoup
@@ -267,4 +268,4 @@ class VisitPage(BaseTool):
             else:
                 return "The button can not be clicked, please retry a new botton!"
         else:
-            return "Your input is invalid, plase output the action input correctly!"
+            return "Your input is invalid, plase output the action input correctly!"}

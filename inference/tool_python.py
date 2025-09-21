@@ -1,13 +1,14 @@
 import re
-from typing import Dict, Optional, Union
+from typing import Dict, List, Optional, Union
 import json5
 from qwen_agent.tools.base import BaseToolWithFileAccess, register_tool
 from qwen_agent.utils.utils import extract_code
-from sandbox_fusion import run_code, RunCodeRequest
+from sandbox_fusion import run_code, RunCodeRequest, RunStatus
 from requests.exceptions import Timeout
 import os
 import random
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Array of sandbox fusion endpoints
 SANDBOX_FUSION_ENDPOINTS = []
@@ -79,12 +80,12 @@ class PythonInterpreter(BaseToolWithFileAccess):
                     if code_result.run_result.stderr:
                         result.append(f"stderr:\n{code_result.run_result.stderr}")
                     if code_result.run_result.execution_time >= timeout-1:
-                        result.append("[PythonInterpreter Error] TimeoutError: Execution timed out.")
+                        result.append(f"[PythonInterpreter Error] TimeoutError: Execution timed out.")
                     result = '\n'.join(result)
                     print('SUCCESS RUNNING TOOL')
                     return result if result.strip() else 'Finished execution.'
 
-                except Timeout:
+                except Timeout as e:
                     last_error = f'[Python Interpreter Error] TimeoutError: Execution timed out on endpoint {endpoint}.'
                     print(f"Timeout on attempt {attempt + 1}: {last_error}")
                     if attempt == 4:  # Last attempt
@@ -136,7 +137,7 @@ class PythonInterpreter(BaseToolWithFileAccess):
             execution_time = end_time - start_time
             return True, result if result.strip() else 'Finished execution.', execution_time
 
-        except Timeout:
-            return False, '[Python Interpreter Error] TimeoutError: Execution timed out.', None
+        except Timeout as e:
+            return False, f'[Python Interpreter Error] TimeoutError: Execution timed out.', None
         except Exception as e:
             return False, f'[Python Interpreter Error]: {str(e)}', None

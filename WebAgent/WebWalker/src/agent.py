@@ -63,7 +63,7 @@ class WebWalker(FnCallAgent):
                 if "true" in response.choices[0].message.content:
                     try:
                         return json.loads(response.choices[0].message.content)["information"]
-                    except Exception:
+                    except:
                         return response.choices[0].message.content
                 else:
                     return None
@@ -97,7 +97,7 @@ class WebWalker(FnCallAgent):
                 if "true" in response.choices[0].message.content:
                     try:
                         return json.loads(response.choices[0].message.content)["answer"]
-                    except Exception:
+                    except:
                         return response.choices[0].message.content
                 else:
                     return None
@@ -140,9 +140,9 @@ class WebWalker(FnCallAgent):
             if stage1:
                 self.momery.append(stage1+"\n")
                 if len(self.momery) > 1:
-                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-".join(self.momery)+"\"}")]
+                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-".join(self.momery)+"\"")}]
                 else:
-                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-" + self.momery[0]+"\"}")]
+                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-" + self.momery[0]+"\"")}]
                 stage2 = self.critic_information(query, self.momery)
                 if stage2:
                     response = f'Final Answer: {stage2}'

@@ -3,6 +3,7 @@ import json
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Union
 import requests
+from qwen_agent.tools.base import BaseTool, register_tool
 import os
 
 SEARCH_API_URL = os.getenv("SEARCH_API_URL")
@@ -49,7 +50,7 @@ class Search(BaseTool):
             except Exception as e:
                 print(e)
                 if i == 4:
-                    return "Google search Timeout, return None, Please try again later."
+                    return f"Google search Timeout, return None, Please try again later."
         if response.status_code != 200:
             raise Exception(f"Error: {response.status_code} - {response.text}")
 
@@ -81,7 +82,7 @@ class Search(BaseTool):
 
             content = f"A Google search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
             return content
-        except Exception:
+        except:
             return f"No results found for '{query}'. Try with a more general query, or remove the year filter."
 
 
@@ -89,7 +90,7 @@ class Search(BaseTool):
         assert GOOGLE_SEARCH_KEY is not None, "Please set the GOOGLE_SEARCH_KEY environment variable."
         try:
             query = params["query"]
-        except Exception:
+        except:
             return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
         
         if isinstance(query, str):

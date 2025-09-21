@@ -6,6 +6,7 @@ from qwen_agent.tools.base import BaseTool, register_tool
 from prompt import EXTRACTOR_PROMPT 
 import os 
 from openai import OpenAI
+import random
 
 
 WEBCONTENT_MAXLENGTH = int(os.getenv("WEBCONTENT_MAXLENGTH", 150000))
@@ -45,7 +46,7 @@ class Visit(BaseTool):
         try:
             url = params["url"]
             goal = params["goal"]
-        except Exception:
+        except:
             return "[Visit] Invalid request format: Input must be a JSON object containing 'url' and 'goal' fields"
 
         if isinstance(url, str):
@@ -86,14 +87,14 @@ class Visit(BaseTool):
                 if content:
                     try:
                         json.loads(content)
-                    except Exception:
+                    except:
                         # extract json from string 
                         left = content.find('{')
                         right = content.rfind('}') 
                         if left != -1 and right != -1 and left <= right: 
                             content = content[left:right+1]
                     return content
-            except Exception:
+            except:
                 if attempt == (max_tries - 1):
                     return ""
                 continue
@@ -128,7 +129,7 @@ class Visit(BaseTool):
                 else:
                     print(response.text)
                     raise ValueError("jina readpage error")
-            except Exception:
+            except Exception as e:
                 if attempt == max_retries - 1:
                     return "[visit] Failed to read page."
                 
@@ -190,7 +191,7 @@ class Visit(BaseTool):
                         # 尝试 parse json
                         raw = json.loads(raw)
                         break
-                    except Exception:
+                    except:
                         raw = self.call_server(messages)
                         parse_retry_times += 1
                 # parse 失败

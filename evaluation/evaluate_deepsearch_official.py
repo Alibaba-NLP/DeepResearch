@@ -7,7 +7,8 @@ import json
 import concurrent 
 from tqdm import tqdm 
 from transformers import AutoTokenizer 
-from prompt import JUDGE_PROMPT_GAIA, JUDGE_PROMPT_XBENCH, JUDGE_PROMPT_BROWSECOMP_OFFICIAL 
+import re 
+from prompt import * 
 import traceback
 import tiktoken
 import time
@@ -175,7 +176,7 @@ def count_tokens_with_tokenizer(text, tokenizer):
             return len(tokenizer.encode(text))
         else:  
             return len(tokenizer.encode(text))
-    except Exception:
+    except:
         
         return len(text) // 4
 
@@ -186,7 +187,7 @@ def aggregate_statistics(round1_file, round2_file, round3_file):
     round3_stats = single_round_statistics(round3_file)
     
     keys = round1_stats.keys()  
-    avg_stats = {} 
+    avg_stats = {}
     for key in keys: 
         if isinstance(round1_stats[key], dict):
             
@@ -300,7 +301,7 @@ def single_round_statistics(input_file):
         try:
             if len(tokenizer.encode("".join([msg["content"] for msg in messages]))) > 30000:
                 num_extra += 1  
-        except Exception:
+        except:
             pass
     
     total_questions = len(contents)
@@ -342,7 +343,7 @@ def calculate_enhanced_statistics(round_results, round_items):
                 continue
             try:
                 matching_item = [item for item in items if item['messages'][1]['content'] == result['question']]
-            except Exception:
+            except:
                 items = [item for item in items if len(item['messages'])>0]
                 matching_item = [item for item in items if item['messages'][1]['content'] == result['question']]
             if not matching_item:
@@ -416,7 +417,7 @@ def calculate_best_pass_at_1(query_results):
     round_correct = {round_name: 0 for round_name in ["round1", "round2", "round3"]}
 
     for query, results in query_results.items():
-        for round_name in ["round1", "round2", "round3"]: 
+        for round_name in ["round1", "round2", "round3"]:
             if results[round_name] == "Correct":  
                 round_correct[round_name] += 1 
 
@@ -527,7 +528,7 @@ def main():
         for i in [1, 2, 3]
     }
 
-    print("===========")
+    print(f"===========")
     print(f"Avg. Pass@3 {avg_pass_at_3}%") 
     print(f"Best Pass@1 {best_pass_at_1}%")  
     print(f"Pass@3 {pass_at_3}%") 
@@ -538,18 +539,18 @@ def main():
     print(f"Avg. Action {aggr_statistics['avg_action']:.2f}  Avg. Visit Action {aggr_statistics['avg_visit_action']:.2f}  Avg. Search Action {aggr_statistics['avg_search_action']:.2f}  Avg. Other Action {aggr_statistics['avg_other_action']:.2f}") 
     print(f"Avg. Answer Length {aggr_statistics['avg_ans_length']:.2f}  Avg. Thinking Length {aggr_statistics['avg_think_length']:.2f}")
     enhanced_statistics = calculate_enhanced_statistics(round_results, round_items)
-    print("\n=== ADDITIONAL STATISTICS ===")
+    print(f"\n=== ADDITIONAL STATISTICS ===")
     print(f"Avg. Tool Calls per Question: {aggr_statistics['avg_tool_calls_per_question']:.2f}")
     print(f"Avg. Tool Calls per Question (Correctly Solved): {enhanced_statistics['avg_tool_calls_per_question_correctly_solved']:.2f}")
     print(f"Avg. Assistant Tokens per Question: {aggr_statistics['avg_assistant_tokens_per_question']:.2f}")
     print(f"Avg. Assistant Tokens per Question (Correctly Solved): {enhanced_statistics['avg_assistant_tokens_per_question_correctly_solved']:.2f}")
     print(f"Avg. Assistant Tokens per Message: {aggr_statistics['avg_assistant_tokens_per_message']:.2f}")
     
-    print("\n=== TERMINATION FREQUENCIES ===")
+    print(f"\n=== TERMINATION FREQUENCIES ===")
     for termination_type, frequency in aggr_statistics['termination_freq'].items():
         print(f"{termination_type}: {frequency:.3f}")
     
-    print("===========" )
+    print(f"===========" )
 
     overall_eval_dict = {
         "dataset": dataset, 

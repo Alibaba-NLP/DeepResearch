@@ -2,6 +2,7 @@ import copy
 import json
 import logging
 import os
+from http import HTTPStatus
 from pprint import pformat
 from typing import Dict, Iterator, List, Optional, Literal, Union
 
@@ -14,7 +15,7 @@ else:
 
 from qwen_agent.llm.base import ModelServiceError, register_llm
 from qwen_agent.llm.function_calling import BaseFnCallModel, simulate_response_completion_with_chat
-from qwen_agent.llm.schema import ASSISTANT, Message
+from qwen_agent.llm.schema import ASSISTANT, Message, FunctionCall
 from qwen_agent.log import logger
 
 

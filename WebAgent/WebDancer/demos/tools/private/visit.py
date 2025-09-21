@@ -62,7 +62,7 @@ def jina_readpage(url: str) -> str:
             else:
                 print(response.text)
                 raise ValueError("jina readpage error")
-        except Exception:
+        except Exception as e:
             if attempt == max_retries - 1:
                 return "[visit] Failed to read page."
             
@@ -97,7 +97,7 @@ class Visit(BaseTool):
             params = self._verify_json_format_args(params)
             url = params["url"]
             goal = params["goal"]
-        except Exception:
+        except:
             return "[Visit] Invalid request format: Input must be a JSON object containing 'url' and 'goal' fields"
         if isinstance(url, str):
             response = self.readpage(url, goal)
