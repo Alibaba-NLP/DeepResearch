@@ -1,7 +1,5 @@
-from pydantic import BaseModel
 from openai import OpenAI
 import concurrent.futures
-from typing import Literal
 import litellm 
 import os 
 import argparse
@@ -9,7 +7,6 @@ import json
 import concurrent 
 from tqdm import tqdm 
 from transformers import AutoTokenizer 
-import re 
 from prompt import * 
 import traceback
 import tiktoken
@@ -178,7 +175,7 @@ def count_tokens_with_tokenizer(text, tokenizer):
             return len(tokenizer.encode(text))
         else:  
             return len(tokenizer.encode(text))
-    except:
+    except Exception:
         
         return len(text) // 4
 
@@ -224,7 +221,7 @@ def single_round_statistics(input_file):
 
     try:
         tokenizer = AutoTokenizer.from_pretrained(os.getenv("Qwen2_5_7B_PATH", ""))
-    except Exception as e: 
+    except Exception: 
         tokenizer = tiktoken.encoding_for_model("gpt-4o")
     
     for item in contents:
@@ -303,7 +300,7 @@ def single_round_statistics(input_file):
         try:
             if len(tokenizer.encode("".join([msg["content"] for msg in messages]))) > 30000:
                 num_extra += 1  
-        except:
+        except Exception:
             pass
     
     total_questions = len(contents)
@@ -329,7 +326,7 @@ def calculate_enhanced_statistics(round_results, round_items):
     
     try:
         tokenizer = AutoTokenizer.from_pretrained(os.getenv("Qwen2_5_7B_PATH", ""))
-    except Exception as e: 
+    except Exception: 
         tokenizer = tiktoken.encoding_for_model("gpt-4o")
     
     enhanced_stats = {}
@@ -345,7 +342,7 @@ def calculate_enhanced_statistics(round_results, round_items):
                 continue
             try:
                 matching_item = [item for item in items if item['messages'][1]['content'] == result['question']]
-            except:
+            except Exception:
                 items = [item for item in items if len(item['messages'])>0]
                 matching_item = [item for item in items if item['messages'][1]['content'] == result['question']]
             if not matching_item:
@@ -530,7 +527,7 @@ def main():
         for i in [1, 2, 3]
     }
 
-    print(f"===========")
+    print("===========")
     print(f"Avg. Pass@3 {avg_pass_at_3}%") 
     print(f"Best Pass@1 {best_pass_at_1}%")  
     print(f"Pass@3 {pass_at_3}%") 
@@ -541,18 +538,18 @@ def main():
     print(f"Avg. Action {aggr_statistics['avg_action']:.2f}  Avg. Visit Action {aggr_statistics['avg_visit_action']:.2f}  Avg. Search Action {aggr_statistics['avg_search_action']:.2f}  Avg. Other Action {aggr_statistics['avg_other_action']:.2f}") 
     print(f"Avg. Answer Length {aggr_statistics['avg_ans_length']:.2f}  Avg. Thinking Length {aggr_statistics['avg_think_length']:.2f}")
     enhanced_statistics = calculate_enhanced_statistics(round_results, round_items)
-    print(f"\n=== ADDITIONAL STATISTICS ===")
+    print("\n=== ADDITIONAL STATISTICS ===")
     print(f"Avg. Tool Calls per Question: {aggr_statistics['avg_tool_calls_per_question']:.2f}")
     print(f"Avg. Tool Calls per Question (Correctly Solved): {enhanced_statistics['avg_tool_calls_per_question_correctly_solved']:.2f}")
     print(f"Avg. Assistant Tokens per Question: {aggr_statistics['avg_assistant_tokens_per_question']:.2f}")
     print(f"Avg. Assistant Tokens per Question (Correctly Solved): {enhanced_statistics['avg_assistant_tokens_per_question_correctly_solved']:.2f}")
     print(f"Avg. Assistant Tokens per Message: {aggr_statistics['avg_assistant_tokens_per_message']:.2f}")
     
-    print(f"\n=== TERMINATION FREQUENCIES ===")
+    print("\n=== TERMINATION FREQUENCIES ===")
     for termination_type, frequency in aggr_statistics['termination_freq'].items():
         print(f"{termination_type}: {frequency:.3f}")
     
-    print(f"===========" )
+    print("===========" )
 
     overall_eval_dict = {
         "dataset": dataset, 

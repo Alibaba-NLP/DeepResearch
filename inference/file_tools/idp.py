@@ -1,12 +1,10 @@
 import os 
-import json
 
 from alibabacloud_docmind_api20220711.client import Client as docmind_api20220711Client
 from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_docmind_api20220711 import models as docmind_api20220711_models
 from alibabacloud_tea_util.client import Client as UtilClient
 from alibabacloud_tea_util import models as util_models
-from alibabacloud_credentials.client import Client as CredClient
 
 key = os.environ.get('IDP_KEY_ID')
 secret = os.environ.get('IDP_KEY_SECRET')
@@ -18,7 +16,7 @@ class IDP():
             access_key_id=key,
             access_key_secret=secret
         )
-        config.endpoint = f'docmind-api.cn-hangzhou.aliyuncs.com'
+        config.endpoint = 'docmind-api.cn-hangzhou.aliyuncs.com'
         self.client = docmind_api20220711Client(config)
 
     def file_submit_with_url(self, file_url):
@@ -84,7 +82,7 @@ class IDP():
                     responses = result
                 else:
                     responses['layouts'].extend(result['layouts'])
-            except Exception as error:
+            except Exception:
                 return None,status_parse
         return responses,status_parse
   	

@@ -1,13 +1,8 @@
 import json
-from concurrent.futures import ThreadPoolExecutor
 from typing import List, Union
-import requests
 from qwen_agent.tools.base import BaseTool, register_tool
-import asyncio
-from typing import Dict, List, Optional, Union
-import uuid
+from typing import Optional
 import http.client
-import json
 
 import os
 
@@ -68,7 +63,7 @@ class Search(BaseTool):
             except Exception as e:
                 print(e)
                 if i == 4:
-                    return f"Google search Timeout, return None, Please try again later."
+                    return "Google search Timeout, return None, Please try again later."
                 continue
     
         data = res.read()

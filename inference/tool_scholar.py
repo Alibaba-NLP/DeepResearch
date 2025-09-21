@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 from typing import Union, List
 from qwen_agent.tools.base import BaseTool, register_tool
 from concurrent.futures import ThreadPoolExecutor
@@ -44,7 +43,7 @@ class Scholar(BaseTool):
             except Exception as e:
                 print(e)
                 if i == 4:
-                    return f"Google Scholar Timeout, return None, Please try again later."
+                    return "Google Scholar Timeout, return None, Please try again later."
                 continue
         
 
@@ -87,7 +86,7 @@ class Scholar(BaseTool):
 
             content = f"A Google scholar for '{query}' found {len(web_snippets)} results:\n\n## Scholar Results\n" + "\n\n".join(web_snippets)
             return content
-        except:
+        except Exception:
             return f"No results found for '{query}'. Try with a more general query."
 
 
@@ -96,7 +95,7 @@ class Scholar(BaseTool):
         try:
             params = self._verify_json_format_args(params)
             query = params["query"]
-        except:
+        except Exception:
             return "[google_scholar] Invalid request format: Input must be a JSON object containing 'query' field"
         
         if isinstance(query, str):

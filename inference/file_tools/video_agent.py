@@ -9,22 +9,11 @@ output:
 """
 import sys
 import os
-import re
-import copy
 import json
-from typing import Dict, Iterator, List, Literal, Tuple, Union, Any, Optional
-import json5
 import asyncio
-from openai import OpenAI
 
 from qwen_agent.tools.base import BaseTool, register_tool
-from qwen_agent.agents import Assistant
-from qwen_agent.llm import BaseChatModel
-from qwen_agent.llm.schema import ASSISTANT, USER, FUNCTION, Message, DEFAULT_SYSTEM_MESSAGE, SYSTEM, ROLE
 from qwen_agent.tools import BaseTool
-from qwen_agent.log import logger
-from qwen_agent.utils.tokenization_qwen import count_tokens, tokenizer
-from qwen_agent.settings import DEFAULT_WORKSPACE, DEFAULT_MAX_INPUT_TOKENS
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(current_dir))  

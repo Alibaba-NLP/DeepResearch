@@ -61,7 +61,7 @@ class MultiTurnReactAgent(FnCallAgent):
             except Exception as e:
                 if attempt == (max_tries - 1):
                     print(f"SGLang server error {e}")
-                    return f"SGLang server error"
+                    return "SGLang server error"
                 continue
         
         return "SGLang server empty response"
@@ -69,7 +69,7 @@ class MultiTurnReactAgent(FnCallAgent):
     def count_tokens(self, messages, model="gpt-4o"):
         try: 
             tokenizer = AutoTokenizer.from_pretrained(self.llm_local_path) 
-        except Exception as e: 
+        except Exception: 
             tokenizer = tiktoken.encoding_for_model(model)
         
         full_message = [Message(**x) for x in messages]
@@ -85,14 +85,14 @@ class MultiTurnReactAgent(FnCallAgent):
                 tool_name = tool_call.get('name', '')
                 tool_args = tool_call.get('arguments', {})
                 result = self._call_tool(tool_name, tool_args)
-            except:
+            except Exception:
                 result = 'Error: Tool call is not a valid JSON. Tool call must contain a valid "name" and "arguments" field.'
             result = "<tool_response>\n" + result + "\n</tool_response>"
             messages.append({"role": "user", "content": result})
         return messages
 
     def _handle_token_limit(self, messages, question, answer, rollout_id):
-        print(f"Token count exceeds limit")
+        print("Token count exceeds limit")
         
         messages[-1]['content'] = "You have now reached the maximum context length you can handle. You should stop making tool calls and, based on all the information above, think again and provide what you consider the most likely answer in the following format:<think>your final thinking</think>\n<answer>your answer</answer>"
         content = self.call_server(messages)

@@ -63,7 +63,7 @@ class WebWalker(FnCallAgent):
                 if "true" in response.choices[0].message.content:
                     try:
                         return json.loads(response.choices[0].message.content)["information"]
-                    except:
+                    except Exception:
                         return response.choices[0].message.content
                 else:
                     return None
@@ -97,7 +97,7 @@ class WebWalker(FnCallAgent):
                 if "true" in response.choices[0].message.content:
                     try:
                         return json.loads(response.choices[0].message.content)["answer"]
-                    except:
+                    except Exception:
                         return response.choices[0].message.content
                 else:
                     return None

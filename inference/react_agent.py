@@ -1,7 +1,6 @@
-import json
 import json5
 import os
-from typing import Dict, Iterator, List, Literal, Optional, Tuple, Union
+from typing import Dict, List, Optional, Union
 from qwen_agent.llm.schema import Message
 from qwen_agent.utils.utils import build_text_completion_prompt
 from openai import OpenAI, APIError, APIConnectionError, APITimeoutError
@@ -10,10 +9,8 @@ from transformers import AutoTokenizer
 from datetime import datetime
 from qwen_agent.agents.fncall_agent import FnCallAgent
 from qwen_agent.llm import BaseChatModel
-from qwen_agent.llm.schema import ASSISTANT, DEFAULT_SYSTEM_MESSAGE, Message
 from qwen_agent.settings import MAX_LLM_CALL_PER_RUN
 from qwen_agent.tools import BaseTool
-from qwen_agent.utils.utils import format_as_text_message, merge_generate_cfgs
 from prompt import *
 import time
 import asyncio
@@ -109,12 +106,12 @@ class MultiTurnReactAgent(FnCallAgent):
             else:
                 print("Error: All retry attempts have been exhausted. The call has failed.")
         
-        return f"vllm server error!!!"
+        return "vllm server error!!!"
 
     def count_tokens(self, messages, model="gpt-4o"):
         try: 
             tokenizer = AutoTokenizer.from_pretrained(self.llm_local_path) 
-        except Exception as e: 
+        except Exception: 
             tokenizer = tiktoken.encoding_for_model(model)
         
         full_message = [Message(**x) for x in messages]
@@ -126,7 +123,7 @@ class MultiTurnReactAgent(FnCallAgent):
         self.model=model
         try:
             question = data['item']['question']
-        except: 
+        except Exception: 
             raw_msg = data['item']['messages'][1]["content"] 
             question = raw_msg.split("User:")[1].strip() if "User:" in raw_msg else raw_msg 
 
@@ -168,7 +165,7 @@ class MultiTurnReactAgent(FnCallAgent):
                         try:
                             code_raw=content.split('<tool_call>')[1].split('</tool_call>')[0].split('<code>')[1].split('</code>')[0].strip()
                             result = TOOL_MAP['PythonInterpreter'].call(code_raw)
-                        except:
+                        except Exception:
                             result = "[Python Interpreter Error]: Formatting error."
 
                     else:
@@ -177,7 +174,7 @@ class MultiTurnReactAgent(FnCallAgent):
                         tool_args = tool_call.get('arguments', {})
                         result = self.custom_call_tool(tool_name, tool_args)
 
-                except:
+                except Exception:
                     result = 'Error: Tool call is not a valid JSON. Tool call must contain a valid "name" and "arguments" field.'
                 result = "<tool_response>\n" + result + "\n</tool_response>"
                 # print(result)

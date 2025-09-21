@@ -1,17 +1,11 @@
 import json
 import os
-import signal
-import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Union
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
 from prompt import EXTRACTOR_PROMPT 
 from openai import OpenAI
-import random
-from urllib.parse import urlparse, unquote
 import time 
-from transformers import AutoTokenizer
 import tiktoken
 
 VISIT_SERVER_TIMEOUT = int(os.getenv("VISIT_SERVER_TIMEOUT", 200))
@@ -122,7 +116,7 @@ class Visit(BaseTool):
                         if left != -1 and right != -1 and left <= right: 
                             content = content[left:right+1]
                     return content
-            except Exception as e:
+            except Exception:
                 # print(e)
                 if attempt == (max_retries - 1):
                     return ""
@@ -159,7 +153,7 @@ class Visit(BaseTool):
                 else:
                     print(response.text)
                     raise ValueError("jina readpage error")
-            except Exception as e:
+            except Exception:
                 time.sleep(0.5)
                 if attempt == max_retries - 1:
                     return "[visit] Failed to read page."

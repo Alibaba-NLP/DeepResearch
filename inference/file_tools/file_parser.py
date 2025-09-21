@@ -4,7 +4,6 @@ import re
 import time
 import zipfile
 import math
-from pathlib import Path
 
 from typing import Any, Dict, List, Optional, Union
 from collections import Counter
@@ -17,7 +16,7 @@ import pandas as pd
 from tabulate import tabulate
 from qwen_agent.log import logger
 from qwen_agent.settings import DEFAULT_WORKSPACE, DEFAULT_MAX_INPUT_TOKENS
-from qwen_agent.tools.base import BaseTool, register_tool
+from qwen_agent.tools.base import BaseTool
 from qwen_agent.tools.storage import KeyNotExistsError, Storage
 from file_tools.utils import (get_file_type, hash_sha256, is_http_url, get_basename_from_url, 
                                   sanitize_chrome_file_path, save_url_to_local_work_dir)
@@ -522,7 +521,7 @@ class SingleFileParser(BaseTool):
             if USE_IDP and file_type in idp_types:
                 try:
                     results = parse_file_by_idp(file_path=file_path)
-                except Exception as e:
+                except Exception:
                     results = self.parsers[file_type](file_path)
             else:
                 results = self.parsers[file_type](file_path)
@@ -536,7 +535,7 @@ class SingleFileParser(BaseTool):
                     tokens += para['token']
 
             if not results or not tokens:
-                logger.error(f"Parsing failed: No information was parsed")
+                logger.error("Parsing failed: No information was parsed")
                 raise FileParserError("Document parsing failed")
             else:
                 self._cache_result(file_path, results)

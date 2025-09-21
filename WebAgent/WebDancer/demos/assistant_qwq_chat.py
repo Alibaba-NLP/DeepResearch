@@ -2,15 +2,11 @@
 
 import os
 
-from qwen_agent.agents import Assistant
-from qwen_agent.utils.output_beautify import typewriter_print
 
 from demos.agents.search_agent import SearchAgent
 from demos.llm.oai import TextChatAtOAI
-from demos.llm.qwen_dashscope import QwenChatAtDS
 from demos.gui.web_ui import WebUI
 from demos.utils.date import date2str, get_date_now
-from demos.tools import Visit, Search
 
 
 ROOT_RESOURCE = os.path.join(os.path.dirname(__file__), 'resource')
@@ -50,8 +46,8 @@ def init_dev_search_agent_service(name: str = 'SEARCH', port: int = 8002, desc: 
         llm=llm_cfg,
         function_list=tools,
         system_message="",
-        name=f'WebDancer',
-        description=f"I am WebDancer, a web information seeking agent, welcome to try!",
+        name='WebDancer',
+        description="I am WebDancer, a web information seeking agent, welcome to try!",
         extra={
             'reasoning': reasoning,
             'max_llm_calls': max_llm_calls,

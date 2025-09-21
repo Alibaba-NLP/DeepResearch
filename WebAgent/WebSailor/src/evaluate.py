@@ -289,7 +289,7 @@ def main():
         for i in [1, 2, 3]
     }
 
-    print(f"===========")
+    print("===========")
     print(f"Avg. Pass@3 {avg_pass_at_3}%") 
     print(f"Best Pass@1 {best_pass_at_1}%")  
     print(f"Pass@3 {pass_at_3}%") 
@@ -297,7 +297,7 @@ def main():
     print(f"# Invalid {aggr_statistics['num_invalid']}  # Extra Length {aggr_statistics['extra_length']}") 
     print(f"Avg. Action {aggr_statistics['avg_action']:.2f}  Avg. Visit Action {aggr_statistics['avg_visit_action']:.2f}  Avg. Search Action {aggr_statistics['avg_search_action']:.2f}  Avg. Other Action {aggr_statistics['avg_other_action']:.2f}") 
     print(f"Avg. Answer Length {aggr_statistics['avg_ans_length']:.2f}  Avg. Thinking Length {aggr_statistics['avg_think_length']:.2f}")  
-    print(f"===========" )
+    print("===========" )
 
     overall_eval_dict = {
         "dataset": dataset, 
