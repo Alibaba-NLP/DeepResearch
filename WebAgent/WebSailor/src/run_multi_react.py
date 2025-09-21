@@ -8,7 +8,7 @@ from datetime import datetime
 from react_agent import MultiTurnReactAgent
 from prompt import SYSTEM_PROMPT_MULTI, USER_PROMPT
 from tool_search import *
-from tool_visit import Visit 
+from tool_visit import * 
 
 
 if __name__ == "__main__":

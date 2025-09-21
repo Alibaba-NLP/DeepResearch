@@ -457,10 +457,10 @@ def main():
     args = parser.parse_args()
     
     dataset = args.dataset  
-    if dataset in ["gaia", "webwalker"]: 
+    if dataset in ["gaia", "webwalker"]:
         judge_model = "openai/qwen2.5-72b-instruct"
         judge_prompt = JUDGE_PROMPT_GAIA 
-    elif dataset in ["xbench-deepsearch"]: 
+    elif dataset in ["xbench-deepsearch"]:
         judge_prompt = JUDGE_PROMPT_XBENCH
         judge_model = "google/gemini-2.0-flash-001"
     elif dataset.startswith("browsecomp_zh"):

@@ -22,10 +22,11 @@ from tool_file import *
 from tool_scholar import *
 from tool_python import *
 from tool_search import *
-from tool_visit import Visit
+from tool_visit import *
 
 OBS_START = '<tool_response>'
-OBS_END = '\n</tool_response>'
+OBS_END = '
+</tool_response>'
 
 MAX_LLM_CALL_PER_RUN = int(os.getenv('MAX_LLM_CALL_PER_RUN', 100))
 
@@ -249,4 +250,4 @@ class MultiTurnReactAgent(FnCallAgent):
             return result
 
         else:
-            return f"Error: Tool {tool_name} not found"
+            return f"Error: Tool {tool_name} not found"}

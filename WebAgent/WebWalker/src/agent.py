@@ -9,7 +9,7 @@ from qwen_agent.tools import BaseTool
 from qwen_agent.utils.utils import format_as_text_message, merge_generate_cfgs
 from openai import OpenAI
 import time
-from prompts import STSTEM_CRITIIC_INFORMATION, STSTEM_CRITIIC_ANSWER, SYSTEM_EXPLORER
+from prompts import *
 
 
 TOOL_DESC = (
@@ -140,9 +140,9 @@ class WebWalker(FnCallAgent):
             if stage1:
                 self.momery.append(stage1+"\n")
                 if len(self.momery) > 1:
-                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-".join(self.momery)+"\"")}]
+                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-".join(self.momery)+"\"")]
                 else:
-                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-" + self.momery[0]+"\"")}]
+                    yield [Message(role=ASSISTANT, content= "Memory:\n" + "-" + self.momery[0]+"\"")]
                 stage2 = self.critic_information(query, self.momery)
                 if stage2:
                     response = f'Final Answer: {stage2}'
