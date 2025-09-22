@@ -268,4 +268,4 @@ class VisitPage(BaseTool):
             else:
                 return "The button can not be clicked, please retry a new botton!"
         else:
-            return "Your input is invalid, plase output the action input correctly!"}
+            return "Your input is invalid, plase output the action input correctly!"
