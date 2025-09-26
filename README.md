@@ -23,7 +23,7 @@
 
 👏 Welcome to try Tongyi DeepResearch via our **[<img src="./assets/tongyi.png" width="14px" style="display:inline;"> Modelscope online demo](https://www.modelscope.cn/studios/jialongwu/Tongyi-DeepResearch)** or **[🤗 Huggingface online demo](https://huggingface.co/spaces/Alibaba-NLP/Tongyi-DeepResearch)** or <img src="./WebAgent/assets/aliyun.png" width="14px" style="display:inline;">  **[bailian service](https://bailian.console.aliyun.com/?spm=a2ty02.31808181.d_app-market.1.6c4974a1tFmoFc&tab=app#/app/app-market/deep-search/)**!
 > [!NOTE]
-> This demo is for quick exploration only. Response times may vary or fail intermittently due to model latency and tool QPS limits. For a stable experience we recommend local deployment; for a production-ready service, visit  <img src="./WebAgent/assets/aliyun.png" width="14px" style="display:inline;"> [bailian](https://bailian.console.aliyun.com/?spm=a2ty02.31808181.d_app-market.1.6c4974a1tFmoFc&tab=app#/app/app-market/deep-search/) and follow the guided setup.
+> This demo is for quick exploration only. Response times may vary or fail intermittent due to model latency and tool QPS limits. For a stable experience we recommend local deployment; for a production-ready service, visit  <img src="./WebAgent/assets/aliyun.png" width="14px" style="display:inline;"> [bailian](https://bailian.console.aliyun.com/?spm=a2ty02.31808181.d_app-market.1.6c4974a1tFmoFc&tab=app#/app/app-market/deep-search/) and follow the guided setup.
 
 # Introduction
 
