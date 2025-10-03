@@ -57,9 +57,13 @@ class MultiTurnReactAgent(FnCallAgent):
         return "<think>" in content and "</think>" in content
     
     def call_server(self, msgs, planning_port, max_tries=10):
-        
-        openai_api_key = "EMPTY"
-        openai_api_base = f"http://127.0.0.1:{planning_port}/v1"
+        # Prefer agent-specific env; fall back to generic if needed
+        openai_api_key  = os.getenv("DR_API_KEY")  or os.getenv("API_KEY")
+        openai_api_base = os.getenv("DR_API_BASE") or os.getenv("API_BASE") or "https://openrouter.ai/api/v1"
+        resolved_model  = os.getenv("DR_MODEL_NAME") or os.getenv("MODEL_NAME") or "alibaba/tongyi-deepresearch-30b-a3b"
+
+        # If self.model is "api" or empty, use the real model id from env
+        use_model = resolved_model if str(getattr(self, "model", "")).strip().lower() in ("", "api") else self.model
 
         client = OpenAI(
             api_key=openai_api_key,
@@ -67,12 +71,12 @@ class MultiTurnReactAgent(FnCallAgent):
             timeout=600.0,
         )
 
-        base_sleep_time = 1 
+        base_sleep_time = 1
         for attempt in range(max_tries):
             try:
                 print(f"--- Attempting to call the service, try {attempt + 1}/{max_tries} ---")
                 chat_response = client.chat.completions.create(
-                    model=self.model,
+                    model=use_model,  # <--- use the resolved model
                     messages=msgs,
                     stop=["\n<tool_response>", "<tool_response>"],
                     temperature=self.llm_generate_cfg.get('temperature', 0.6),
@@ -81,15 +85,19 @@ class MultiTurnReactAgent(FnCallAgent):
                     max_tokens=10000,
                     presence_penalty=self.llm_generate_cfg.get('presence_penalty', 1.1)
                 )
-                content = chat_response.choices[0].message.content
+                content = (chat_response.choices[0].message.content or "").strip()
 
-                # OpenRouter provides API calling. If you want to use OpenRouter, you need to uncomment line 89 - 90.
-                # reasoning_content = "<think>\n" + chat_response.choices[0].message.reasoning.strip() + "\n</think>"
-                # content = reasoning_content + content                
-                
-                if content and content.strip():
+                # Optional: prepend reasoning if provider returns it
+                try:
+                    reasoning_text = getattr(chat_response.choices[0].message, "reasoning", None)
+                    if isinstance(reasoning_text, str) and reasoning_text.strip():
+                        content = "<think>\n" + reasoning_text.strip() + "\n</think>" + content
+                except Exception:
+                    pass
+
+                if content:
                     print("--- Service call successful, received a valid response ---")
-                    return content.strip()
+                    return content
                 else:
                     print(f"Warning: Attempt {attempt + 1} received an empty response.")
 
@@ -99,23 +107,33 @@ class MultiTurnReactAgent(FnCallAgent):
                 print(f"Error: Attempt {attempt + 1} failed with an unexpected error: {e}")
 
             if attempt < max_tries - 1:
-                sleep_time = base_sleep_time * (2 ** attempt) + random.uniform(0, 1)
-                sleep_time = min(sleep_time, 30) 
-                
+                sleep_time = min(base_sleep_time * (2 ** attempt) + random.uniform(0, 1), 30)
                 print(f"Retrying in {sleep_time:.2f} seconds...")
                 time.sleep(sleep_time)
             else:
                 print("Error: All retry attempts have been exhausted. The call has failed.")
-        
-        return f"vllm server error!!!"
+
+        return "vllm server error!!!"
+
+
 
     def count_tokens(self, messages):
+        # >>> minimal guard for API mode (no local HF tokenizer) <<<
+        if str(getattr(self, "llm_local_path", "")).strip().lower() == "api":
+            try:
+                text = "\n".join(m.get("content", "") for m in messages if isinstance(m, dict))
+            except Exception:
+                text = str(messages)
+            # cheap approx: ~1 token per 4 chars
+            return max(1, len(text) // 4)
+
         tokenizer = AutoTokenizer.from_pretrained(self.llm_local_path) 
         full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
         tokens = tokenizer(full_prompt, return_tensors="pt")
         token_count = len(tokens["input_ids"][0])
         
         return token_count
+
 
     def _run(self, data: str, model: str, **kwargs) -> List[List[Message]]:
         self.model=model
