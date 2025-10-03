@@ -13,6 +13,7 @@ from qwen_agent.llm.schema import ASSISTANT, DEFAULT_SYSTEM_MESSAGE, Message
 from qwen_agent.settings import MAX_LLM_CALL_PER_RUN
 from qwen_agent.tools import BaseTool
 from qwen_agent.utils.utils import format_as_text_message, merge_generate_cfgs
+from qwen_agent.utils.tokenization_qwen import count_tokens
 from prompt import *
 import time
 import asyncio
@@ -58,8 +59,8 @@ class MultiTurnReactAgent(FnCallAgent):
     
     def call_server(self, msgs, planning_port, max_tries=10):
         
-        openai_api_key = "EMPTY"
-        openai_api_base = f"http://127.0.0.1:{planning_port}/v1"
+        openai_api_key = os.getenv('OPENROUTER_API_KEY', "EMPTY")
+        openai_api_base = "https://openrouter.ai/api/v1"
 
         client = OpenAI(
             api_key=openai_api_key,
@@ -72,7 +73,7 @@ class MultiTurnReactAgent(FnCallAgent):
             try:
                 print(f"--- Attempting to call the service, try {attempt + 1}/{max_tries} ---")
                 chat_response = client.chat.completions.create(
-                    model=self.model,
+                    model="alibaba/tongyi-deepresearch-30b-a3b",
                     messages=msgs,
                     stop=["\n<tool_response>", "<tool_response>"],
                     temperature=self.llm_generate_cfg.get('temperature', 0.6),
@@ -84,8 +85,8 @@ class MultiTurnReactAgent(FnCallAgent):
                 content = chat_response.choices[0].message.content
 
                 # OpenRouter provides API calling. If you want to use OpenRouter, you need to uncomment line 89 - 90.
-                # reasoning_content = "<think>\n" + chat_response.choices[0].message.reasoning.strip() + "\n</think>"
-                # content = reasoning_content + content                
+                reasoning_content = "<think>\n" + chat_response.choices[0].message.reasoning.strip() + "\n</think>"
+                content = reasoning_content + content                
                 
                 if content and content.strip():
                     print("--- Service call successful, received a valid response ---")
@@ -110,11 +111,12 @@ class MultiTurnReactAgent(FnCallAgent):
         return f"vllm server error!!!"
 
     def count_tokens(self, messages):
-        tokenizer = AutoTokenizer.from_pretrained(self.llm_local_path) 
-        full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
-        tokens = tokenizer(full_prompt, return_tensors="pt")
-        token_count = len(tokens["input_ids"][0])
+        full_text = ""
+        for msg in messages:
+            content = msg.get("content", "") if isinstance(msg, dict) else str(msg)
+            full_text += content + "\n"
         
+        token_count = count_tokens(full_text)
         return token_count
 
     def _run(self, data: str, model: str, **kwargs) -> List[List[Message]]:

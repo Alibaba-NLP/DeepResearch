@@ -1,3 +1,5 @@
+# Commented out packages are GPU-only and require Linux + CUDA
+
 aiofiles==24.1.0
 aiohappyeyeballs==2.6.1
 aiohttp==3.12.15
@@ -28,7 +30,7 @@ cloudpickle==3.1.1
 compressed-tensors==0.10.2
 crcmod==1.7
 cryptography==44.0.3
-cupy-cuda12x==13.6.0
+# cupy-cuda12x==13.6.0        # GPU-only, Linux + CUDA
 darabonba-core==1.0.3
 dashscope==1.24.4
 depyf==0.19.0
@@ -45,7 +47,7 @@ fastapi==0.116.1
 fastapi-cli==0.0.11
 fastapi-cloud-cli==0.1.5
 fastrlock==0.8.3
-fastuuid==0.12.0
+# fastuuid==0.12.0
 filelock==3.19.1
 frozendict==2.4.6
 frozenlist==1.7.0
@@ -86,20 +88,20 @@ networkx==3.4.2
 ninja==1.13.0
 numba==0.61.2
 numpy==2.2.6
-nvidia-cublas-cu12==12.6.4.1
-nvidia-cuda-cupti-cu12==12.6.80
-nvidia-cuda-nvrtc-cu12==12.6.77
-nvidia-cuda-runtime-cu12==12.6.77
-nvidia-cudnn-cu12==9.5.1.17
-nvidia-cufft-cu12==11.3.0.4
-nvidia-cufile-cu12==1.11.1.6
-nvidia-curand-cu12==10.3.7.77
-nvidia-cusolver-cu12==11.7.1.2
-nvidia-cusparse-cu12==12.5.4.2
-nvidia-cusparselt-cu12==0.6.3
-nvidia-nccl-cu12==2.26.2
-nvidia-nvjitlink-cu12==12.6.85
-nvidia-nvtx-cu12==12.6.77
+# nvidia-cublas-cu12==12.6.4.1
+# nvidia-cuda-cupti-cu12==12.6.80
+# nvidia-cuda-nvrtc-cu12==12.6.77
+# nvidia-cuda-runtime-cu12==12.6.77
+# nvidia-cudnn-cu12==9.5.1.17
+# nvidia-cufft-cu12==11.3.0.4
+# nvidia-cufile-cu12==1.11.1.6
+# nvidia-curand-cu12==10.3.7.77
+# nvidia-cusolver-cu12==11.7.1.2
+# nvidia-cusparse-cu12==12.5.4.2
+# nvidia-cusparselt-cu12==0.6.3
+# nvidia-nccl-cu12==2.26.2
+# nvidia-nvjitlink-cu12==12.6.85
+# nvidia-nvtx-cu12==12.6.77
 openai==1.99.5
 openai-harmony==0.0.4
 opencv-python-headless==4.12.0.88
@@ -162,12 +164,12 @@ tabulate==0.9.0
 tenacity==9.1.2
 tiktoken==0.11.0
 tokenizers==0.22.0
-torch==2.7.1
-torchaudio==2.7.1
-torchvision==0.22.1
+# torch==2.7.1
+# torchaudio==2.7.1
+# torchvision==0.22.1
 tqdm==4.67.1
 transformers==4.56.1
-triton==3.3.1
+# triton==3.3.1             # GPU-only, Linux + CUDA
 typer==0.17.4
 typing_extensions==4.15.0
 typing-inspection==0.4.1
@@ -176,13 +178,14 @@ tzlocal==5.3.1
 urllib3==2.5.0
 uvicorn==0.35.0
 uvloop==0.21.0
-vllm==0.10.1
+# vllm==0.10.1
 watchfiles==1.1.0
 websocket-client==1.8.0
 websockets==15.0.1
 wheel==0.45.1
-xformers==0.0.31
+# xformers==0.0.31          # GPU-only, Linux + CUDA
 xgrammar==0.1.21
 xlsxwriter==3.2.8
 yarl==1.20.1
 zipp==3.23.0
+firecrawl>=2.0.0
