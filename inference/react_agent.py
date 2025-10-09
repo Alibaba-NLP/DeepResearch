@@ -251,7 +251,7 @@ class MultiTurnReactAgent(FnCallAgent):
             elif tool_name == "parse_file":
                 params = {"files": tool_args["files"]}
                 
-                raw_result = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="./eval_data/file_corpus"))
+                raw_result = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="../eval_data/file_corpus"))
                 result = raw_result
 
                 if not isinstance(raw_result, str):
