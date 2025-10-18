@@ -1,0 +1,13 @@
+crawl4ai
+requests
+json5
+pillow
+beautifulsoup4
+qwen-agent
+datasets
+tenacity
+volcengine-python-sdk
+langchain
+langchain-community
+langchain-core
+streamlit
