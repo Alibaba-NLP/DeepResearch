@@ -16,12 +16,14 @@ from qwen_agent.utils.utils import format_as_text_message, merge_generate_cfgs
 from prompt import *
 import time
 import asyncio
+import hashlib
 
 from tool_file import *
 from tool_scholar import *
 from tool_python import *
 from tool_search import *
 from tool_visit import *
+from tool_memory import *
 
 OBS_START = '<tool_response>'
 OBS_END = '\n</tool_response>'
@@ -29,6 +31,7 @@ OBS_END = '\n</tool_response>'
 MAX_LLM_CALL_PER_RUN = int(os.getenv('MAX_LLM_CALL_PER_RUN', 100))
 
 TOOL_CLASS = [
+    MemoryTool(), 
     FileParser(),
     Scholar(),
     Visit(),
@@ -143,6 +146,12 @@ class MultiTurnReactAgent(FnCallAgent):
             raw_msg = data['item']['messages'][1]["content"] 
             question = raw_msg.split("User:")[1].strip() if "User:" in raw_msg else raw_msg 
 
+        # --- NEW: session/question ids for memory ---
+        self.session_id = os.getenv("SESSION_ID") or f"s-{int(time.time())}-{random.randint(1000,9999)}"
+        self.question_id = hashlib.sha1(question.encode("utf-8")).hexdigest()[:12]
+        mem = TOOL_MAP["memory"]  # MemoryTool instance
+        # -------------------------------------------
+        
         start_time = time.time()
         planning_port = data['planning_port']
         answer = data['item']['answer']
@@ -151,6 +160,12 @@ class MultiTurnReactAgent(FnCallAgent):
         cur_date = today_date()
         system_prompt = system_prompt + str(cur_date)
         messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": question}]
+        
+        # --- NEW: persist initial context ---
+        mem.log_message(self.session_id, self.question_id, "system", system_prompt)
+        mem.log_message(self.session_id, self.question_id, "user", question)
+        # ------------------------------------
+
         num_llm_calls_available = MAX_LLM_CALL_PER_RUN
         round = 0
         while num_llm_calls_available > 0:
@@ -174,6 +189,9 @@ class MultiTurnReactAgent(FnCallAgent):
                 pos = content.find('<tool_response>')
                 content = content[:pos]
             messages.append({"role": "assistant", "content": content.strip()})
+            # --- NEW: persist assistant message ---
+            mem.log_message(self.session_id, self.question_id, "assistant", content.strip())
+            # --------------------------------------
             if '<tool_call>' in content and '</tool_call>' in content:
                 tool_call = content.split('<tool_call>')[1].split('</tool_call>')[0]
                 try:
@@ -192,9 +210,74 @@ class MultiTurnReactAgent(FnCallAgent):
 
                 except:
                     result = 'Error: Tool call is not a valid JSON. Tool call must contain a valid "name" and "arguments" field.'
-                result = "<tool_response>\n" + result + "\n</tool_response>"
+                #result = "<tool_response>\n" + result + "\n</tool_response>"
                 # print(result)
-                messages.append({"role": "user", "content": result})
+                #messages.append({"role": "user", "content": result})
+                # result already computed (string or object). We want two things:
+                #  1) log the raw tool output as a conversation "tool" message
+                #  2) try to extract and store page-like objects into the pages table
+
+                # Ensure we have a string to wrap in <tool_response>
+                tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
+
+                # 1) Log the tool call + a truncated output as a conversation turn
+                try:
+                    tool_call_text = content.split('<tool_call>')[1].split('</tool_call>')[0]
+                except Exception:
+                    tool_call_text = "<unknown tool_call payload>"
+                mem.log_message(self.session_id, self.question_id, "tool",
+                                f"{tool_call_text}\n\n{tool_out_str[:8000]}")
+
+                # 2) Try to store accessed pages
+                def _maybe_store_page(obj: dict):
+                    """
+                    Accepts any dict and tries to store it as a 'page'.
+                    We accept content OR snippet; if content is missing but snippet present,
+                    we still store it so you can recall it later (lightweight).
+                    """
+                    try:
+                        url = obj.get("url") or obj.get("source_url")
+                        title = obj.get("title")
+                        content_txt = (obj.get("text") or
+                                    obj.get("content") or
+                                    obj.get("page_content") or
+                                    obj.get("body") or "")
+                        snippet = obj.get("snippet") or (content_txt[:280] if content_txt else None)
+                        # If no content but we have a snippet (e.g., Search results), store snippet as content fallback
+                        if not content_txt and snippet:
+                            content_txt = snippet
+                        if (url or content_txt) and content_txt:
+                            mem.log_page(self.session_id, self.question_id, url, title, content_txt, snippet, meta=obj)
+                    except Exception:
+                        pass
+
+                # Heuristics:
+                # - Many tools return JSON with obvious keys ("results", "items", "data")
+                # - Some return a single dict (page), some a list of dicts
+                # - If it's non-JSON (plain text), we can't page-store (but it's still in conv memory)
+                try:
+                    parsed = json.loads(tool_out_str)
+                    if isinstance(parsed, dict):
+                        _maybe_store_page(parsed)
+                        for key in ("results", "items", "data", "pages", "hits"):
+                            seq = parsed.get(key)
+                            if isinstance(seq, list):
+                                for it in seq:
+                                    if isinstance(it, dict):
+                                        _maybe_store_page(it)
+                    elif isinstance(parsed, list):
+                        for it in parsed:
+                            if isinstance(it, dict):
+                                _maybe_store_page(it)
+                except Exception:
+                    # Non-JSON tool output — nothing to store as a page, but already logged as message.
+                    pass
+
+                # Keep your original wrapper so the LLM sees the observation next turn
+                wrapped = "<tool_response>\n" + tool_out_str + "\n</tool_response>"
+                messages.append({"role": "user", "content": wrapped})
+
+                
             if '<answer>' in content and '</answer>' in content:
                 termination = 'answer'
                 break
@@ -211,6 +294,9 @@ class MultiTurnReactAgent(FnCallAgent):
                 messages[-1]['content'] = "You have now reached the maximum context length you can handle. You should stop making tool calls and, based on all the information above, think again and provide what you consider the most likely answer in the following format:<think>your final thinking</think>\n<answer>your answer</answer>"
                 content = self.call_server(messages, planning_port)
                 messages.append({"role": "assistant", "content": content.strip()})
+                # --- NEW: persist assistant message ---
+                mem.log_message(self.session_id, self.question_id, "assistant", content.strip())
+                # --------------------------------------
                 if '<answer>' in content and '</answer>' in content:
                     prediction = messages[-1]['content'].split('<answer>')[1].split('</answer>')[0]
                     termination = 'generate an answer as token limit reached'
