@@ -23,7 +23,13 @@ from tool_scholar import *
 from tool_python import *
 from tool_search import *
 from tool_visit import *
+#whatever is imported last wins
+from tool_scholarLOCAL import *
+from tool_searchLOCAL import *
+from tool_visitLOCAL import *
 from tool_memory import *
+
+
 
 OBS_START = '<tool_response>'
 OBS_END = '\n</tool_response>'
@@ -74,7 +80,7 @@ class MultiTurnReactAgent(FnCallAgent):
             timeout=600.0,
         )
 
-        base_sleep_time = 1
+        base_sleep_time = 120
         for attempt in range(max_tries):
             try:
                 print(f"--- Attempting to call the service, try {attempt + 1}/{max_tries} ---")
@@ -110,7 +116,7 @@ class MultiTurnReactAgent(FnCallAgent):
                 print(f"Error: Attempt {attempt + 1} failed with an unexpected error: {e}")
 
             if attempt < max_tries - 1:
-                sleep_time = min(base_sleep_time * (2 ** attempt) + random.uniform(0, 1), 30)
+                sleep_time = min(base_sleep_time * (2 ** attempt) + random.uniform(0, 1), 300)
                 print(f"Retrying in {sleep_time:.2f} seconds...")
                 time.sleep(sleep_time)
             else:
@@ -146,7 +152,7 @@ class MultiTurnReactAgent(FnCallAgent):
             raw_msg = data['item']['messages'][1]["content"] 
             question = raw_msg.split("User:")[1].strip() if "User:" in raw_msg else raw_msg 
 
-        # --- NEW: session/question ids for memory ---
+        # --- NEW: session/question ids do you wanna try it real quickfor memory ---
         self.session_id = os.getenv("SESSION_ID") or f"s-{int(time.time())}-{random.randint(1000,9999)}"
         self.question_id = hashlib.sha1(question.encode("utf-8")).hexdigest()[:12]
         mem = TOOL_MAP["memory"]  # MemoryTool instance
@@ -169,7 +175,7 @@ class MultiTurnReactAgent(FnCallAgent):
         num_llm_calls_available = MAX_LLM_CALL_PER_RUN
         round = 0
         while num_llm_calls_available > 0:
-            # Check whether time is reached
+            # Check whether time is reacdo you wanna try it real quickhed
             if time.time() - start_time > 150 * 60:  # 150 minutes in seconds
                 prediction = 'No answer found after 2h30mins'
                 termination = 'No answer found after 2h30mins'
@@ -233,7 +239,7 @@ class MultiTurnReactAgent(FnCallAgent):
                     """
                     Accepts any dict and tries to store it as a 'page'.
                     We accept content OR snippet; if content is missing but snippet present,
-                    we still store it so you can recall it later (lightweight).
+                    we still store it sodo you wanna try it real quick you can recall it later (lightweight).
                     """
                     try:
                         url = obj.get("url") or obj.get("source_url")
