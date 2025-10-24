@@ -4,6 +4,17 @@ import requests
 from typing import List, Optional, Union
 from qwen_agent.tools.base import BaseTool, register_tool
 
+from tool_visitLOCAL import (
+    WORKING_DOCS_DIR,
+    _make_run_folder,
+    _update_index,
+)
+
+# small local helpers we need for saving
+from tool_visitLOCAL import _utc_now_iso  # already there in your visit file
+from pathlib import Path
+import json, re, secrets
+
 S2_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
 CR_URL = "https://api.crossref.org/works"
 
@@ -12,22 +23,109 @@ class Scholar(BaseTool):
     name = "google_scholar"
     description = "Leverage scholarly indexes to retrieve relevant information from academic publications. Accepts multiple queries."
     parameters = {
-        "type": "object",
-        "properties": {
-                "query": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": "Array of query strings for scholarly search."
-                },
-                "max_results": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "maximum": 50,
-                    "description": "How many results per query (default 10)."
-                }
+    "type": "object",
+    "properties": {
+        "query": {
+            "type": ["string", "array"],
+            "items": {"type": "string"},
+            "description": "Query string or array of query strings for scholarly search."
         },
-        "required": ["query"],
+        "max_results": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "How many results per query (default 10)."
+        },
+        "question_id": {  # NEW
+            "type": "string",
+            "description": "If provided, all saved files go under this folder name (shared with 'visit')."
+        }
+    },
+    "required": ["query"],
     }
+    
+    '''
+    def _save_query_artifacts(self, qdir: Path, query: str, text: str, s2_raw: list, cr_raw: list) -> None:
+    # filename base (like visit does for URLs)
+        safe = re.sub(r"[^a-zA-Z0-9]+", "-", query).strip("-").lower()[:36]
+        base = f"scholar-{safe}-{secrets.token_hex(4)}"
+        ts = _utc_now_iso()
+
+        # save a JSON bundle
+        json_path = qdir / f"{base}__scholar.json"
+        bundle = {
+            "type": "scholar",
+            "query": query,
+            "saved_at": ts,
+            "providers": ["SemanticScholar", "Crossref"],
+            "counts": {
+                "semanticscholar": len(s2_raw or []),
+                "crossref": len(cr_raw or []),
+                "total": (len(s2_raw or []) + len(cr_raw or [])),
+            },
+            "results": {
+                "semanticscholar": s2_raw or [],
+                "crossref": cr_raw or [],
+            },
+            "formatted_text": text or "",
+        }
+        json_path.write_text(json.dumps(bundle, ensure_ascii=False, indent=2), encoding="utf-8")
+
+        # save a readable markdown alongside
+        md_path = qdir / f"{base}__scholar.md"
+        md = (
+            f"# Scholarly Search Results\n\n"
+            f"**Query:** {query}\n\n"
+            f"**Saved:** {ts}\n\n"
+            f"---\n\n"
+            f"{text or ''}\n"
+        )
+        md_path.write_text(md, encoding="utf-8")
+
+        # append a single record into the SAME index.json used by visit
+        _update_index(qdir, {
+            "type": "scholar",
+            "query": query,
+            "saved_at": ts,
+            "json_file": str(json_path),
+            "md_file": str(md_path),
+            "status": "ok",
+            "counts": bundle["counts"],
+            "preview": (text or "")[:300],
+        })
+
+'''
+    def _save_query_artifacts(self, qdir: Path, query: str, text: str, s2_raw: list, cr_raw: list) -> None:
+        # filename base (like visit does for URLs)
+        safe = re.sub(r"[^a-zA-Z0-9]+", "-", query).strip("-").lower()[:36]
+        base = f"scholar-{safe}-{secrets.token_hex(4)}"
+        ts = _utc_now_iso()
+
+        #  Save a readable MARKDOWN file only
+        md_path = qdir / f"{base}__scholar.md"
+        md = (
+            f"# Scholarly Search Results\n\n"
+            f"**Query:** {query}\n\n"
+            f"**Saved:** {ts}\n\n"
+            f"---\n\n"
+            f"{text or ''}\n"
+        )
+        md_path.write_text(md, encoding="utf-8")
+
+        #  Append a compact record to index.json (no json_file, no big payloads)
+        _update_index(qdir, {
+            "type": "scholar",
+            "query": query,
+            "saved_at": ts,
+            "md_file": str(md_path),
+            "status": "ok",
+            "counts": {
+                "semanticscholar": len(s2_raw or []),
+                "crossref": len(cr_raw or []),
+                "total": (len(s2_raw or []) + len(cr_raw or [])),
+            },
+            "preview": (text or "")[:300],
+        })
 
     def __init__(self, cfg: Optional[dict] = None):
         super().__init__(cfg)
@@ -124,12 +222,70 @@ class Scholar(BaseTool):
         try:
             qv = params["query"]
             k = params.get("max_results", 10)
+            question_id = params.get("question_id")  # NEW
         except Exception:
             return "[google_scholar] Invalid request format: Input must be a JSON object containing 'query' field"
 
-        if isinstance(qv, str):
-            return self._one(qv, max_results=k)
+        # SAME DIRECTORY as `visit`:
+        # visit's _make_run_folder(goal, question_id) – if question_id is present, it wins.
+        qdir = _make_run_folder("scholar", question_id)
+        print(f"[scholar] saving to {qdir}")
 
-        assert isinstance(qv, List)
-        blocks = [self._one(q, max_results=k) for q in qv]
+        def run_one(q: str) -> str:
+            # do your current search logic, but capture raw lists
+            s2_raw = []
+            cr_raw = []
+            text = ""
+
+            # >>> your existing _search_semanticscholar + _search_crossref code,
+            # but keep the raw arrays in s2_raw / cr_raw, and build the final
+            # formatted 'text' exactly like before.
+
+            # 1) S2
+            for attempt in range(5):
+                try:
+                    s2_raw = self._search_semanticscholar(q, k)
+                    break
+                except Exception:
+                    if attempt == 4:
+                        text = "Google search Timeout, return None, Please try again later."
+                        self._save_query_artifacts(qdir, q, text, [], [])
+                        return text
+                    time.sleep(0.3)
+
+            collected = []
+            for i, rec in enumerate(s2_raw[:k], 1):
+                collected.append(self._format_item_s2(i, rec))
+
+            # 2) Crossref fill
+            if len(collected) < k:
+                need = k - len(collected)
+                try:
+                    cr_raw = self._search_crossref(q, need)
+                    start_idx = len(collected) + 1
+                    for j, rec in enumerate(cr_raw[:need], start_idx):
+                        collected.append(self._format_item_cr(j, rec))
+                except Exception:
+                    pass
+
+            if not collected:
+                text = f"No results found for '{q}'. Try with a more general query."
+                self._save_query_artifacts(qdir, q, text, s2_raw, cr_raw)
+                return text
+
+            text = (
+                f"A Google search for '{q}' found {len(collected)} results:\n\n"
+                "## Web Results\n" + "\n\n".join(collected)
+            )
+
+            # WRITE into the SAME index.json inside qdir
+            self._save_query_artifacts(qdir, q, text, s2_raw, cr_raw)
+            return text
+
+        if isinstance(qv, str):
+            return run_one(qv)
+
+        assert isinstance(qv, list)
+        blocks = [run_one(q) for q in qv]
         return "\n=======\n".join(blocks)
+

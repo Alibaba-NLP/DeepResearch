@@ -17,6 +17,7 @@ from prompt import *
 import time
 import asyncio
 import hashlib
+from dotenv import load_dotenv
 
 from tool_file import *
 from tool_scholar import *
@@ -28,6 +29,7 @@ from tool_scholarLOCAL import *
 from tool_searchLOCAL import *
 from tool_visitLOCAL import *
 from tool_memory import *
+import re
 
 
 
@@ -38,11 +40,11 @@ MAX_LLM_CALL_PER_RUN = int(os.getenv('MAX_LLM_CALL_PER_RUN', 100))
 
 TOOL_CLASS = [
     MemoryTool(), 
-    FileParser(),
     Scholar(),
     Visit(),
     Search(),
-    PythonInterpreter(),
+    #PythonInterpreter(),
+    #FileParser(),
 ]
 TOOL_MAP = {tool.name: tool for tool in TOOL_CLASS}
 
@@ -150,8 +152,11 @@ class MultiTurnReactAgent(FnCallAgent):
             question = data['item']['question']
         except: 
             raw_msg = data['item']['messages'][1]["content"] 
-            question = raw_msg.split("User:")[1].strip() if "User:" in raw_msg else raw_msg 
-
+            question = raw_msg.split("User:")[1].strip() if "UserI needed a question id, w:" in raw_msg else raw_msg 
+        
+        self.external_question_id = str(data['item'].get('question_id', '') or '')
+        
+        
         # --- NEW: session/question ids do you wanna try it real quickfor memory ---
         self.session_id = os.getenv("SESSION_ID") or f"s-{int(time.time())}-{random.randint(1000,9999)}"
         self.question_id = hashlib.sha1(question.encode("utf-8")).hexdigest()[:12]
@@ -170,6 +175,7 @@ class MultiTurnReactAgent(FnCallAgent):
         # --- NEW: persist initial context ---
         mem.log_message(self.session_id, self.question_id, "system", system_prompt)
         mem.log_message(self.session_id, self.question_id, "user", question)
+        self.did_visit = False
         # ------------------------------------
 
         num_llm_calls_available = MAX_LLM_CALL_PER_RUN
@@ -198,92 +204,91 @@ class MultiTurnReactAgent(FnCallAgent):
             # --- NEW: persist assistant message ---
             mem.log_message(self.session_id, self.question_id, "assistant", content.strip())
             # --------------------------------------
+# handle ALL tool calls in the assistant message
             if '<tool_call>' in content and '</tool_call>' in content:
-                tool_call = content.split('<tool_call>')[1].split('</tool_call>')[0]
-                try:
-                    if "python" in tool_call.lower():
-                        try:
-                            code_raw=content.split('<tool_call>')[1].split('</tool_call>')[0].split('<code>')[1].split('</code>')[0].strip()
-                            result = TOOL_MAP['PythonInterpreter'].call(code_raw)
-                        except:
-                            result = "[Python Interpreter Error]: Formatting error."
+                calls = re.findall(r"<tool_call>(.*?)</tool_call>", content, flags=re.DOTALL)
+                aggregated_outputs = []
 
-                    else:
-                        tool_call = json5.loads(tool_call)
-                        tool_name = tool_call.get('name', '')
-                        tool_args = tool_call.get('arguments', {})
-                        result = self.custom_call_tool(tool_name, tool_args)
-
-                except:
-                    result = 'Error: Tool call is not a valid JSON. Tool call must contain a valid "name" and "arguments" field.'
-                #result = "<tool_response>\n" + result + "\n</tool_response>"
-                # print(result)
-                #messages.append({"role": "user", "content": result})
-                # result already computed (string or object). We want two things:
-                #  1) log the raw tool output as a conversation "tool" message
-                #  2) try to extract and store page-like objects into the pages table
-
-                # Ensure we have a string to wrap in <tool_response>
-                tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
-
-                # 1) Log the tool call + a truncated output as a conversation turn
-                try:
-                    tool_call_text = content.split('<tool_call>')[1].split('</tool_call>')[0]
-                except Exception:
-                    tool_call_text = "<unknown tool_call payload>"
-                mem.log_message(self.session_id, self.question_id, "tool",
-                                f"{tool_call_text}\n\n{tool_out_str[:8000]}")
-
-                # 2) Try to store accessed pages
-                def _maybe_store_page(obj: dict):
-                    """
-                    Accepts any dict and tries to store it as a 'page'.
-                    We accept content OR snippet; if content is missing but snippet present,
-                    we still store it sodo you wanna try it real quick you can recall it later (lightweight).
-                    """
+                for raw_call in calls:
                     try:
-                        url = obj.get("url") or obj.get("source_url")
-                        title = obj.get("title")
-                        content_txt = (obj.get("text") or
-                                    obj.get("content") or
-                                    obj.get("page_content") or
-                                    obj.get("body") or "")
-                        snippet = obj.get("snippet") or (content_txt[:280] if content_txt else None)
-                        # If no content but we have a snippet (e.g., Search results), store snippet as content fallback
-                        if not content_txt and snippet:
-                            content_txt = snippet
-                        if (url or content_txt) and content_txt:
-                            mem.log_page(self.session_id, self.question_id, url, title, content_txt, snippet, meta=obj)
+                        # Python inline (optional path)
+                        if "python" in raw_call.lower() and "<code>" in raw_call and "</code>" in raw_call:
+                            try:
+                                code_raw = raw_call.split("<code>")[1].split("</code>")[0].strip()
+                                result = TOOL_MAP['PythonInterpreter'].call(code_raw)
+                            except Exception:
+                                result = "[Python Interpreter Error]: Formatting error."
+                        else:
+                            # JSON tool call (normal path)
+                            call_obj = json5.loads(raw_call)
+                            tool_name = call_obj.get('name', '')
+                            tool_args = call_obj.get('arguments', {})
+
+                            # dispatch
+                            result = self.custom_call_tool(tool_name, tool_args)
+
+                            # flip flag if we actually visited
+                            if tool_name.lower() == "visit":
+                                self.did_visit = True
+
+                    except Exception as e:
+                        result = f"Error: Tool call execution failed: {e}"
+
+                    # stringify tool output
+                    tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
+
+                    # 1) Log tool call + truncated output to memory
+                    try:
+                        mem.log_message(self.session_id, self.question_id, "tool",
+                                        f"{raw_call}\n\n{tool_out_str[:8000]}")
                     except Exception:
                         pass
 
-                # Heuristics:
-                # - Many tools return JSON with obvious keys ("results", "items", "data")
-                # - Some return a single dict (page), some a list of dicts
-                # - If it's non-JSON (plain text), we can't page-store (but it's still in conv memory)
-                try:
-                    parsed = json.loads(tool_out_str)
-                    if isinstance(parsed, dict):
-                        _maybe_store_page(parsed)
-                        for key in ("results", "items", "data", "pages", "hits"):
-                            seq = parsed.get(key)
-                            if isinstance(seq, list):
-                                for it in seq:
-                                    if isinstance(it, dict):
-                                        _maybe_store_page(it)
-                    elif isinstance(parsed, list):
-                        for it in parsed:
-                            if isinstance(it, dict):
-                                _maybe_store_page(it)
-                except Exception:
-                    # Non-JSON tool output — nothing to store as a page, but already logged as message.
-                    pass
+                    # 2) Try to store accessed pages (same heuristic as before)
+                    def _maybe_store_page(obj: dict):
+                        try:
+                            url = obj.get("url") or obj.get("source_url")
+                            title = obj.get("title")
+                            content_txt = (obj.get("text") or
+                                        obj.get("content") or
+                                        obj.get("page_content") or
+                                        obj.get("body") or "")
+                            snippet = obj.get("snippet") or (content_txt[:280] if content_txt else None)
+                            if not content_txt and snippet:
+                                content_txt = snippet
+                            if (url or content_txt) and content_txt:
+                                mem.log_page(self.session_id, self.question_id, url, title, content_txt, snippet, meta=obj)
+                        except Exception:
+                            pass
 
-                # Keep your original wrapper so the LLM sees the observation next turn
-                wrapped = "<tool_response>\n" + tool_out_str + "\n</tool_response>"
+                    # parse JSON output to store pages if possible
+                    try:
+                        parsed = json.loads(tool_out_str)
+                        if isinstance(parsed, dict):
+                            _maybe_store_page(parsed)
+                            for key in ("results", "items", "data", "pages", "hits"):
+                                seq = parsed.get(key)
+                                if isinstance(seq, list):
+                                    for it in seq:
+                                        if isinstance(it, dict):
+                                            _maybe_store_page(it)
+                        elif isinstance(parsed, list):
+                            for it in parsed:
+                                if isinstance(it, dict):
+                                    _maybe_store_page(it)
+                    except Exception:
+                        pass
+
+                    aggregated_outputs.append(tool_out_str)
+
+                # Feed *all* tool outputs back at once
+                wrapped = "<tool_response>\n" + "\n\n".join(aggregated_outputs) + "\n</tool_response>"
                 messages.append({"role": "user", "content": wrapped})
-
                 
+                continue
+
+
+                # Ensure we have a string to wrap in <tool_respons
             if '<answer>' in content and '</answer>' in content:
                 termination = 'answer'
                 break
@@ -337,21 +342,22 @@ class MultiTurnReactAgent(FnCallAgent):
 
     def custom_call_tool(self, tool_name: str, tool_args: dict, **kwargs):
         if tool_name in TOOL_MAP:
-            tool_args["params"] = tool_args
-            if "python" in tool_name.lower():
-                result = TOOL_MAP['PythonInterpreter'].call(tool_args)
-            elif tool_name == "parse_file":
-                params = {"files": tool_args["files"]}
-                
-                raw_result = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="../eval_data/file_corpus"))
-                result = raw_result
+            # make a copy so we don’t mutate a shared object
+            tool_args = dict(tool_args or {})
 
-                if not isinstance(raw_result, str):
-                    result = str(raw_result)
-            else:
-                raw_result = TOOL_MAP[tool_name].call(tool_args, **kwargs)
-                result = raw_result
-            return result
+            # Always inject question_id for visit & scholar if missing/falsey
+            if tool_name.lower() in ("visit", "google_scholar"):
+                qi = tool_args.get("question_id")
+                if not qi:  # covers None, "", 0, etc.
+                    qi = self.external_question_id or self.question_id
+                    tool_args["question_id"] = str(qi)
+                print(f"[agent] {tool_name} → question_id={tool_args['question_id']}")
 
+            # (You don’t need 'params' = tool_args; that self-reference is messy. Remove it.)
+            # tool_args["params"] = tool_args  # <- delete this line
+
+            raw_result = TOOL_MAP[tool_name].call(tool_args, **kwargs)
+            return raw_result
         else:
             return f"Error: Tool {tool_name} not found"
+
