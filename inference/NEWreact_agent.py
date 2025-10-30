@@ -1,5 +1,5 @@
 import json
-#from pyexpat.errors import messages
+from pyexpat.errors import messages
 import json5
 import os
 from typing import Dict, Iterator, List, Literal, Optional, Tuple, Union
@@ -26,16 +26,13 @@ from tool_python import *
 from tool_search import *
 from tool_visit import *
 
-from db_min import reset_docs
 from tool_scholarLOCAL import *
 from tool_searchLOCAL import *
 from tool_visitLOCAL import *
 import re
 
-
 OBS_START = '<tool_response>'
 OBS_END = '\n</tool_response>'
-DOC_ID_RE = re.compile(r"\[\[DOC_ID:(\d+)\]\]")
 
 MAX_LLM_CALL_PER_RUN = int(os.getenv('MAX_LLM_CALL_PER_RUN', 100))
 
@@ -88,8 +85,6 @@ class MultiTurnReactAgent(FnCallAgent):
                  function_list: Optional[List[Union[str, Dict, BaseTool]]] = None,
                  llm: Optional[Union[Dict, BaseChatModel]] = None,
                  **kwargs):
-        
-        self.doc_ids: List[int] = []
 
         self.llm_generate_cfg = llm["generate_cfg"]
         self.llm_local_path = llm["model"]
@@ -210,7 +205,6 @@ class MultiTurnReactAgent(FnCallAgent):
 
     def _cleanup_after_run(self):
         """Reset per-question orchestrator state to avoid leakage across tasks."""
-        self.doc_ids = []
         try:
             if hasattr(self, "summary_memory") and self.summary_memory:
                 self.summary_memory.clear()
@@ -289,8 +283,6 @@ class MultiTurnReactAgent(FnCallAgent):
         self.model=model
         try:
             question = data['item']['question']
-            reset_docs() # reset the database from the the past questions
-            self.doc_ids = []
         except: 
             raw_msg = data['item']['messages'][1]["content"] 
             question = raw_msg.split("User:")[1].strip() if "UserI needed a question id, w:" in raw_msg else raw_msg 
@@ -325,10 +317,8 @@ class MultiTurnReactAgent(FnCallAgent):
                     "prediction": prediction,
                     "termination": termination,
                     "handoff_summary": self.summary_memory.as_text(),
-                    "doc_ids": sorted(set(self.doc_ids))
                 }
                 self._cleanup_after_run()
-                
                 return result
             round += 1
             num_llm_calls_available -= 1
@@ -391,35 +381,14 @@ class MultiTurnReactAgent(FnCallAgent):
                         result = f"Error: Tool call execution failed: {e}"
 
                     # stringify tool output
-                    
-                    # tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
-                    # aggregated_outputs.append(tool_out_str)
-                    # stringify tool output
                     tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
-
-                    # --- NEW: capture and log document IDs from tool outputs ---
-                    ids_now = [int(x) for x in DOC_ID_RE.findall(tool_out_str or "")]
-                    if ids_now:
-                        self.doc_ids.extend(ids_now)
-                        try:
-                            print(f"[doc] captured ids from {tool_name}: {ids_now}")
-                        except Exception:
-                            pass
-
-                    # (optional) strip the tag before feeding back to the model to save tokens
-                    tool_out_str_clean = DOC_ID_RE.sub("", tool_out_str).lstrip()
-
-                    aggregated_outputs.append(tool_out_str_clean)
-
-                    
+                    aggregated_outputs.append(tool_out_str)
 
                 # Feed *all* tool outputs back at once (clear delimiter between items)
                 tool_response_str = "<tool_response>\n" + "\n\n---\n\n".join(aggregated_outputs) + "\n</tool_response>"
                 #messages.append({"role": "user", "content": tool_response_str})
                 msg_tool = {"role": "user", "content": tool_response_str}
                 messages.append(msg_tool)
-                if self.doc_ids:
-                    print(f"[doc] total ids so far: {sorted(set(self.doc_ids))}")
                 self.raw_messages.append(msg_tool)  # keep raw
                 just_ran_tool = True
                 last_tool_response_len = len(tool_response_str)
@@ -527,8 +496,6 @@ class MultiTurnReactAgent(FnCallAgent):
                     "prediction": prediction,
                     "termination": termination,
                     "handoff_summary": self.summary_memory.as_text(),
-                    "doc_ids": sorted(set(self.doc_ids))
-
                 }
                 self._cleanup_after_run()
                 return result
@@ -548,8 +515,6 @@ class MultiTurnReactAgent(FnCallAgent):
             "prediction": prediction,
             "termination": termination,
             "handoff_summary": self.summary_memory.as_text(),
-            "doc_ids": sorted(set(self.doc_ids))
-
         }
         self._cleanup_after_run()
         return result

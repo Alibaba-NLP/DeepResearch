@@ -22,6 +22,7 @@ import mimetypes
 import secrets
 from urllib.parse import urlparse
 from datetime import datetime, timezone
+from db_min import save_document  # this will allow us to write the content, and will return the numeric
 
 
 
@@ -364,6 +365,124 @@ class Visit(BaseTool):
 
     
     def _read_and_summarize(self , url: str, goal: str, qdir: Path) -> str:
+        # 0) (optional raw fetch is commented out in your file)
+
+        base = _basename_for_url(url)
+        ts = _utc_now_iso()
+        raw_info = {"status": None, "content_type": None, "final_url": url}
+        raw_path = None
+        doc_id = None  # <-- IMPORTANT: init so we can tag all return paths
+
+        # 1) extract page
+        content = local_readpage(url)
+
+        # 1a) save extracted markdown (if any)
+        extracted_path = None
+        if _ok(content):
+            extracted_path = qdir / f"{base}__extracted.md"
+            try:
+                header = f"# Extracted content\n\nURL: {url}\nSaved: {ts}\n\n---\n\n"
+                _save_text(extracted_path, header + content)
+                # Save ONLY the extracted markdown to MySQL; keep it 2 columns (id, content)
+                doc_id = save_document(content)
+            except Exception:
+                extracted_path = None
+
+        # 2) bail early if extraction failed (still keep index)
+        if not _ok(content):
+            _update_index(qdir, {
+                "url": url,
+                "saved_at": ts,
+                "goal": goal,
+                "raw_file": (str(raw_path) if raw_path else None),
+                "extracted_file": None,
+                "summary_file": None,
+                "status": "fallback",
+                "http_status": raw_info.get("status"),
+                "content_type": raw_info.get("content_type"),
+                "final_url": raw_info.get("final_url", url),
+            })
+            tag = f"[[DOC_ID:{doc_id}]]\n" if doc_id else ""
+            return tag + _fallback_payload(url, goal)
+
+        # 3) summarize (your existing logic)
+        content = truncate_to_tokens(content, 95_000)
+        messages = _build_messages(content, goal)
+
+        raw = _call_summary_server(messages, max_retries=int(os.getenv("VISIT_SERVER_MAX_RETRIES", 2)))
+        summary_retries = 3
+        while (not raw or len(raw) < 10) and summary_retries >= 0:
+            trunc_len = int(0.7 * len(content)) if summary_retries > 0 else 25_000
+            print(f"[visit] Summary url[{url}] attempt {3 - summary_retries + 1}/3; content_len={len(content)} → truncating to {trunc_len}")
+            content = content[:trunc_len]
+            messages = _build_messages(content, goal)
+            raw = _call_summary_server(messages, max_retries=1)
+            summary_retries -= 1
+
+        # parse JSON
+        if isinstance(raw, str):
+            raw = raw.replace("```json", "").replace("```", "").strip()
+
+        parse_retry_times = 0
+        while parse_retry_times < 2:
+            try:
+                obj = json.loads(raw)
+                break
+            except Exception:
+                raw = _call_summary_server(messages, max_retries=1)
+                if isinstance(raw, str):
+                    raw = raw.replace("```json", "").replace("```", "").strip()
+                parse_retry_times += 1
+        else:
+            _update_index(qdir, {
+                "url": url, "saved_at": ts, "goal": goal,
+                "raw_file": (str(raw_path) if raw_path else None),
+                "extracted_file": (str(extracted_path) if extracted_path else None),
+                "summary_file": None,
+                "status": "parse_failed",
+                "http_status": raw_info.get("status"),
+                "content_type": raw_info.get("content_type"),
+                "final_url": raw_info.get("final_url", url),
+            })
+            tag = f"[[DOC_ID:{doc_id}]]\n" if doc_id else ""
+            return tag + _fallback_payload(url, goal)
+
+        evidence = str(obj.get("evidence", ""))
+        summary  = str(obj.get("summary", ""))
+
+        # 4) (summary JSON save is intentionally disabled)
+        summary_path = None
+
+        # 5) update index
+        _update_index(qdir, {
+            "url": url,
+            "saved_at": ts,
+            "goal": goal,
+            "raw_file": (str(raw_path) if raw_path else None),
+            "extracted_file": (str(extracted_path) if extracted_path else None),
+            "summary_file": (str(summary_path) if summary_path else None),
+            "status": "ok",
+            "http_status": raw_info.get("status"),
+            "content_type": raw_info.get("content_type"),
+            "final_url": raw_info.get("final_url", url),
+        })
+
+        # 6) return same shape the agent expects (+ prepend DOC_ID tag)
+        result = (
+            f"The useful information in {url} for user goal {goal} as follows: \n\n"
+            f"Evidence in page: \n{evidence}\n\n"
+            f"Summary: \n{summary}\n\n"
+        )
+        if len(result) < 10 and summary_retries < 0:
+            print("[visit] Could not generate valid summary after maximum retries")
+            return "[visit] Failed to read page"
+
+        tag = f"[[DOC_ID:{doc_id}]]\n" if doc_id else ""
+        return tag + result
+    
+    
+
+    '''def _read_and_summarize(self , url: str, goal: str, qdir: Path) -> str:
         # 0) archive RAW bytes up front
         
         
@@ -384,6 +503,7 @@ class Visit(BaseTool):
         ts = _utc_now_iso()
         raw_info = {"status": None, "content_type": None, "final_url": url}
         raw_path = None
+        doc_id = None
 
         # 1) extract page
         content = local_readpage(url)
@@ -395,6 +515,7 @@ class Visit(BaseTool):
             try:
                 header = f"# Extracted content\n\nURL: {url}\nSaved: {ts}\n\n---\n\n"
                 _save_text(extracted_path, header + content)
+                doc_id = save_document(content)
             except Exception:
                 extracted_path = None
 
@@ -453,8 +574,10 @@ class Visit(BaseTool):
                 "content_type": raw_info.get("content_type"),
                 "final_url": raw_info.get("final_url", url),
             })
-            return _fallback_payload(url, goal)
-
+            # >>> include ID tag if available <<<
+            tag = f"[[DOC_ID:{doc_id}]]\n" if doc_id else ""
+            return tag + _fallback_payload(url, goal)
+            
         evidence = str(obj.get("evidence", ""))
         summary  = str(obj.get("summary", ""))
 
@@ -467,7 +590,8 @@ class Visit(BaseTool):
         #         ensure_ascii=False, indent=2
         #     ))
         # except Exception:
-        #     summary_path = None
+        #     
+        summary_path = None
 
         # 5) update index
         _update_index(qdir, {
@@ -494,7 +618,7 @@ class Visit(BaseTool):
             return "[visit] Failed to read page"
         return result
 
-
+'''
 '''
 
 
