@@ -3,7 +3,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Union
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
-from prompt import EXTRACTOR_PROMPT 
 import os 
 from openai import OpenAI
 import random
@@ -11,10 +10,27 @@ import random
 
 WEBCONTENT_MAXLENGTH = int(os.getenv("WEBCONTENT_MAXLENGTH", 150000))
 IGNORE_JINA = os.getenv("IGNORE_JINA", "false").lower() == "true"
-# Visit Tool (Using Jina Reader)
-JINA_READER_URL_PREFIX = "https://r.jina.ai/"
 
+JINA_READER_URL_PREFIX = "https://r.jina.ai/"
+SUMMERY_MODEL_PATH = os.getenv("SUMMERY_MODEL_PATH")
 JINA_API_KEY = os.getenv("JINA_API_KEY")
+
+
+EXTRACTOR_PROMPT = """Please process the following webpage content and user goal to extract relevant information:
+
+## **Webpage Content** 
+{webpage_content}
+
+## **User Goal**
+{goal}
+
+## **Task Guidelines**
+1. **Content Scanning for Rational**: Locate the **specific sections/data** directly related to the user's goal within the webpage content
+2. **Key Extraction for Evidence**: Identify and extract the **most relevant information** from the content, you never miss any important information, output the **full original context** of the content as far as possible, it can be more than three paragraphs.
+3. **Summary Output for Summary**: Organize into a concise paragraph with logical flow, prioritizing clarity and judge the contribution of the information to the goal.
+
+**Final Output Format using JSON format has "rational", "evidence", "summary" feilds**
+"""
 
 
 @register_tool('visit', allow_overwrite=True)
@@ -78,7 +94,7 @@ class Visit(BaseTool):
         for attempt in range(max_tries):
             try:
                 chat_response = client.chat.completions.create(
-                    model='/path/qwen2.5-instruct-72b',
+                    model=SUMMERY_MODEL_PATH,
                     messages=msgs,
                     stop=["\n<tool_response>", "<tool_response>"],
                     temperature=0.7

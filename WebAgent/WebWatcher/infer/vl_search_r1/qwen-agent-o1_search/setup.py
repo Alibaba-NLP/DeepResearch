@@ -14,8 +14,11 @@ def get_version() -> str:
 
 
 def read_description() -> str:
-    with open('README.md', 'r', encoding='UTF-8') as f:
-        long_description = f.read()
+    try:
+        with open('README.md', 'r', encoding='UTF-8') as f:
+            long_description = f.read()
+    except Exception:
+        long_description = ""
     return long_description
 
 

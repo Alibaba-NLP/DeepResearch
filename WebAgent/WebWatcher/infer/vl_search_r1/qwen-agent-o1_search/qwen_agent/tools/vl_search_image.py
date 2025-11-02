@@ -11,19 +11,18 @@ import oss2
 from pathlib import Path
 from functools import wraps
 import atexit
-from dotenv import load_dotenv
 import logging
 import subprocess
 from urllib.parse import quote
 import hashlib
 import base64
+from serpapi import GoogleSearch
 
 from qwen_agent.tools.private.cache_utils import JSONLCache
 from qwen_agent.tools.base import BaseTool, register_tool
 
 
-load_dotenv()
-IMG_SEARCH_KEY = os.getenv('IMG_SEARCH_KEY', '')
+IMG_SEARCH_KEY = os.getenv('IMG_SEARCH_KEY', "4d98f746fe5362640c23542efb8b14b21b1cc31c30b91cedb19cad1ffc2cd6e1")
 accessKeyId = os.getenv('OSS_KEY_ID','')
 accessKeySecret = os.getenv('OSS_KEY_SECRET','')
 SEARCH_STRATEGY =  os.getenv('SEARCH_STRATEGY',"incremental")
@@ -68,36 +67,42 @@ class VLSearchImage(BaseTool):
     }
 
     @search_cache_decorator
-    def search_image_by_image_url_v2(self, download_url, img_save_path=None, byte=True, retry_attempt=10, timeout=30):
+    def search_image_by_image_url(self, download_url, img_save_path=None, byte=True, retry_attempt=10, timeout=30):
         
-        url = 'https://idealab.alibaba-inc.com/api/v1/lens/search'
-        headers = {
-            "X-AK": IMG_SEARCH_KEY,
-            "Content-Type": "application/json"
-        }
-        template = {
-            "extendParams": {"url": download_url},
-            "platformInput": {"model": "google-search"}
+        # dl_img = False
+        # for attempt in range(retry_attempt):
+        #     try:
+        #         resp = requests.get(download_url, timeout=timeout)
+        #         resp.raise_for_status()
+        #         img_bytes = resp.content
+        #         img_b64 = base64.b64encode(img_bytes).decode("utf-8")
+        #         dl_img = True
+        #         break
+        #     except Exception as e:
+        #         print(f"Retry {attempt+1}/{retry_attempt} download input image url failed: {e}")
+        #         time.sleep(1)
+        
+        # if dl_img = False:
+        #     raise RuntimeError("Input image download failed after multiple attempts.")
+
+        params = {
+        "engine": "google_reverse_image",
+        "image_url": download_url,
+        "api_key": IMG_SEARCH_KEY
         }
 
-        resp = ""
-        # breakpoint()
+        results = {}
+        breakpoint()
         for attempt in range(retry_attempt):
             try:
-                resp = requests.post(url, headers=headers, json=template, timeout=timeout)
-
-                code = resp.status_code
-                rst = resp.json()
-
-                if isinstance(rst, str):
-                    rst = json.loads(rst)
-
-                docs = rst.get("data", {}).get("originalOutput", {}).get("organic", [])
+                search = GoogleSearch(params)
+                rst = search.get_dict()
+                docs = rst.get('image_results', [])
                 
                 search_data = [
                     {
-                        "image_path": item.get("thumbnailUrl", ""),
-                        "snippet": item.get("title", ""),
+                        "image_path": item.get("favicon", ""),
+                        "snippet": item.get("snippet", ""),
                         "url": item.get("link", ""),
                         # "source": item.get("source", "")
                     }
@@ -113,52 +118,6 @@ class VLSearchImage(BaseTool):
         
         return []
 
-    @search_cache_decorator
-    def search_image_by_image_url_v1(self, download_url, img_save_path, byte, retry_attempt=10, timeout=30):
-        
-        url = 'http://47.88.77.118:8080/api/search_images'
-        headers = {"Host": "pre-nlp-cn-hangzhou.aliyuncs.com", "Authorization": f"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dCJ9.eyJ1c2VybmFtZSI6IjIzNjc4NSIsInBhc3N3b3JkIjoiMjM2Nzg1IiwiZXhwIjoyMDI2MzY2MDQ2fQ.4NK2-mbahiUHZ3tMc6VfyxMIhqK8Iu-at6FgNE7aIHM", "Content-Type": "application/json"}
-        template = {
-            "sem_type":"google",
-            "image_url":download_url,
-
-        }
-        resp = ""
-      
-        for attempt in range(retry_attempt):
-            try:
-                resp = requests.post(url, headers=headers, json=template, timeout=timeout)
-
-                code = resp.status_code
-                rst = resp.json()
-
-                if isinstance(rst, str):
-                    rst = json.loads(rst)
-
-                docs = rst.get("organic", {})
-                
-                search_data = []
-                for item in docs[:15]:
-                    try:
-                        img64 = item.get('image_base64')
-                        title = item.get("title", "")
-                        url = item.get("link", "")
-                        search_data.append(
-                        {
-                            "image_path": img64,
-                            "snippet": title,
-                            "url": url
-                        })
-                    except Exception as e:
-                        continue
-
-                return self.download_upload(search_data[:10], img_save_path, byte)
-            except requests.exceptions.Timeout:
-                print(f"请求超时（尝试 {attempt + 1}/{retry_attempt}）: {download_url}")
-            except Exception as e:
-                print(f"Error searching image via URL: {str(e)}. Code = {code}, Retrying...")
-        
-        return []
 
     def save_image_detail(self, data_dict, save_dir):
         with open(save_dir, 'a') as df:
@@ -338,7 +297,7 @@ class VLSearchImage(BaseTool):
         ctxs = []
 
         for image_url in image_urls:
-            search_result = self.search_image_by_image_url_v2(image_url, img_save_path, byte)
+            search_result = self.search_image_by_image_url(image_url, img_save_path, byte)
             
             search_images, search_texts, search_urls = self.parse_image_search_result(search_result)
            
@@ -368,7 +327,8 @@ class VLSearchImage(BaseTool):
 
 if __name__ == '__main__':
 
-    image_url1 = ["https://mitalinlp.oss-cn-hangzhou.aliyuncs.com/rallm/deep_research_vl_image/hle_image/216.jpg"]
+    image_url1 = ["https://mitalinlp.oss-cn-hangzhou.aliyuncs.com/rallm/deep_research_vl_image/hle_image/214.jpg"]
+    image_url2 = ["https://th.bing.com/th/id/OIP.sCzpnScidvdeSPyy-0Rd2wHaDt?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3"]
     
     results = VLSearchImage().call({"images": image_url1},img_save_path="/mnt/data/zhili/image_test",byte=False)
     print(results)

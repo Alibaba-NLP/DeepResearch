@@ -6,14 +6,14 @@ date=$(date +%Y%m%d)
 
 
 PROJECT_NAME=${date}
-# benchmark='hle' 
-# EXPERIMENT_NAME='0908'
-# MODEL_PATH=pretrain_model/qwen2.5_vl_7b
-# SUMMERY_MODEL_PATH=pretrain_model/qwen2.5_vl_72b
-benchmark=$1
-EXPERIMENT_NAME=$2
-MODEL_PATH=$3
-SUMMERY_MODEL_PATH=$4
+benchmark='hle' 
+EXPERIMENT_NAME='1030'
+MODEL_PATH=pretrain_model/webwatcher7b
+SUMMERY_MODEL_PATH=pretrain_model/qwen2.5_vl_72b
+# benchmark=$1
+# EXPERIMENT_NAME=$2
+# MODEL_PATH=$3
+# SUMMERY_MODEL_PATH=$4
 
 SAVE_PATH=scripts_eval/results/${PROJECT_NAME}_${benchmark}
 SAVE_FILE=scripts_eval/results/${PROJECT_NAME}_${benchmark}/${EXPERIMENT_NAME}.jsonl
@@ -26,10 +26,11 @@ fi
 # search config
 echo "" | sudo tee -a /etc/hosts
 echo "==== 启动模型 vllm (端口8001)... ===="
-CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve $MODEL_PATH --port 8001 --host 0.0.0.0 --limit-mm-per-prompt '{"image": 100}' --served-model-name $MODEL_PATH --max-num-batched-tokens 32768 --max-num-seqs 128 --tensor-parallel-size 1 > ${SAVE_PATH}/${EXPERIMENT_NAME}_vllm.log 2>&1 & vllm_pid=$!
+vllm serve $MODEL_PATH --port 8001 --host 0.0.0.0 --limit-mm-per-prompt '{"image": 100}' --served-model-name $MODEL_PATH --max-num-batched-tokens 32768 --max-num-seqs 128 --tensor-parallel-size 1 > ${SAVE_PATH}/${EXPERIMENT_NAME}_vllm.log 2>&1 & vllm_pid=$!
+# CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve $MODEL_PATH --port 8001 --host 0.0.0.0 --limit-mm-per-prompt '{"image": 100}' --served-model-name $MODEL_PATH --max-num-batched-tokens 32768 --max-num-seqs 128 --tensor-parallel-size 1 > ${SAVE_PATH}/${EXPERIMENT_NAME}_vllm.log 2>&1 & vllm_pid=$!
 
-echo "==== 启动summery model vllm (端口6002)... ===="
-CUDA_VISIBLE_DEVICES=4,5,6,7 vllm serve $SUMMERY_MODEL_PATH --port 6002 --host 0.0.0.0 --served-model-name $SUMMERY_MODEL_PATH --max-num-batched-tokens 32768 --max-num-seqs 128 --tensor-parallel-size 1  & summery_pid=$!
+# echo "==== 启动summery model vllm (端口6002)... ===="
+# CUDA_VISIBLE_DEVICES=4,5,6,7 vllm serve $SUMMERY_MODEL_PATH --port 6002 --host 0.0.0.0 --served-model-name $SUMMERY_MODEL_PATH --max-num-batched-tokens 32768 --max-num-seqs 128 --tensor-parallel-size 1  & summery_pid=$!
 
 #####################################
 ### 2. 等待 server 端口 ready     ###
@@ -44,19 +45,21 @@ while true; do
     if ! $server1_ready && curl -s http://localhost:8001/v1/chat/completions > /dev/null; then
         echo -e "\nLocal model (port 8001) is ready!"
         server1_ready=true
+        # TODO: delete break
+        break
     fi
 
         # Check Summary Model
-    if ! $server2_ready && curl -s http://localhost:6002/v1/chat/completions > /dev/null; then
-        echo -e "\nSummary model (port 6002) is ready!"
-        server2_ready=true
-    fi
+    # if ! $server2_ready && curl -s http://localhost:6002/v1/chat/completions > /dev/null; then
+    #     echo -e "\nSummary model (port 6002) is ready!"
+    #     server2_ready=true
+    # fi
     
-    # If both servers are ready, exit loop
-    if $server1_ready && $server2_ready; then
-        echo "Both servers are ready for inference!"
-        break
-    fi
+    # # If both servers are ready, exit loop
+    # if $server1_ready && $server2_ready; then
+    #     echo "Both servers are ready for inference!"
+    #     break
+    # fi
     
     current_time=$(date +%s)
     elapsed=$((current_time - start_time))
@@ -108,17 +111,29 @@ else
   echo "警告: 未知的 benchmark 值 '$benchmark'. 未设置 IMAGE_DIR."
 fi
 
-export IMG_SEARCH_KEY=$5
-export JINA_API_KEY=$6
-export DASHSCOPE_API=$7
-export TEXT_SEARCH_KEY=$8 
-export ALIBABA_CLOUD_ACCESS_KEY_ID=$9
-export ALIBABA_CLOUD_ACCESS_KEY_SECRET=$10
+export IMG_SEARCH_KEY="6fd1f6920c314a1f47b6ee5b5d2494274ab6d386"
+export JINA_API_KEY='jina_b5f95c8238764e49972e57909ed2f77fmV1N1mLXZ-rUNQQOJCb60KduO3Ym'
+# export DASHSCOPE_API=$7
+export TEXT_SEARCH_KEY="6fd1f6920c314a1f47b6ee5b5d2494274ab6d386"
 
-pip uninstall qwen-agent
-pip install -e vl_search_r1/qwen-agent-o1_search --no-deps
-pip install -e uniform_eval --no-deps
-pip install "qwen-agent[code_interpreter]"
+# export IMG_SEARCH_KEY=$5
+# export JINA_API_KEY=$6
+# export DASHSCOPE_API=$7
+# export TEXT_SEARCH_KEY=$8 
+# export ALIBABA_CLOUD_ACCESS_KEY_ID=$9
+# export ALIBABA_CLOUD_ACCESS_KEY_SECRET=$10
+
+# pip uninstall qwen-agent
+# pip install -e vl_search_r1/qwen-agent-o1_search --no-deps
+# pip install "qwen-agent[code_interpreter]"
+
+HOST_LINE="203.119.169.238   idealab.alibaba-inc.com"
+if ! grep -q "idealab.alibaba-inc.com" /etc/hosts; then
+    echo "$HOST_LINE" | sudo tee -a /etc/hosts
+    echo "Added host mapping: $HOST_LINE"
+else
+    echo "Host mapping already exists, skipped."
+fi
 
 
 # for i in 1 2 3
@@ -130,8 +145,7 @@ pip install "qwen-agent[code_interpreter]"
 #         --eval_data $benchmark
 # done
 
-SAVE_FILE=${SAVE_PATH}/${EXPERIMENT_NAME}_round${i}.jsonl
-[ -s "$SAVE_FILE" ] && > "$SAVE_FILE"
+SAVE_FILE=${SAVE_PATH}/${EXPERIMENT_NAME}.jsonl
 python scripts_eval/agent_eval.py \
     --output_file $SAVE_FILE \
     --eval_data $benchmark
@@ -143,8 +157,8 @@ else
     echo "警告：未能关闭VLLM服务 (PID: ${vllm_pid})，可能已被关闭或不存在。"
 fi
 
-if kill ${summery_pid}; then
-    echo "成功关闭VLLM服务 (PID: ${summery_pid})"
-else
-    echo "警告：未能关闭VLLM服务 (PID: ${summery_pid})，可能已被关闭或不存在。"
-fi
+# if kill ${summery_pid}; then
+#     echo "成功关闭VLLM服务 (PID: ${summery_pid})"
+# else
+#     echo "警告：未能关闭VLLM服务 (PID: ${summery_pid})，可能已被关闭或不存在。"
+# fi
