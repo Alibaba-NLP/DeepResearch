@@ -238,8 +238,7 @@ For communications, please contact Yong Jiang (yongjiang.jy@alibaba-inc.com).
 ## Citation
 
 ```bibtex
-@misc{tongyidr,
-@article{team2025tongyi,
+@article{tongyidr,
   title={Tongyi DeepResearch Technical Report},
   author={Team, Tongyi DeepResearch and Li, Baixuan and Zhang, Bo and Zhang, Dingchu and Huang, Fei and Li, Guangyu and Chen, Guoxin and Yin, Huifeng and Wu, Jialong and Zhou, Jingren and others},
   journal={arXiv preprint arXiv:2510.24701},
