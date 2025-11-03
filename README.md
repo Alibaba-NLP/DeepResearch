@@ -239,9 +239,10 @@ For communications, please contact Yong Jiang (yongjiang.jy@alibaba-inc.com).
 
 ```bibtex
 @misc{tongyidr,
-  author={Tongyi DeepResearch Team},
-  title={Tongyi DeepResearch: A New Era of Open-Source AI Researchers},
-  year={2025},
-  howpublished={\url{https://github.com/Alibaba-NLP/DeepResearch}}
+@article{team2025tongyi,
+  title={Tongyi DeepResearch Technical Report},
+  author={Team, Tongyi DeepResearch and Li, Baixuan and Zhang, Bo and Zhang, Dingchu and Huang, Fei and Li, Guangyu and Chen, Guoxin and Yin, Huifeng and Wu, Jialong and Zhou, Jingren and others},
+  journal={arXiv preprint arXiv:2510.24701},
+  year={2025}
 }
 ```
