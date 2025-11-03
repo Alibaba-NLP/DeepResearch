@@ -11,11 +11,16 @@ import re
 from collections import Counter, defaultdict
 from transformers import AutoTokenizer
 import argparse
+from dotenv import load_dotenv
+load_dotenv()
+
+
+
 
 
 
 # ---------------- Verbose logging helpers ----------------
-VERBOSE = False
+VERBOSE = True
 _log_lock = threading.Lock()
 def vlog(msg: str, pad: int = 2, border: bool = False, width: int = 80):
     """
@@ -58,7 +63,7 @@ def _first_env(*names: str, default: str = "") -> str:
 
 # Use a valid model id for the judge:
 JUDGE_MODEL = _first_env("JUDGE_MODEL", default="gpt-5-nano")
-MAX_WORKERS = 20
+MAX_WORKERS = 15
 
 API_KEY  = _first_env("API_KEY", "OPENAI_API_KEY")
 BASE_URL = _first_env("API_BASE", "BASE_URL", "OPENAI_BASE_URL", default="https://api.openai.com/v1")
@@ -86,7 +91,7 @@ def _preflight():
             messages=[{"role": "user", "content": "[question]: 2+2\n[response]: 4\n[correct_answer]: 4"}],
             response_format=_R,
             max_completion_tokens=64,
-            timeout=20
+            timeout=650
         )
         return True, f"preflight ok: model={JUDGE_MODEL}, correct={r.choices[0].message.parsed.correct}"
     except Exception as e:
@@ -143,10 +148,10 @@ def extract_answer(question, correct_answer, response, item_idx=None):
     try:
         response_obj = client.beta.chat.completions.parse(
             model=JUDGE_MODEL,
-            max_completion_tokens=8192,  
+            max_completion_tokens=100000,  
             messages=[{"role": "user", "content": prompt}],
             response_format=ExtractedAnswer,
-            timeout=60.0
+            timeout=1000
         )
         content = response_obj.choices[0].message.parsed
         if VERBOSE:
@@ -163,7 +168,7 @@ def extract_answer(question, correct_answer, response, item_idx=None):
             "confidence": content.confidence
         }
     except Exception as e:
-        vlog(f"[judge_error] cap={8192}: {e}")
+        vlog(f"[judge_error] cap={100000}: {e}")
         return None
 
 

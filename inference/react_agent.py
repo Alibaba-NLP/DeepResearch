@@ -31,6 +31,7 @@ from tool_scholarLOCAL import *
 from tool_searchLOCAL import *
 from tool_visitLOCAL import *
 import re
+from db_min import fetch_document  # local MySQL doc store (fetch by doc_id)
 
 
 OBS_START = '<tool_response>'
@@ -109,6 +110,18 @@ class MultiTurnReactAgent(FnCallAgent):
         self.initial_user_question: Optional[str] = None
         self.raw_messages: List[Dict] = [] # copy of all messages w/o summaries
 
+        # -----------------------------
+        # NEW: Doc summary cache + models
+        # -----------------------------
+        self._doc_cache: Dict[int, str] = {}  # doc_id -> shortened summary
+        self._doc_cache_msg_index: int = 2    # target index position in messages
+        # Small/cheap models for routing/shortening (fallback to main model if unset)
+        self._shortener_model = os.getenv("DR_SHORTENER_MODEL", os.getenv("SUMMARY_MODEL_NAME", "")) or os.getenv("DR_MODEL_NAME") or os.getenv("MODEL_NAME")
+        self._trigger_model   = os.getenv("DR_TRIGGER_MODEL",  os.getenv("SUMMARY_MODEL_NAME", "")) or os.getenv("DR_MODEL_NAME") or os.getenv("MODEL_NAME")
+        # Shortener/output limits
+        self._short_summary_max_chars = int(os.getenv("DOC_CACHE_SUMMARY_MAX_CHARS", "220"))
+        self._doc_cache_max_items     = int(os.getenv("DOC_CACHE_MAX_ITEMS", "20"))
+
         # Track whether a visit actually occurred (may be useful downstream)
         self.did_visit: bool = False
 
@@ -119,14 +132,18 @@ class MultiTurnReactAgent(FnCallAgent):
                     msgs,
                     planning_port,
                     max_tries: int = 10,
-                    override_stop: Optional[List[str]] = None):        # Prefer agent-specific env; fall back to generic if needed
+                    override_stop: Optional[List[str]] = None,
+                    model_override: Optional[str] = None,
+                    max_tokens_override: Optional[int] = None):        # Prefer agent-specific env; fall back to generic if needed
         openai_api_key  = os.getenv("DR_API_KEY")  or os.getenv("API_KEY")
         openai_api_base = os.getenv("DR_API_BASE") or os.getenv("API_BASE") or "https://openrouter.ai/api/v1"
         resolved_model  = os.getenv("DR_MODEL_NAME") or os.getenv("MODEL_NAME") or "alibaba/tongyi-deepresearch-30b-a3b"
 
         # If self.model is "api" or empty, use the real model id from env
         use_model = resolved_model if str(getattr(self, "model", "")).strip().lower() in ("", "api") else self.model
-
+        if model_override:
+            use_model = model_override
+            
         if not openai_api_key:
             # Fail fast with a clear message; caller handles the string appropriately.
             return "ERROR: Missing API key. Set DR_API_KEY or API_KEY."
@@ -218,7 +235,120 @@ class MultiTurnReactAgent(FnCallAgent):
             pass
         self.initial_user_question = None
         self.raw_messages = []
+        self._doc_cache.clear()
 
+        # -----------------------------
+    # NEW: Doc cache helpers
+    # -----------------------------
+    def _extract_doc_id_and_summary(self, tool_response_str: str) -> Tuple[Optional[int], Optional[str]]:
+        """Parse '[[DOC_ID:123]]' and the 'Summary:' block from tool output."""
+        if not isinstance(tool_response_str, str) or not tool_response_str:
+            return None, None
+        m = re.search(r"\[\[DOC_ID:(\d+)\]\]", tool_response_str)
+        doc_id = int(m.group(1)) if m else None
+        # capture text after 'Summary:' label until a blank line or end
+        s = None
+        sm = re.search(r"Summary:\s*(.+?)(?:\n{2,}|\Z)", tool_response_str, flags=re.DOTALL | re.IGNORECASE)
+        if sm:
+            s = sm.group(1).strip()
+        return doc_id, s
+
+    def _shorten_summary(self, text: str) -> str:
+        """Call a small LLM to compress the per-doc summary; robust fallbacks."""
+        text = (text or "").strip()
+        if not text:
+            return ""
+        if len(text) <= self._short_summary_max_chars:
+            return text
+        sys = "You write terse, faithful one-sentence summaries. <= {n} chars. No markup, no bracketed tags.".format(
+            n=self._short_summary_max_chars
+        )
+        usr = "Shorten this summary to <= {n} chars without losing key entities:\n\n{t}".format(
+            n=self._short_summary_max_chars, t=text
+        )
+        msgs = [{"role": "system", "content": sys}, {"role": "user", "content": usr}]
+        out = self.call_server(
+            msgs,
+            planning_port=None,
+            max_tries=3,
+            override_stop=[],
+            model_override=self._shortener_model,
+            max_tokens_override=256
+        )
+        out = (out or "").strip()
+        # sanitize: strip control tags if any leaked
+        out = re.sub(r"</?[^>]+>", "", out)
+        return out[:self._short_summary_max_chars] if out else text[:self._short_summary_max_chars]
+
+    def _rebuild_doc_cache_msg(self) -> Optional[Dict]:
+        """Build the system message content for the doc cache."""
+        if not self._doc_cache:
+            return None
+        # Limit size for safety
+        items = list(self._doc_cache.items())[-self._doc_cache_max_items:]
+        lines = ["<doc_cache>"]
+        for did, summ in items:
+            lines.append(f"- [DOC_ID:{did}] {summ}")
+        lines.append("</doc_cache>")
+        return {"role": "system", "content": "\n".join(lines)}
+
+    def _upsert_doc_cache_message(self, messages: List[Dict]) -> None:
+        """Ensure cache message lives at messages[2] (after system + question)."""
+        cache_msg = self._rebuild_doc_cache_msg()
+        if not cache_msg:
+            return
+        # Ensure we have at least 2 head messages
+        while len(messages) < 2:
+            messages.append({"role": "user", "content": ""})
+        if len(messages) == 2:
+            messages.append(cache_msg)
+        else:
+            # if there's already something at index 2 that looks like a cache, replace; else insert
+            try:
+                if isinstance(messages[2], dict) and isinstance(messages[2].get("content", ""), str) and "<doc_cache>" in messages[2]["content"]:
+                    messages[2] = cache_msg
+                else:
+                    messages.insert(2, cache_msg)
+            except Exception:
+                # Defensive: if any index errors occur, append instead
+                messages.append(cache_msg)
+
+    def _maybe_trigger_local_retrieval(self, messages: List[Dict]) -> Optional[int]:
+        """
+        Ask a small LLM whether to pull a local document now; returns doc_id or None.
+        Emits <memory>DOC_ID</memory> or <memory>none</memory>.
+        """
+        if not self._doc_cache:
+            return None
+        # Build a compact view: last 8 turns + cache listing
+        tail = messages[-8:] if len(messages) > 8 else messages[:]
+        cache_list = "\n".join(f"[DOC_ID:{k}] {v}" for k, v in list(self._doc_cache.items())[-self._doc_cache_max_items:])
+        sys = ("You are a retrieval router. Decide if a local document is needed to answer next step. "
+               "If yes, output EXACTLY <memory>DOC_ID</memory>. If no, output EXACTLY <memory>none</memory>. "
+               "No other text.")
+        usr = "Doc cache:\n{}\n\nRecent context (JSON):\n{}".format(cache_list, json.dumps(tail, ensure_ascii=False))
+        msgs = [{"role": "system", "content": sys}, {"role": "user", "content": usr}]
+        out = self.call_server(
+            msgs,
+            planning_port=None,
+            max_tries=3,
+            override_stop=[],
+            model_override=self._trigger_model,
+            max_tokens_override=16
+        )
+        if not isinstance(out, str) or not out:
+            return None
+        m = re.search(r"<memory>\s*(\d+|none)\s*</memory>", out, flags=re.IGNORECASE)
+        if not m:
+            return None
+        token = m.group(1).lower()
+        if token == "none":
+            return None
+        try:
+            return int(token)
+        except Exception:
+            return None
+        
     # ======================================================
     # NEW: Summarize current conversation for orchestration
     # ======================================================
@@ -423,6 +553,22 @@ class MultiTurnReactAgent(FnCallAgent):
                 self.raw_messages.append(msg_tool)  # keep raw
                 just_ran_tool = True
                 last_tool_response_len = len(tool_response_str)
+                
+                # === NEW: parse doc_id + summary from tool payload, shorten, cache, upsert at [2]
+                try:
+                    did, summ = self._extract_doc_id_and_summary(tool_response_str)
+                    if did and summ:
+                        short = self._shorten_summary(summ)
+                        if short:
+                            self._doc_cache[did] = short
+                            # clamp cache size
+                            if len(self._doc_cache) > self._doc_cache_max_items:
+                                first_key = list(self._doc_cache.keys())[0]
+                                self._doc_cache.pop(first_key, None)
+                            self._upsert_doc_cache_message(messages)
+                except Exception as _e:
+                    print(f"[DocCache] skip due to error: {_e}")
+
             # ============================
             # /Multi-<tool_call> integration
             # ============================
@@ -438,6 +584,24 @@ class MultiTurnReactAgent(FnCallAgent):
             max_tokens = 110 * 1024
             token_count = self.count_tokens(messages)
             print(f"round: {round}, token count: {token_count}")
+            
+            # === NEW: After tool call, before summarization, maybe fetch local doc text
+            retrieval_happened = False
+            try:
+                if just_ran_tool:
+                    target_id = self._maybe_trigger_local_retrieval(messages)
+                    if isinstance(target_id, int):
+                        doc_text = fetch_document(target_id)
+                        if doc_text:
+                            local_msg = {
+                                "role": "user",
+                                "content": "<local_memory>\n[[DOC_ID:{:d}]]\n{}\n</local_memory>".format(target_id, doc_text)
+                            }
+                            messages.append(local_msg)
+                            self.raw_messages.append(local_msg)
+                            retrieval_happened = True  # Skip summarization this round
+            except Exception as _e:
+                print(f"[LocalRetrieval] error: {_e}")
 
             # Trigger summarization:
             # - every N rounds
@@ -454,6 +618,8 @@ class MultiTurnReactAgent(FnCallAgent):
                 if just_ran_tool and last_tool_response_len >= self.tool_response_size_threshold:
                     print("Summarization triggered by large tool response.\n")
                     should_summarize = True
+                if retrieval_happened:
+                    should_summarize = False  # skip summarization when we just injected local memory                
             except Exception:
                 # Fallback if any unexpected type issues
                 print("Summarization triggered by exception fallback.\n")
@@ -473,14 +639,18 @@ class MultiTurnReactAgent(FnCallAgent):
                         "content": "<orchestrator_summary>\n" + rolled + "\n</orchestrator_summary>"
                     }
 
-                    # REPLACEMENT STRATEGY (no pinned question):
+                    # REPLACEMENT STRATEGY:
                     # keep:
                     #  - messages[0] = system prompt
                     #  - messages[1] = initial user question
+                    #  - messages[2] = doc cache (if present)
                     #  - latest summary as a system message
-                    #  - optional short tail from RAW history (skip first two)
-                    K = 3  # retain ~last K pairs as tail
+                    #  - optional short tail from RAW history (skip first two, preserve cache slot)
+                    K = 6  # retain ~last K pairs as tail
                     head = [messages[0], messages[1]]
+                    # Ensure cache remains at index 2
+                    self._upsert_doc_cache_message(head)  # will append/insert cache as [2] if exists
+                    # Tail from raw history (no summaries or cache duplicates)
                     raw_body = self.raw_messages[2:] if len(self.raw_messages) > 2 else []
                     tail_len = min(len(raw_body), 2 * K)
                     tail = raw_body[-tail_len:] if tail_len > 0 else []
