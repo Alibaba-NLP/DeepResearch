@@ -33,6 +33,8 @@ from tool_visitLOCAL import *
 import re
 from db_min import fetch_document  # local MySQL doc store (fetch by doc_id)
 
+# NEW: path & I/O helpers for logging
+from pathlib import Path
 
 OBS_START = '<tool_response>'
 OBS_END = '\n</tool_response>'
@@ -83,7 +85,25 @@ class SummaryMemory:
 
     def clear(self):
         self.chunks.clear()
-        
+
+# ==== Logging helpers ========================================================
+def _now_iso():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def _slugify(text: str, maxlen: int = 64) -> str:
+    return re.sub(r"[^a-zA-Z0-9._-]+", "-", (text or "")).strip("-").lower()[:maxlen] or "q"
+
+def _ensure_logs_dir() -> Path:
+    p = Path("logs").resolve()
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+def _short(s: str, n: int = 300) -> str:
+    s = s or ""
+    return s if len(s) <= n else (s[:n] + f"... [trimmed {len(s)-n}]")
+
+# ============================================================================
+
 class MultiTurnReactAgent(FnCallAgent):
     def __init__(self,
                  function_list: Optional[List[Union[str, Dict, BaseTool]]] = None,
@@ -125,9 +145,89 @@ class MultiTurnReactAgent(FnCallAgent):
         # Track whether a visit actually occurred (may be useful downstream)
         self.did_visit: bool = False
 
+        # -----------------------------
+        # NEW: Logging state
+        # -----------------------------
+        self.external_question_id: str = ""
+        self._log_path: Optional[Path] = None
+        self._choice_path: List[str] = []  # e.g., ["orch", "tool:visit", "recall:123", "summary", "answer"]
+
     def sanity_check_output(self, content):
         return "<think>" in content and "</think>" in content
-    
+
+    # ==== Logging methods ====================================================
+    def _init_run_logger(self, question: str):
+        """Create/initialize the log file path for this run."""
+        try:
+            logs_dir = _ensure_logs_dir()
+            qid = self.external_question_id or ""
+            if not qid:
+                # fallback: hash question so filename is unique & deterministic-ish
+                qid = "noid-" + hashlib.sha256((question or "").encode("utf-8")).hexdigest()[:10]
+            fname = f"{_slugify(qid)}.log"
+            self._log_path = logs_dir / fname
+            # header
+            with open(self._log_path, "w", encoding="utf-8") as f:
+                f.write(f"=== RUN START [{_now_iso()}] ===\n")
+                f.write(f"question_id: {qid}\n")
+                f.write(f"system_date: {today_date()}\n")
+                f.write("CHOICE PATH (building):\n")
+                f.write("  (will be finalized at end)\n\n")
+                f.write("QUESTION (verbatim):\n")
+                f.write((question or "") + "\n")
+                f.write("\n")
+        except Exception as e:
+            print(f"[log] init failed: {e}")
+
+    def _log(self, section: str, text: str):
+        """Append a sectioned log entry to the run log."""
+        try:
+            if not self._log_path:
+                return
+            with open(self._log_path, "a", encoding="utf-8") as f:
+                f.write(f"\n--- {section} @ { _now_iso() } ---\n")
+                f.write(text if text is not None else "")
+                if text and not text.endswith("\n"):
+                    f.write("\n")
+        except Exception as e:
+            print(f"[log] write failed: {e}")
+
+    def _format_doc_cache_short(self) -> str:
+        if not self._doc_cache:
+            return "(doc_cache empty)"
+        items = list(self._doc_cache.items())[-self._doc_cache_max_items:]
+        return "\n".join(f"- [DOC_ID:{did}] {_short(summ, 160)}" for did, summ in items)
+
+    def _finalize_log(self, messages, result):
+        """Write the final choice path at top, and dump raw messages + state."""
+        try:
+            if not self._log_path:
+                return
+            # Append details
+            dump = {
+                "final_choice_path": " -> ".join(self._choice_path),
+                "doc_cache": self._doc_cache,
+                "summary_memory_chunks": self.summary_memory.chunks,
+                "doc_ids": sorted(set(self.doc_ids)),
+                "messages": messages,
+                "raw_messages": getattr(self, "raw_messages", []),
+                "result": result
+            }
+            self._log("FINAL DUMP", json.dumps(dump, ensure_ascii=False, indent=2))
+
+            # Prepend final choice path at the very top
+            try:
+                original = self._log_path.read_text(encoding="utf-8")
+                header = "=== CHOICE PATH (final) ===\n" + " -> ".join(self._choice_path) + "\n\n"
+                self._log_path.write_text(header + original, encoding="utf-8")
+            except Exception as e:
+                print(f"[log] prepend choice path failed: {e}")
+
+        except Exception as e:
+            print(f"[log] finalize failed: {e}")
+
+    # =========================================================================
+
     def call_server(self,
                     msgs,
                     planning_port,
@@ -218,9 +318,8 @@ class MultiTurnReactAgent(FnCallAgent):
         if self._tokenizer is None:
             self._tokenizer = AutoTokenizer.from_pretrained(self.llm_local_path)
 
-        
-        full_prompt = tokenizer.apply_chat_template(messages, tokenize=False)
-        tokens = tokenizer(full_prompt, return_tensors="pt")
+        full_prompt = self._tokenizer.apply_chat_template(messages, tokenize=False)
+        tokens = self._tokenizer(full_prompt, return_tensors="pt")
         token_count = int(tokens["input_ids"].shape[-1])
         
         return token_count
@@ -426,6 +525,8 @@ class MultiTurnReactAgent(FnCallAgent):
             question = raw_msg.split("User:")[1].strip() if "UserI needed a question id, w:" in raw_msg else raw_msg 
         
         self.external_question_id = str(data['item'].get('question_id', '') or '')
+        # init logging now that we know the id/question
+        self._init_run_logger(question)
 
         start_time = time.time()
         planning_port = data['planning_port']
@@ -457,12 +558,27 @@ class MultiTurnReactAgent(FnCallAgent):
                     "handoff_summary": self.summary_memory.as_text(),
                     "doc_ids": sorted(set(self.doc_ids))
                 }
+                # finalize log
+                try:
+                    self._choice_path.append("timeout")
+                    self._finalize_log(messages, result)
+                except Exception:
+                    pass
                 self._cleanup_after_run()
                 
                 return result
             round += 1
             num_llm_calls_available -= 1
+
+            # Orchestrator call
+            self._choice_path.append("orch")
             content = self.call_server(messages, planning_port)
+            # log orchestrator response (+ length)
+            try:
+                self._log("ORCHESTRATOR RESPONSE", f"len={len(content or '')}\n{_short(content or '', 4000)}")
+            except Exception:
+                pass
+
             print(f'Round {round}: {content}')
             if not isinstance(content, str) or not content:
                 # Defensive: empty or non-string response
@@ -471,6 +587,7 @@ class MultiTurnReactAgent(FnCallAgent):
                 pos = content.find('<tool_response>')
                 content = content[:pos]
             messages.append({"role": "assistant", "content": content.strip()})
+            self.raw_messages.append({"role":"assistant", "content": content.strip()})
             
             just_ran_tool = False
             last_tool_response_len = 0
@@ -484,20 +601,18 @@ class MultiTurnReactAgent(FnCallAgent):
                 aggregated_outputs: List[str] = []
 
                 for raw_call in calls:
+                    tool_name = ""
                     try:
                         is_python = ("python" in raw_call.lower())
                         has_code_tags = ("<code>" in raw_call and "</code>" in raw_call)
 
                         if is_python and has_code_tags:
-                            # Python inline path
-                            try:
-                                code_raw = raw_call.split("<code>", 1)[1].split("</code>", 1)[0].strip()
-                                result = TOOL_MAP['PythonInterpreter'].call(code_raw)
-                            except Exception as e:
-                                result = f"[Python Interpreter Error]: Formatting error. ({e})"
+                            # Python tool intentionally disabled
+                            result = "[Python Interpreter Disabled]: This tool is intentionally disabled."
+                            tool_name = "python"
                         elif is_python and not has_code_tags:
-                            # Preserve prior behavior: treat as formatting error if python is indicated but no code tags
                             result = "[Python Interpreter Error]: Formatting error."
+                            tool_name = "python"
                         else:
                             # JSON tool call path (normal)
                             call_obj = None
@@ -521,10 +636,6 @@ class MultiTurnReactAgent(FnCallAgent):
                         result = f"Error: Tool call execution failed: {e}"
 
                     # stringify tool output
-                    
-                    # tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
-                    # aggregated_outputs.append(tool_out_str)
-                    # stringify tool output
                     tool_out_str = result if isinstance(result, str) else json.dumps(result, ensure_ascii=False)
 
                     # --- NEW: capture and log document IDs from tool outputs ---
@@ -541,11 +652,19 @@ class MultiTurnReactAgent(FnCallAgent):
 
                     aggregated_outputs.append(tool_out_str_clean)
 
-                    
+                    # Choice & logging
+                    self._choice_path.append(f"tool:{tool_name or 'unknown'}")
+                    try:
+                        # log local memory list for SEARCH calls
+                        if str(tool_name).lower() == "search":
+                            self._log("SEARCH CALL / DOC CACHE SNAPSHOT", self._format_doc_cache_short())
+                        # log tool response and length
+                        self._log(f"TOOL RESPONSE ({tool_name})", f"len={len(tool_out_str_clean)}\n{_short(tool_out_str_clean, 4000)}")
+                    except Exception:
+                        pass
 
                 # Feed *all* tool outputs back at once (clear delimiter between items)
                 tool_response_str = "<tool_response>\n" + "\n\n---\n\n".join(aggregated_outputs) + "\n</tool_response>"
-                #messages.append({"role": "user", "content": tool_response_str})
                 msg_tool = {"role": "user", "content": tool_response_str}
                 messages.append(msg_tool)
                 if self.doc_ids:
@@ -554,7 +673,7 @@ class MultiTurnReactAgent(FnCallAgent):
                 just_ran_tool = True
                 last_tool_response_len = len(tool_response_str)
                 
-                # === NEW: parse doc_id + summary from tool payload, shorten, cache, upsert at [2]
+                # === parse doc_id + summary from tool payload, shorten, cache, upsert at [2]
                 try:
                     did, summ = self._extract_doc_id_and_summary(tool_response_str)
                     if did and summ:
@@ -574,10 +693,15 @@ class MultiTurnReactAgent(FnCallAgent):
             # ============================
                 
             if '<answer>' in content and '</answer>' in content:
+                self._choice_path.append("answer")
+                try:
+                    ans = content.split('<answer>')[1].split('</answer>')[0]
+                    self._log("ANSWER", f"len={len(ans)}\n{_short(ans, 8000)}")
+                except Exception:
+                    pass
                 termination = 'answer'
                 break
             if num_llm_calls_available <= 0 and '<answer>' not in content:
-                #messages.append({"role": "assistant", "content": 'Sorry, the number of llm calls exceeds the limit.'})
                 msg_budget = {"role": "assistant", "content": 'Sorry, the number of llm calls exceeds the limit.'}
                 messages.append(msg_budget)
                 self.raw_messages.append(msg_budget)  # keep raw                
@@ -585,7 +709,7 @@ class MultiTurnReactAgent(FnCallAgent):
             token_count = self.count_tokens(messages)
             print(f"round: {round}, token count: {token_count}")
             
-            # === NEW: After tool call, before summarization, maybe fetch local doc text
+            # === After tool call, before summarization, maybe fetch local doc text
             retrieval_happened = False
             try:
                 if just_ran_tool:
@@ -593,6 +717,14 @@ class MultiTurnReactAgent(FnCallAgent):
                     if isinstance(target_id, int):
                         doc_text = fetch_document(target_id)
                         if doc_text:
+                            # Choice & logging for recall
+                            self._choice_path.append(f"recall:{target_id}")
+                            try:
+                                self._log("LOCAL RETRIEVAL DECISION", f"doc_id={target_id}\nDOC CACHE SNAPSHOT:\n{self._format_doc_cache_short()}")
+                                self._log("LOCAL RETRIEVAL RETURN", f"len={len(doc_text)}\n{_short(doc_text, 8000)}")
+                            except Exception:
+                                pass
+
                             local_msg = {
                                 "role": "user",
                                 "content": "<local_memory>\n[[DOC_ID:{:d}]]\n{}\n</local_memory>".format(target_id, doc_text)
@@ -627,11 +759,24 @@ class MultiTurnReactAgent(FnCallAgent):
 
             if should_summarize:
                 try:
+                    # log memory sizes before summary
+                    try:
+                        self._log("SUMMARY PRE", f"messages_len={len(messages)} raw_messages_len={len(self.raw_messages)}")
+                    except Exception:
+                        pass
+
                     summary_text = self.summarize_messages(messages)
                     self.summary_memory.add(summary_text)
                     rolled = self.summary_memory.as_text()
                     print("[ORCH SUMMARY]\n{}\n[Length: {} chars]".format(rolled, len(rolled)))
                     print("[/ORCH SUMMARY]\n")
+
+                    # log summary text + length
+                    try:
+                        self._choice_path.append("summary")
+                        self._log("SUMMARY TEXT", f"len={len(rolled)}\n{_short(rolled, 8000)}")
+                    except Exception:
+                        pass
 
                     # Inject a single orchestrator summary as a high-priority system message
                     summary_msg = {
@@ -660,6 +805,12 @@ class MultiTurnReactAgent(FnCallAgent):
                     new_tc = self.count_tokens(messages)
                     print(f"[Summary] Injected summary. Token count reduced: {token_count} -> {new_tc}")
 
+                    # log memory sizes after summary
+                    try:
+                        self._log("SUMMARY POST", f"messages_len={len(messages)} raw_messages_len={len(self.raw_messages)}")
+                    except Exception:
+                        pass
+
                 except Exception as e:
                     print(f"[Summary] skipped due to error: {e}")
             # ------------------------------------------------------------
@@ -669,15 +820,13 @@ class MultiTurnReactAgent(FnCallAgent):
             if token_count > max_tokens:
                 print(f"Token quantity exceeds the limit: {token_count} > {max_tokens}")
 
-                # Instruct the model to finalize now. We keep existing context and ask for a structured finalization.
-                #messages.append({
                 msg_finalize = {
                     "role": "assistant",
                     "content": "You have now reached the maximum context length you can handle. "
                                "You should stop making tool calls and, based on all the information above, "
                                "think again and provide what you consider the most likely answer in the following format:"
                                "<think>your final thinking</think>\n<answer>your answer</answer>"
-                }#)
+                }
                 messages.append(msg_finalize)
                 self.raw_messages.append(msg_finalize)  # keep raw
                 content = self.call_server(messages, planning_port)
@@ -700,12 +849,24 @@ class MultiTurnReactAgent(FnCallAgent):
                     "doc_ids": sorted(set(self.doc_ids))
 
                 }
+                try:
+                    self._choice_path.append("forced-finalize")
+                    # log final answer-ish content
+                    self._log("FINALIZE RESPONSE", f"len={len(content or '')}\n{_short(content or '', 8000)}")
+                    self._finalize_log(messages, result)
+                except Exception:
+                    pass
                 self._cleanup_after_run()
                 return result
 
         if '<answer>' in messages[-1]['content']:
             prediction = messages[-1]['content'].split('<answer>')[1].split('</answer>')[0]
             termination = 'answer'
+            try:
+                self._choice_path.append("answer")
+                self._log("ANSWER", f"len={len(prediction)}\n{_short(prediction, 8000)}")
+            except Exception:
+                pass
         else:
             prediction = 'No answer found.'
             termination = 'answer not found'
@@ -721,6 +882,11 @@ class MultiTurnReactAgent(FnCallAgent):
             "doc_ids": sorted(set(self.doc_ids))
 
         }
+        # finalize log for normal termination
+        try:
+            self._finalize_log(messages, result)
+        except Exception:
+            pass
         self._cleanup_after_run()
         return result
 
@@ -736,9 +902,6 @@ class MultiTurnReactAgent(FnCallAgent):
                     qi = self.external_question_id or self.question_id
                     tool_args["question_id"] = str(qi)
                 print(f"[agent] {tool_name} → question_id={tool_args['question_id']}")
-
-            # (You don’t need 'params' = tool_args; that self-reference is messy. Remove it.)
-            # tool_args["params"] = tool_args  # <- delete this line
 
             raw_result = TOOL_MAP[tool_name].call(tool_args, **kwargs)
             return raw_result
