@@ -335,6 +335,7 @@ class MultiTurnReactAgent(FnCallAgent):
         self.initial_user_question = None
         self.raw_messages = []
         self._doc_cache.clear()
+        self._choice_path = []  
 
         # -----------------------------
     # NEW: Doc cache helpers
@@ -534,6 +535,7 @@ class MultiTurnReactAgent(FnCallAgent):
             question = raw_msg.split("User:")[1].strip() if "UserI needed a question id, w:" in raw_msg else raw_msg 
         
         self.external_question_id = str(data['item'].get('question_id', '') or '')
+        self._choice_path = []  # start fresh path for this run
         # init logging now that we know the id/question
         self._init_run_logger(question)
 
