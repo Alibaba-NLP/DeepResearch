@@ -435,12 +435,21 @@ class MultiTurnReactAgent(FnCallAgent):
             model_override=self._trigger_model,
             max_tokens_override=16
         )
+        try:
+            self._log("RECALL TRIGGER OUTPUT", f"len={len(out or '')}\n{_short(out or '', 2000)}")
+        except Exception:
+            pass
         if not isinstance(out, str) or not out:
             return None
         m = re.search(r"<memory>\s*(\d+|none)\s*</memory>", out, flags=re.IGNORECASE)
         if not m:
             return None
         token = m.group(1).lower()
+        # Log the parsed decision token (<memory>…</memory>)
+        try:
+            self._log("RECALL TRIGGER DECISION", f"token='{token}'")
+        except Exception:
+            pass
         if token == "none":
             return None
         try:
