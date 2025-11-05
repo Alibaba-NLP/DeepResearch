@@ -657,6 +657,29 @@ class MultiTurnReactAgent(FnCallAgent):
                             print(f"[doc] captured ids from {tool_name}: {ids_now}")
                         except Exception:
                             pass
+                    
+                    # --- NEW: Update doc cache BEFORE cleaning the DOC_ID tag ---
+                    try:
+                        did_raw, summ_raw = self._extract_doc_id_and_summary(tool_out_str)
+                        if did_raw and summ_raw:
+                            short = self._shorten_summary(summ_raw)
+                            if short:
+                                self._doc_cache[did_raw] = short
+                                # clamp cache size
+                                if len(self._doc_cache) > self._doc_cache_max_items:
+                                    # pop oldest insertion (dict is ordered in Py3.7+)
+                                    first_key = next(iter(self._doc_cache))
+                                    self._doc_cache.pop(first_key, None)
+                                # ensure cache message lives at [2]
+                                self._upsert_doc_cache_message(messages)
+                                # log cache update
+                                try:
+                                    self._log("DOC CACHE UPDATE",
+                                              f"added [DOC_ID:{did_raw}] short_len={len(short)}\n{_short(short, 400)}")
+                                except Exception:
+                                    pass
+                    except Exception as _e:
+                        print(f"[DocCache] update skipped due to error: {_e}")
 
                     # (optional) strip the tag before feeding back to the model to save tokens
                     tool_out_str_clean = DOC_ID_RE.sub("", tool_out_str).lstrip()
@@ -684,20 +707,6 @@ class MultiTurnReactAgent(FnCallAgent):
                 just_ran_tool = True
                 last_tool_response_len = len(tool_response_str)
                 
-                # === parse doc_id + summary from tool payload, shorten, cache, upsert at [2]
-                try:
-                    did, summ = self._extract_doc_id_and_summary(tool_response_str)
-                    if did and summ:
-                        short = self._shorten_summary(summ)
-                        if short:
-                            self._doc_cache[did] = short
-                            # clamp cache size
-                            if len(self._doc_cache) > self._doc_cache_max_items:
-                                first_key = list(self._doc_cache.keys())[0]
-                                self._doc_cache.pop(first_key, None)
-                            self._upsert_doc_cache_message(messages)
-                except Exception as _e:
-                    print(f"[DocCache] skip due to error: {_e}")
 
             # ============================
             # /Multi-<tool_call> integration
