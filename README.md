@@ -61,6 +61,7 @@ You can directly download the model by following the links below.
 [2025/09/17]🔥 We have released **Tongyi-DeepResearch-30B-A3B**.
 
 # Deep Research Benchmark Results
+
 <p align="center">
   <img width="100%" src="./assets/benchmark.png">
 </p>
@@ -70,6 +71,7 @@ You can directly download the model by following the links below.
 This guide provides instructions for setting up the environment and running inference scripts located in the [inference](./inference/) folder.
 
 ### 1. Environment Setup
+
 - Recommended Python version: **3.10.0** (using other versions may cause dependency issues).
 - It is strongly advised to create an isolated environment using `conda` or `virtualenv`.
 
@@ -82,6 +84,7 @@ conda activate react_infer_env
 ### 2. Installation
 
 Install the required dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -117,6 +120,7 @@ The system supports two input file formats: **JSON** and **JSONL**.
 #### Supported File Formats:
 
 **Option 1: JSONL Format (recommended)**
+
 - Create your data file with `.jsonl` extension (e.g., `my_questions.jsonl`)
 - Each line must be a valid JSON object with `question` and `answer` keys:
   ```json
@@ -125,6 +129,7 @@ The system supports two input file formats: **JSON** and **JSONL**.
   ```
 
 **Option 2: JSON Format**
+
 - Create your data file with `.json` extension (e.g., `my_questions.json`)
 - File must contain a JSON array of objects, each with `question` and `answer` keys:
   ```json
@@ -143,6 +148,7 @@ The system supports two input file formats: **JSON** and **JSONL**.
 - Example: `{"question": "report.pdf What are the key findings?", "answer": "..."}`
 
 #### File Organization:
+
 ```
 project_root/
 ├── eval_data/
@@ -165,6 +171,7 @@ project_root/
 ```bash
 bash run_react_infer.sh
 ```
+
 ---
 
 With these steps, you can fully prepare the environment, configure the dataset, and run the model. For more details, consult the inline comments in each script or open an issue.
