@@ -54,29 +54,34 @@ You can download WebWatcher via Hugging Face [🤗 HuggingFace](https://huggingf
 
 Before running inference, test set images need to be downloaded to the `infer/scripts_eval/images` folder. This can be accomplished by running `infer/scripts_eval/download_image.py`. If you encounter issues downloading images from our provided OSS URLs, please obtain the images from the original dataset source and place them in the corresponding `infer/scripts_eval/images` folder.
 
-### Step 3: Inference
+### Step 3: Model Preparation
+
+Put a trained model that needs inference and a summery model (qwen-2.5-72b or more) into `infer/pretrain_model`.
+
+### Step 4: Inference
 
 Run `infer/scripts_eval/scripts/eval.sh` with the following required parameters:
 
 - **benchmark**: Name of the dataset to test. Available options: `'hle'`, `'gaia'`, `'livevqa'`, `'mmsearch'`, `'simplevqa'`, `'bc_vl_v1'`, `'bc_vl_v2'`. These test sets should be pre-stored in `infer/vl_search_r1/eval_data` with naming convention like `hle.jsonl`. We have provided format examples for some datasets in `infer/vl_search_r1/eval_data`. If extending to new datasets, please ensure consistent formatting.
 - **EXPERIMENT_NAME**: Name for this experiment (user-defined)
 - **MODEL_PATH**: Path to the trained model
-- **DASHSCOPE_API_KEY**: GPT API key
+- **SUMMERY_MODEL_PATH**: Path to the summery model (qwen-2.5-72b)
 - **IMG_SEARCH_KEY**: Google SerpApi key for image search
 - **JINA_API_KEY**: Jina API key
-- **SCRAPERAPI_KEY**: Scraper API key
-- **QWEN_SEARCH_KEY**: Google SerpApi key for text search
+- **TEXT_SEARCH_KEY**: Google SerpApi key for text search
 
 **Note**: For image search tools, if you need to upload searched images to OSS, the following are required:
 - **ALIBABA_CLOUD_ACCESS_KEY_ID**: Alibaba Cloud OSS access key ID
 - **ALIBABA_CLOUD_ACCESS_KEY_SECRET**: Alibaba Cloud OSS access key secret
 
-### Step 4: Evaluation
+### Step 5: Evaluation
 
-Run `infer/vl_search_r1/pass3.sh` to use LLM-as-judge for evaluating Pass@3 and Pass@1 metrics. Parameters:
+Run `infer/evaluation/run_eval.sh` with the following required parameters:
 
-- **DIRECTORY**: Path to the folder containing JSONL files generated from inference
-- **DASHSCOPE_API_KEY**: GPT API key
+- **API_KEY**
+- **BASE_URL**
+- **JUDGE_MODEL**
+- **MAX_WORKERS**
 
 
 ## 📑 Citation
