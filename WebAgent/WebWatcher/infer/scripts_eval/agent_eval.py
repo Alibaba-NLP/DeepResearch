@@ -56,7 +56,7 @@ You are an intelligent agent engaged in a conversation with a user. The user pos
   "parameters": {
     "type": "object",
     "properties": {
-        "images": {
+        "image_urls": {
             "type": "array",
             "items": {"type": "string", "description": "The search image url."},
             "description": "The list of search image url."
@@ -302,15 +302,11 @@ class OmniSearch:
                     if not os.path.exists(img_save_path):
                         os.makedirs(img_save_path)
 
-                    # search_results = self.qwen_agent._call_tool(request_para['name'], request_para['arguments'], img_save_path=img_save_path, byte=True)
                     if request_para['name'] in ['VLSearchImage', 'vlsearchimage']:
                         user_query = sample.get('prompt', '')
                         search_results = self.qwen_agent._call_tool(
                             request_para['name'],
-                            request_para['arguments'],
-                            img_save_path=img_save_path,
-                            byte=True,
-                            user_query=user_query
+                            request_para['arguments']
                         )
                     else:
                         search_results = self.qwen_agent._call_tool(
@@ -407,7 +403,7 @@ class OmniSearch:
         try:
             status, messages, content = self.run_main(sample)
         except Exception as e:
-            sample["response"] = 'No Answer'
+            sample["response"] = e
             sample["gen"] = 'No Answer'
             print(e)
             return sample

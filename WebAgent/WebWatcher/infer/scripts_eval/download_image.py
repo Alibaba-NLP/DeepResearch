@@ -41,6 +41,6 @@ def download_images_from_jsonl(jsonl_file, output_dir):
                     print(f"下载图片时出错: {image_url} 错误: {e}")
 
 # 使用示例
-jsonl_file = 'vl_search_r1/eval_data/hle.jsonl'  # 你的jsonl文件路径
-output_dir = 'scripts_eval/images/hle'  # 图片保存的目标文件夹
+jsonl_file = 'vl_search_r1/eval_data/hle_50.jsonl'  # 你的jsonl文件路径
+output_dir = 'scripts_eval/images/hle_50'  # 图片保存的目标文件夹
 download_images_from_jsonl(jsonl_file, output_dir)

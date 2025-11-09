@@ -21,12 +21,18 @@ from serpapi import GoogleSearch
 from qwen_agent.tools.private.cache_utils import JSONLCache
 from qwen_agent.tools.base import BaseTool, register_tool
 
+try:
+    IMG_SEARCH_KEY = os.getenv('IMG_SEARCH_KEY')
+except Exception:
+    print("Warning: IMG_SEARCH_KEY not set.")
 
-IMG_SEARCH_KEY = os.getenv('IMG_SEARCH_KEY', "4d98f746fe5362640c23542efb8b14b21b1cc31c30b91cedb19cad1ffc2cd6e1")
-accessKeyId = os.getenv('OSS_KEY_ID','')
-accessKeySecret = os.getenv('OSS_KEY_SECRET','')
+try:
+    accessKeyId = os.getenv('OSS_KEY_ID','')
+    accessKeySecret = os.getenv('OSS_KEY_SECRET','')
+except Exception:
+    print("Warning: OSS_KEY_ID or OSS_KEY_SECRET not set.")
+
 SEARCH_STRATEGY =  os.getenv('SEARCH_STRATEGY',"incremental")
-
 enable_search_cache = os.getenv('VL_IMG_SEARCH_ENABLE_CACHE', 'false').lower() in ('y', 'yes', 't', 'true', '1', 'on')
 cache = JSONLCache(os.path.join(os.path.dirname(__file__), "vl_search/search_cache_image.jsonl"))
 
@@ -51,48 +57,31 @@ def search_cache_decorator(func):
 
 @register_tool("VLSearchImage", allow_overwrite=True)
 class VLSearchImage(BaseTool): 
-    # class VLSearchImage():       
     name = "VLSearchImage"
     description = "Utilize the vl search engine to retrieve relevant information based on the input image."
     parameters = {
         "type": "object",
         "properties": {
-            "images": {
+            "image_urls": {
                 "type": "array",
                 "items": {"type": "string", "description": "The search image url."},
                 "description": "The list of search image url.",
             }
         },
-        "required": ["images"],   
+        "required": ["image_urls"],   
     }
 
     @search_cache_decorator
     def search_image_by_image_url(self, download_url, img_save_path=None, byte=True, retry_attempt=10, timeout=30):
-        
-        # dl_img = False
-        # for attempt in range(retry_attempt):
-        #     try:
-        #         resp = requests.get(download_url, timeout=timeout)
-        #         resp.raise_for_status()
-        #         img_bytes = resp.content
-        #         img_b64 = base64.b64encode(img_bytes).decode("utf-8")
-        #         dl_img = True
-        #         break
-        #     except Exception as e:
-        #         print(f"Retry {attempt+1}/{retry_attempt} download input image url failed: {e}")
-        #         time.sleep(1)
-        
-        # if dl_img = False:
-        #     raise RuntimeError("Input image download failed after multiple attempts.")
 
         params = {
         "engine": "google_reverse_image",
         "image_url": download_url,
-        "api_key": IMG_SEARCH_KEY
+        "api_key": IMG_SEARCH_KEY,
         }
 
         results = {}
-        breakpoint()
+        
         for attempt in range(retry_attempt):
             try:
                 search = GoogleSearch(params)
@@ -269,7 +258,7 @@ class VLSearchImage(BaseTool):
 
     def parse_image_search_result(self, search_result):
         search_images = [item.get('image_url', '') for item in search_result]
-        search_texts = [item.get('caption') or item.get('snippet', '') for item in search_result]
+        search_texts = [item.get('snippet', '') for item in search_result]
         search_urls = [item.get('url', '') for item in search_result]
 
         if all(img == '' for img in search_images) or search_images[0] == None:
@@ -283,12 +272,12 @@ class VLSearchImage(BaseTool):
             search_urls
         )
 
-    def call(self, items, messages=None, img_save_path=None, byte=True, **kwargs):
+    def call(self, items, messages=None, img_save_path=None, byte=False, **kwargs):
         try:
             assert isinstance(items, dict)
-            image_urls = items["images"]
+            image_urls = items.get("image_urls") or items.get("images")
         except:
-            return "[VL Search] Invalid request format: Input must be a DICT containing 'images' field"
+            return "[VL Search] Invalid request format: Input must be a DICT containing 'image_urls' field"
 
         if len(image_urls) == 0:
             return "[VL Search] Empty search images."
@@ -317,32 +306,19 @@ class VLSearchImage(BaseTool):
                 contents = "```\n" + '\n\n'.join(lines) + "\n```"
             
             else:
-                contents = "[VLSearchImage] No image found."
+                contents = f"[VLSearchImage] No image found: {search_images}, {search_texts}, {search_result}"
             
             ctxs.append(contents)
             
+        print(ctxs[0])            
         return ctxs[0]      # 只支持一次搜一张图片！
 
 
 
 if __name__ == '__main__':
 
-    image_url1 = ["https://mitalinlp.oss-cn-hangzhou.aliyuncs.com/rallm/deep_research_vl_image/hle_image/214.jpg"]
+    image_url1 = ["https://mitalinlp.oss-cn-hangzhou.aliyuncs.com/rallm/deep_research_vl_image/hle_image/1.jpg"]
     image_url2 = ["https://th.bing.com/th/id/OIP.sCzpnScidvdeSPyy-0Rd2wHaDt?o=7rm=3&rs=1&pid=ImgDetMain&o=7&rm=3"]
     
-    results = VLSearchImage().call({"images": image_url1},img_save_path="/mnt/data/zhili/image_test",byte=False)
+    results = VLSearchImage().call({"images": ["https://mitalinlp.oss-cn-hangzhou.aliyuncs.com/rallm/deep_research_vl_image/hle_image/290.jpg"] })
     print(results)
-
-
-
-   
-
-
-  
-
-
-
-
-
-
-

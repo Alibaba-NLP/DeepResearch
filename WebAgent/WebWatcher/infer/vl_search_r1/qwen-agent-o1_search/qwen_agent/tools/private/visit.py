@@ -12,8 +12,11 @@ WEBCONTENT_MAXLENGTH = int(os.getenv("WEBCONTENT_MAXLENGTH", 150000))
 IGNORE_JINA = os.getenv("IGNORE_JINA", "false").lower() == "true"
 
 JINA_READER_URL_PREFIX = "https://r.jina.ai/"
-SUMMERY_MODEL_PATH = os.getenv("SUMMERY_MODEL_PATH")
-JINA_API_KEY = os.getenv("JINA_API_KEY")
+try:
+    SUMMERY_MODEL_PATH = os.getenv("SUMMERY_MODEL_PATH")
+    JINA_API_KEY = os.getenv("JINA_API_KEY")
+except Exception as e:
+    print(f"[visit] Error loading environment variables: {e}")
 
 
 EXTRACTOR_PROMPT = """Please process the following webpage content and user goal to extract relevant information:

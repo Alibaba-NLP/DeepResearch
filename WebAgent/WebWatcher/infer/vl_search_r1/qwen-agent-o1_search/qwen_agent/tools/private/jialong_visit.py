@@ -4,6 +4,7 @@ import time
 import random
 import asyncio
 import json
+import re
 from typing import List, Union
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from uniform_eval.network.server.rm_model.judge_model import judge_model
@@ -19,7 +20,7 @@ GPT_API_KEY = os.getenv("GPT_API_KEY", "")
 JUDGE_MODEL_N = os.getenv("JUDGE_MODEL_N", "5")
 JUDGE_SUMMARY_MODEL = os.getenv("JUDGE_SUMMARY_NAME", "Qwen2.5-72B-Instruct-SummaryModel-lw-32b")
 WEBCONTENT_MAXLENGTH = int(os.getenv("WEBCONTENT_MAXLENGTH", 150000))
-import re
+
 
 
 extractor_prompt = """Please process the following webpage content and user goal to extract relevant information:
