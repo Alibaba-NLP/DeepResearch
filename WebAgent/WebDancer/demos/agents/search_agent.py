@@ -49,7 +49,7 @@ class SearchAgent(Assistant):
         self.insert_in_custom_user_prompt(messages=messages)
         if self.make_system_prompt:
             if not messages or messages[0][ROLE] != SYSTEM:
-                messages.insert(0, Message(role=SYSTEM, content=self.make_system_prompt()))
+                messages.insert(0, Message(role=SYSTEM, content=self.make_system_prompt())) #システムプロンプトを入れている部分
         for msg in messages:
             if isinstance(msg.content, list):
                 assert len(msg.content) == 1
@@ -59,6 +59,7 @@ class SearchAgent(Assistant):
 
         reasoning = self.extra.get('reasoning', True)
         num_llm_calls_available = self.extra.get('max_llm_calls', 20)
+        stream_mode = kwargs.get('stream', self.extra.get('stream', True))
         response = []
         while True and num_llm_calls_available > 0:
             num_llm_calls_available -= 1
@@ -68,9 +69,11 @@ class SearchAgent(Assistant):
                 extra_generate_cfg['seed'] = kwargs['seed']
             output_stream = self._call_llm(messages=messages,
                                            functions=[func.function for func in self.function_map.values()],
+                                           stream=stream_mode,
                                            extra_generate_cfg=extra_generate_cfg)
             output: List[Message] = []
-            for output in output_stream:
+            stream_iter = output_stream if stream_mode else [output_stream]
+            for output in stream_iter:
                 if output:
                     first_msg = output[0]
                     if reasoning and isinstance(first_msg.content, str):
@@ -94,6 +97,7 @@ class SearchAgent(Assistant):
                         response.append(fn_msg)
                         yield response
                         used_any_tool = True
+                        break  # After using a tool, restart the LLM call loop # 追加
                 if not used_any_tool:
                     logger.info(f'{self.name} not used any tool, skip out')
                     break

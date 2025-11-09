@@ -1,6 +1,7 @@
 """An image generation agent implemented by assistant with qwq"""
 
 import os
+from dotenv import load_dotenv
 
 from qwen_agent.agents import Assistant
 from qwen_agent.utils.output_beautify import typewriter_print
@@ -12,32 +13,55 @@ from demos.gui.web_ui import WebUI
 from demos.utils.date import date2str, get_date_now
 from demos.tools import Visit, Search
 
+load_dotenv()
 
 ROOT_RESOURCE = os.path.join(os.path.dirname(__file__), 'resource')
+MODEL_NAME = os.environ.get('GPT5MINI_MODEL_NAME')
+OPENAI_API_BASE = os.environ.get('OPENAI_API_BASE')
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+OPEN_ROUTER_API_BASE = os.environ.get('OPEN_ROUTER_API_BASE')
+OPEN_ROUTER_API_KEY = os.environ.get('OPEN_ROUTER_API_KEY')
 
 
 
-def init_dev_search_agent_service(name: str = 'SEARCH', port: int = 8002, desc: str = '初版', reasoning: bool = True, max_llm_calls: int = 20, tools = ['search', 'visit'], addtional_agent = None):
-    llm_cfg = TextChatAtOAI({
-        'model': '',
+def init_dev_search_agent_service(name: str = 'SEARCH', port: int = 8002, desc: str = '初版', reasoning: bool = True, max_llm_calls: int = 20, tools = ['search', 'visit'], addtional_agent = None, llm_type: str = "azure", stream: bool = False) -> SearchAgent:
+    init_cfg = {
+        'model': MODEL_NAME,
         'model_type': 'oai',
-        'model_server': f'http://127.0.0.1:{port}/v1',
-        'api_key': 'EMPTY',
+        'model_server': OPENAI_API_BASE,
+        'api_key': OPENAI_API_KEY,
         'generate_cfg': {
             'fncall_prompt_type': 'nous',
-            'temperature': 0.6,
-            'top_p': 0.95,
-            'top_k': -1,
+            # 'temperature': 0.6,
+            # 'top_p': 0.95,
+            # 'top_k': -1,
             'repetition_penalty': 1.1,
-            'max_tokens': 32768,
-            'stream_options': {
-                'include_usage': True,
-            },
+            'max_completion_tokens': 32768,
+            # 'stream_options': {
+            #     'include_usage': True,
+            # },
             'timeout': 3000
         },
-    })
-    def make_system_prompt():
-        system_message="You are a Web Information Seeking Master. Your task is to thoroughly seek the internet for information and provide accurate answers to questions. with chinese language." \
+        'llm_type': llm_type,
+    }
+
+    if stream:
+        init_cfg['generate_cfg']['stream_options'] = {
+            'include_usage': True,
+        }
+    if llm_type == "local":
+        init_cfg["model_server"] = f'http://127.0.0.1:{port}/v1',
+        init_cfg["api_key"] = 'EMPTY'
+
+    if llm_type == "openai":
+        init_cfg["model_server"] = OPEN_ROUTER_API_BASE,
+        init_cfg["api_key"] = OPEN_ROUTER_API_KEY
+
+
+    llm_cfg = TextChatAtOAI(init_cfg)
+
+    def make_system_prompt():  # with chinese language.
+        system_message="You are a Web Information Seeking Master. Your task is to thoroughly seek the internet for information and provide accurate answers to questions." \
                        "And you are also a Location-Based Services (LBS) assistant designed to help users find location-specific information." \
                         "No matter how complex the query, you will not give up until you find the corresponding information.\n\nAs you proceed, adhere to the following principles:\n\n" \
                         "1. **Persistent Actions for Answers**: You will engage in many interactions, delving deeply into the topic to explore all possible aspects until a satisfactory answer is found.\n\n" \
@@ -55,31 +79,59 @@ def init_dev_search_agent_service(name: str = 'SEARCH', port: int = 8002, desc: 
         extra={
             'reasoning': reasoning,
             'max_llm_calls': max_llm_calls,
+            'stream': stream,
         },
         addtional_agent = addtional_agent,
         make_system_prompt = make_system_prompt,
-        custom_user_prompt='''The assistant starts with one or more cycles of (thinking about which tool to use -> performing tool call -> waiting for tool response), and ends with (thinking about the answer -> answer of the question). The thinking processes, tool calls, tool responses, and answer are enclosed within their tags. There could be multiple thinking processes, tool calls, tool call parameters and tool response parameters.
+        # custom_user_prompt='''
+        # The assistant starts with one or more cycles of (thinking about which tool to use -> performing tool call -> waiting for tool response), and ends with (thinking about the answer -> answer of the question).
+        # The thinking processes, tool calls, tool responses, and answer are enclosed within their tags. There could be multiple thinking processes, tool calls, tool call parameters and tool response parameters.
+        # Example response:
+        # <think> thinking process here </think>
+        # <tool_call>
+        # {"name": "tool name here", "arguments": {"parameter name here": parameter value here, "another parameter name here": another parameter value here, ...}}
+        # </tool_call>
+        # <tool_response>
+        # tool_response here
+        # </tool_response>
+        # <think> thinking process here </think>
+        # <tool_call>
+        # {"name": "another tool name here", "arguments": {...}}
+        # </tool_call>
+        # <tool_response>
+        # tool_response here
+        # </tool_response>
+        # (more thinking processes, tool calls and tool responses here)
+        # <think> thinking process here </think>
+        # <answer> answer here </answer>
 
-Example response:
-<think> thinking process here </think>
-<tool_call>
-{"name": "tool name here", "arguments": {"parameter name here": parameter value here, "another parameter name here": another parameter value here, ...}}
-</tool_call>
-<tool_response>
-tool_response here
-</tool_response>
-<think> thinking process here </think>
-<tool_call>
-{"name": "another tool name here", "arguments": {...}}
-</tool_call>
-<tool_response>
-tool_response here
-</tool_response>
-(more thinking processes, tool calls and tool responses here)
-<think> thinking process here </think>
-<answer> answer here </answer>
+        # User: ''',
+        custom_user_prompt='''
+        The assistant starts with one or more cycles of (thinking about which tool to use -> performing tool call -> waiting for tool response), and ends with (thinking about the answer -> answer of the question).
+        The thinking processes, tool calls, tool responses, and answer are enclosed within their tags. 
+        You can use a tool only one time for each tool call.
+        Example tagsd responses:
+        - example 1:
+        <think> thinking process here </think>
+        <tool_call>
+        {"name": "tool name here", "arguments": {"parameter name here": parameter value here, "another parameter name here": another parameter value here, ...}}
+        </tool_call>
+        <tool_response>
+        tool_response here
+        </tool_response>
+        - example 2:
+        <think> thinking process here </think>
+        <tool_call>
+        {"name": "another tool name here", "arguments": {...}}
+        </tool_call>
+        <tool_response>
+        tool_response here
+        </tool_response>
+        - example 2:
+        <think> thinking process here </think>
+        <answer> answer here </answer>
 
-User: '''
+        User: '''
     )
 
     return bot
@@ -89,7 +141,7 @@ User: '''
 def app_gui():
     agents = []
     for name, port, desc, reasoning, max_llm_calls, tools in [
-        ('WebDancer-QwQ-32B', 8004, '...', True, 50, ['search', 'visit']),
+        ('WebDancer-QwQ-32B', 8004, '...', True, 50, ['search', 'visit']), # ここ変えるべき、azureもqwenも選択できるようにできそう
     ]:
         search_bot_dev = init_dev_search_agent_service(
             name=name,
@@ -122,7 +174,7 @@ def app_gui():
         'user.name': 'User',
         'verbose': True
     }
-    messages = {'role': 'user', 'content': '介绍下你自己'}
+    messages = {'role': 'user', 'content': 'introduce yourself'}
     WebUI(
         agent=agents,
         chatbot_config=chatbot_config,

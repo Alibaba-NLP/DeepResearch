@@ -1,2 +1,12 @@
-sglang[all]
-qwen-agent[gui,rag,code_interpreter,mcp]
+# sglang[all]
+# sglang
+# qwen-agent[gui,rag,code_interpreter,mcp]
+
+sglang==0.5.2
+qwen-agent[gui,rag,code_interpreter,mcp]==0.0.26
+pybase64==1.4.2
+
+# conda activate webdancer
+# which python
+
+# conda run -n webdancer python -m pip install -r requirements.txt

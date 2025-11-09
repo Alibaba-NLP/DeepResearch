@@ -8,6 +8,7 @@ from typing import Dict, Iterator, List, Optional, Literal, Union
 
 import openai
 
+
 if openai.__version__.startswith('0.'):
     from openai.error import OpenAIError  # noqa
 else:
@@ -27,6 +28,7 @@ class TextChatAtOAI(BaseFnCallModel):
         self.model = self.model or 'gpt-4o-mini'
         cfg = cfg or {}
 
+        llm_type = cfg.get('llm_type')
         api_base = cfg.get('api_base')
         api_base = api_base or cfg.get('base_url')
         api_base = api_base or cfg.get('model_server')
@@ -70,11 +72,23 @@ class TextChatAtOAI(BaseFnCallModel):
                     for k in extra_params:
                         if k in kwargs:
                             kwargs['extra_body'][k] = kwargs.pop(k)
+
+
                 if 'request_timeout' in kwargs:
                     kwargs['timeout'] = kwargs.pop('request_timeout')
 
-                client = openai.OpenAI(**api_kwargs)
-                return client.chat.completions.create(*args, **kwargs)
+                if llm_type == 'azure':
+                    if 'extra_body' in kwargs:
+                        print(kwargs.pop('extra_body'))
+                    client = openai.AzureOpenAI(
+                        api_key=api_key,
+                        azure_endpoint=api_base,
+                        api_version="2025-01-01-preview",
+                    )   
+                    return client.chat.completions.create(*args, **kwargs)
+                else: 
+                    client = openai.OpenAI(**api_kwargs)
+                    return client.chat.completions.create(*args, **kwargs)
 
             def _complete_create(*args, **kwargs):
                 # OpenAI API v1 does not allow the following args, must pass by extra_body
@@ -100,8 +114,10 @@ class TextChatAtOAI(BaseFnCallModel):
         generate_cfg: dict,
     ) -> Iterator[List[Message]]:
         messages = self.convert_messages_to_dicts(messages)
+        # response = self._chat_complete_create(model=self.model, messages=messages, stream=False, **generate_cfg)
         try:
             response = self._chat_complete_create(model=self.model, messages=messages, stream=True, **generate_cfg)
+            print(response)
             if delta_stream:
                 for chunk in response:
                     if chunk.choices:

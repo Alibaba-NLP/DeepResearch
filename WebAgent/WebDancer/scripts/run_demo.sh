@@ -2,12 +2,7 @@
 
 cd $(dirname $0) || exit
 
-# GOOGLE_SEARCH_KEY
-export GOOGLE_SEARCH_KEY=''
-# JINA
-export JINA_API_KEY=''
-# DASHSCOPE
-export DASHSCOPE_API_KEY=''
+source ../.env
 
 cd ..
 

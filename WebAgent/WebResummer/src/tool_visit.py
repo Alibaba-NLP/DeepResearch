@@ -131,6 +131,7 @@ class Visit(BaseTool):
                 "Authorization": f"Bearer {JINA_API_KEYS}",
             }
             try:
+                print("###########################")
                 response = requests.get(
                     f"https://r.jina.ai/{url}",
                     headers=headers,

@@ -1,14 +1,24 @@
 import os
 import json
 import requests
-from openai import OpenAI
+from openai import OpenAI, AzureOpenAI
 from qwen_agent.tools.base import BaseTool, register_tool
 from typing import List
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+# MAX_MULTIQUERY_NUM = os.environ.get("MAX_MULTIQUERY_NUM", 3)
+# JINA_API_KEY = os.environ.get("JINA_API_KEY")
+# DASHSCOPE_KEY = os.environ.get('DASHSCOPE_API_KEY')
 MAX_MULTIQUERY_NUM = os.getenv("MAX_MULTIQUERY_NUM", 3)
 JINA_API_KEY = os.getenv("JINA_API_KEY")
 DASHSCOPE_KEY = os.getenv('DASHSCOPE_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+OPENAI_API_BASE = os.getenv('OPENAI_API_BASE')
+GPT5MINI_MODEL_NAME = os.getenv('GPT5MINI_MODEL_NAME')
+print("GPT5MINI_MODEL_NAME:", GPT5MINI_MODEL_NAME)
+print("OPENAI_API_KEY:", OPENAI_API_KEY)
+print("OPENAI_API_BASE:", OPENAI_API_BASE)
+print("JINA_API_KEY:", JINA_API_KEY)
 
 extractor_prompt = """Please process the following webpage content and user goal to extract relevant information:
 
@@ -116,13 +126,21 @@ class Visit(BaseTool):
     
 
     def llm(self, messages):
-        client = OpenAI(api_key=DASHSCOPE_KEY, base_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+        # client = OpenAI(api_key=DASHSCOPE_KEY, base_url="https://dashscope.aliyuncs.com/compatible-mode/v1")
+        client = AzureOpenAI(api_key=OPENAI_API_KEY, azure_endpoint=OPENAI_API_BASE, api_version="2025-01-01-preview",)
         max_retries = 10
-        for attempt in range(max_retries):
+        for _ in range(max_retries):
+            # response = client.chat.completions.create(
+            #     model="qwen2.5-72b-instruct", 
+            #     # model="qwen-plus",
+            #     messages=messages,
+            #     response_format={"type": "json_object"},
+            # )
             response = client.chat.completions.create(
-                model="qwen2.5-72b-instruct", 
+                model=GPT5MINI_MODEL_NAME, 
                 messages=messages,
-                response_format={"type": "json_object"},
+                stream=False,
+                reasoning_effort="minimal",
             )
             return response.choices[0].message.content
         return ""
@@ -165,9 +183,10 @@ class Visit(BaseTool):
                 useful_information = "The useful information in {url} for user goal {goal} as follows: \n\n".format(url=url, goal=goal)
                 useful_information += "Evidence in page: \n" + "The provided webpage content could not be accessed. Please check the URL or file format." + "\n\n"
                 useful_information += "Summary: \n" + "The webpage content could not be processed, and therefore, no information is available." + "\n\n"
-                return useful_information
+        return useful_information
 
 
 
 if __name__ == '__main__':
-    print(Visit().readpage("https://github.com/callanwu/WebWalker-1?tab=readme-ov-file", "who are you?"))
+    # print(Visit().readpage("https://github.com/callanwu/WebWalker-1?tab=readme-ov-file", "who are you?"))
+    print(Visit().readpage("https://www.acv.at/en/get-in-touch/ ", "get an useful information"))

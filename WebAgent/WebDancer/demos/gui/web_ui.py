@@ -267,7 +267,7 @@ class WebUI:
         # TODO 仅保持任务的单论对话
         if self.verbose:
             logger.info('agent_run input[all]:\n' + pprint.pformat(_history, indent=2))
-        _history = _history[-1:]
+        _history = _history[-1:] # 最新のやり取りしか取っていない
         if self.verbose:
             logger.info('agent_run input[new]:\n' + pprint.pformat(_history, indent=2))
 
