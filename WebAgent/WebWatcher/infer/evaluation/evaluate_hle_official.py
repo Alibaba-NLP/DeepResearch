@@ -16,7 +16,7 @@ import argparse
 JUDGE_MODEL = os.getenv("JUDGE_MODEL", "Qwen/Qwen2.5-32B-Instruct")
 MAX_WORKERS = int(os.getenv("MAX_WORKERS", "1"))
 
-API_KEY= os.getenv("API_KEY","ms-4fcc0072-2e28-4428-9812-cbc7603ac9e9")
+API_KEY= os.getenv("API_KEY","")
 BASE_URL=os.getenv("BASE_URL","https://api-inference.modelscope.cn/v1/")
 
 def load_jsonl(fp):
