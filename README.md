@@ -140,7 +140,7 @@ The system supports two input file formats: **JSON** and **JSONL**.
 
 - If using the _file parser_ tool, **prepend the filename to the `question` field**
 - Place referenced files in `eval_data/file_corpus/` directory
-- Example: `{"question": "report.pdf What are the key findings?", "answer": "..."}`
+- Example: `{"question": "(Uploaded 1 file: ['report.pdf'])\n\nWhat are the key findings?", "answer": "..."}`
 
 #### File Organization:
 ```
