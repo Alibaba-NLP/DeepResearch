@@ -206,7 +206,12 @@ Tongyi DeepResearch also has an extensive deep research agent family. You can fi
 [9] [WebSailor-V2: Bridging the Chasm to Proprietary Agents via Synthetic Data and Scalable Reinforcement Learning](https://arxiv.org/pdf/2509.13305)<br>
 [10] [Scaling Agents via Continual Pre-training](https://arxiv.org/pdf/2509.13310)<br>
 [11] [Towards General Agentic Intelligence via Environment Scaling](https://arxiv.org/pdf/2509.13311)<br>
-[12] [WebLeaper: Empowering Efficient, Info-Rich Seeking for Web Agents](https://arxiv.org/pdf/2510.24697)
+[12] [AgentFold: Long-Horizon Web Agents with Proactive Context Management](https://arxiv.org/pdf/2510.24699)<br>
+[13] [WebLeaper: Empowering Efficient, Info-Rich Seeking for Web Agents](https://arxiv.org/pdf/2510.24697)<br>
+[14] [BrowseConf: Confidence-Guided Test-Time Scaling for Web Agents](https://arxiv.org/pdf/2510.23458)<br>
+[15] [Repurposing Synthetic Data for Fine-grained Search Agent Supervision](https://arxiv.org/pdf/2510.24694)<br>
+[16] [ParallelMuse: Agentic Parallel Thinking for Deep Information Seeking](https://arxiv.org/pdf/2510.24698)<br>
+[17] [AgentFrontier: Expanding the Capability Frontier of LLM Agents with ZPD-Guided Data Synthesis](https://arxiv.org/pdf/2510.24695)<br>
 
 ## 🌟 Misc
 
