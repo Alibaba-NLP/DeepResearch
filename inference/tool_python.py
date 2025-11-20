@@ -9,6 +9,13 @@ import os
 import random
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+CHINESE_CHAR_RE = re.compile(r'[\u4e00-\u9fff]')
+
+
+def has_chinese_chars(data: Any) -> bool:
+    text = f'{data}'
+    return bool(CHINESE_CHAR_RE.search(text))
+
 
 # Array of sandbox fusion endpoints
 SANDBOX_FUSION_ENDPOINTS = []
