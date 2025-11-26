@@ -2,7 +2,7 @@
 MLX React Agent Runner for Apple Silicon
 
 This script runs DeepResearch using Apple's MLX framework instead of vLLM/CUDA.
-It connects to the MLX-lm server which provides an OpenAI-compatible API.
+Uses native MLX Python API with proper chat template handling.
 
 Usage:
     python run_mlx_react.py --dataset eval_data/test.jsonl --output ./outputs
@@ -13,18 +13,22 @@ import json
 import os
 import time
 import threading
-import random
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from tqdm import tqdm
+from typing import Any, Dict, List, Optional
 
+# Load environment variables
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
+
+from tqdm import tqdm
 import json5
-from openai import OpenAI, APIError, APIConnectionError, APITimeoutError
+from mlx_lm import load, generate
+from mlx_lm.sample_utils import make_sampler
 
 from prompt import SYSTEM_PROMPT
 
 # Tool registry - import tools with fallbacks for compatibility
-TOOL_MAP = {}
+TOOL_MAP: Dict[str, Any] = {}
 
 try:
     from tool_search import Search
@@ -61,104 +65,83 @@ print(f"Loaded tools: {list(TOOL_MAP.keys())}")
 MAX_LLM_CALL_PER_RUN = int(os.getenv('MAX_LLM_CALL_PER_RUN', 100))
 
 
-def today_date():
+def today_date() -> str:
     return datetime.now().strftime("%Y-%m-%d")
 
 
 class MLXReactAgent:
     """
-    React agent that uses MLX-lm server for inference on Apple Silicon.
+    React agent that uses native MLX Python API for inference on Apple Silicon.
     
-    The MLX server provides an OpenAI-compatible API at /v1/chat/completions,
-    making it a drop-in replacement for vLLM/sglang servers.
+    Uses the model's chat template directly for proper tool-calling format.
     """
     
-    def __init__(self, model: str, mlx_host: str = "127.0.0.1", mlx_port: int = 8080,
-                 temperature: float = 0.85, top_p: float = 0.95, 
-                 presence_penalty: float = 1.1, max_tokens: int = 10000):
-        self.model = model
-        self.mlx_host = mlx_host
-        self.mlx_port = mlx_port
+    def __init__(self, model_path: str, temperature: float = 0.85, 
+                 top_p: float = 0.95, max_tokens: int = 8192):
+        self.model_path = model_path
         self.temperature = temperature
         self.top_p = top_p
-        self.presence_penalty = presence_penalty
         self.max_tokens = max_tokens
         
-        # Create OpenAI client pointing to MLX server
-        self.client = OpenAI(
-            api_key="mlx-local",  # MLX server doesn't require auth
-            base_url=f"http://{mlx_host}:{mlx_port}/v1",
-            timeout=600.0,
+        print(f"Loading model: {model_path}")
+        self.model, self.tokenizer = load(model_path)
+        print("Model loaded successfully")
+    
+    def build_prompt(self, messages: List[Dict[str, str]]) -> str:
+        """
+        Build prompt using the Qwen chat template format.
+        Format: <|im_start|>role\ncontent<|im_end|>
+        """
+        prompt_parts = []
+        for msg in messages:
+            role = msg["role"]
+            content = msg["content"]
+            prompt_parts.append(f"<|im_start|>{role}\n{content}<|im_end|>")
+        
+        # Add assistant start token for generation
+        prompt_parts.append("<|im_start|>assistant\n")
+        return "\n".join(prompt_parts)
+    
+    def generate_response(self, messages: List[Dict[str, str]], max_tokens: Optional[int] = None) -> str:
+        """Generate response using native MLX API."""
+        prompt = self.build_prompt(messages)
+        tokens = max_tokens or self.max_tokens
+        
+        # Create sampler with temperature and top_p
+        sampler = make_sampler(temp=self.temperature, top_p=self.top_p)
+        
+        # Generate with sampler
+        response = generate(
+            self.model,
+            self.tokenizer,
+            prompt=prompt,
+            max_tokens=tokens,
+            sampler=sampler,
+            verbose=False,
         )
         
-        # Verify connection
-        self._verify_connection()
-    
-    def _verify_connection(self):
-        """Verify that the MLX server is running and accessible."""
-        try:
-            models = self.client.models.list()
-            available = [m.id for m in models.data]
-            print(f"MLX server connected. Available models: {available}")
-        except Exception as e:
-            raise ConnectionError(f"Cannot connect to MLX server at {self.mlx_host}:{self.mlx_port}: {e}")
-    
-    def call_server(self, messages: list, max_tries: int = 10) -> str:
-        """Call the MLX server with exponential backoff retry."""
-        base_sleep = 1
+        # Clean up response - remove trailing tokens
+        if "<|im_end|>" in response:
+            response = response.split("<|im_end|>")[0]
+        if "<tool_response>" in response:
+            response = response.split("<tool_response>")[0]
         
-        for attempt in range(max_tries):
-            try:
-                print(f"--- MLX call attempt {attempt + 1}/{max_tries} ---")
-                
-                response = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=messages,
-                    stop=["\n<tool_response>", "<tool_response>"],
-                    temperature=self.temperature,
-                    top_p=self.top_p,
-                    max_tokens=self.max_tokens,
-                    # Note: MLX-lm may not support all parameters
-                    # presence_penalty=self.presence_penalty,
-                )
-                
-                content = response.choices[0].message.content
-                
-                if content and content.strip():
-                    print("--- MLX call successful ---")
-                    return content.strip()
-                
-                print(f"Warning: Attempt {attempt + 1} received empty response")
-                
-            except (APIError, APIConnectionError, APITimeoutError) as e:
-                print(f"API error on attempt {attempt + 1}: {e}")
-            except Exception as e:
-                print(f"Unexpected error on attempt {attempt + 1}: {e}")
-            
-            if attempt < max_tries - 1:
-                sleep_time = min(base_sleep * (2 ** attempt) + random.uniform(0, 1), 30)
-                print(f"Retrying in {sleep_time:.2f}s...")
-                time.sleep(sleep_time)
-        
-        return "MLX server error - all retries exhausted"
+        return response.strip()
     
-    def estimate_tokens(self, messages: list) -> int:
-        """
-        Rough token estimation without loading a full tokenizer.
-        MLX models typically use ~4 chars per token for English text.
-        """
+    def estimate_tokens(self, messages: List[Dict[str, str]]) -> int:
+        """Rough token estimation."""
         total_chars = sum(len(m.get("content", "")) for m in messages)
         return total_chars // 4
     
-    def custom_call_tool(self, tool_name: str, tool_args: dict) -> str:
+    def custom_call_tool(self, tool_name: str, tool_args: Dict[str, Any]) -> str:
         """Execute a tool and return the result."""
         if tool_name not in TOOL_MAP:
-            return f"Error: Tool {tool_name} not found"
+            return f"Error: Tool {tool_name} not found. Available: {list(TOOL_MAP.keys())}"
         
         tool_args["params"] = tool_args
         
         if "python" in tool_name.lower():
-            return TOOL_MAP['PythonInterpreter'].call(tool_args)
+            return str(TOOL_MAP['PythonInterpreter'].call(tool_args))
         
         if tool_name == "parse_file":
             import asyncio
@@ -166,9 +149,9 @@ class MLXReactAgent:
             result = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="./eval_data/file_corpus"))
             return str(result) if not isinstance(result, str) else result
         
-        return TOOL_MAP[tool_name].call(tool_args)
+        return str(TOOL_MAP[tool_name].call(tool_args))
     
-    def run(self, data: dict) -> dict:
+    def run(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Run the react agent loop for a single question.
         
@@ -194,7 +177,7 @@ class MLXReactAgent:
         
         # Build initial messages
         system_prompt = SYSTEM_PROMPT + str(today_date())
-        messages = [
+        messages: List[Dict[str, str]] = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": question}
         ]
@@ -219,38 +202,41 @@ class MLXReactAgent:
             round_num += 1
             num_calls_remaining -= 1
             
-            # Call MLX server
-            content = self.call_server(messages)
-            print(f"Round {round_num}: {content[:200]}..." if len(content) > 200 else f"Round {round_num}: {content}")
+            print(f"--- Round {round_num} ---")
             
-            # Clean up response
-            if '<tool_response>' in content:
-                content = content[:content.find('<tool_response>')]
+            # Generate response
+            content = self.generate_response(messages)
             
-            messages.append({"role": "assistant", "content": content.strip()})
+            preview = content[:200] + "..." if len(content) > 200 else content
+            print(f"Response: {preview}")
+            
+            messages.append({"role": "assistant", "content": content})
             
             # Check for tool calls
             if '<tool_call>' in content and '</tool_call>' in content:
                 tool_call_str = content.split('<tool_call>')[1].split('</tool_call>')[0]
                 
                 try:
-                    if "python" in tool_call_str.lower():
+                    if "python" in tool_call_str.lower() and "<code>" in content:
                         try:
                             code = content.split('<tool_call>')[1].split('</tool_call>')[0]
                             code = code.split('<code>')[1].split('</code>')[0].strip()
-                            result = TOOL_MAP['PythonInterpreter'].call(code)
-                        except:
+                            result = str(TOOL_MAP['PythonInterpreter'].call(code))
+                        except Exception:
                             result = "[Python Interpreter Error]: Formatting error."
                     else:
                         tool_call = json5.loads(tool_call_str)
                         tool_name = tool_call.get('name', '')
                         tool_args = tool_call.get('arguments', {})
+                        print(f"Tool call: {tool_name} with args: {tool_args}")
                         result = self.custom_call_tool(tool_name, tool_args)
                 except Exception as e:
                     result = f'Error: Tool call is not valid JSON. Must contain "name" and "arguments" fields. Error: {e}'
                 
-                result = f"<tool_response>\n{result}\n</tool_response>"
-                messages.append({"role": "user", "content": result})
+                print(f"Tool result preview: {result[:200]}..." if len(result) > 200 else f"Tool result: {result}")
+                
+                tool_response = f"<tool_response>\n{result}\n</tool_response>"
+                messages.append({"role": "user", "content": tool_response})
             
             # Check for final answer
             if '<answer>' in content and '</answer>' in content:
@@ -265,20 +251,21 @@ class MLXReactAgent:
             
             # Check token limit
             token_count = self.estimate_tokens(messages)
-            print(f"Round {round_num}, estimated tokens: {token_count}")
+            print(f"Estimated tokens: {token_count}")
             
             if token_count > max_context_tokens:
                 print(f"Token limit exceeded: {token_count} > {max_context_tokens}")
                 
                 # Force final answer
-                messages[-1]['content'] = (
-                    "You have reached the maximum context length. Stop making tool calls and "
-                    "provide your best answer based on all information above in this format:\n"
-                    "<think>your final thinking</think>\n<answer>your answer</answer>"
-                )
+                messages.append({
+                    "role": "user",
+                    "content": "You have reached the maximum context length. Stop making tool calls and "
+                               "provide your best answer based on all information above in this format:\n"
+                               "<think>your final thinking</think>\n<answer>your answer</answer>"
+                })
                 
-                content = self.call_server(messages)
-                messages.append({"role": "assistant", "content": content.strip()})
+                content = self.generate_response(messages)
+                messages.append({"role": "assistant", "content": content})
                 
                 if '<answer>' in content and '</answer>' in content:
                     prediction = content.split('<answer>')[1].split('</answer>')[0]
@@ -296,11 +283,15 @@ class MLXReactAgent:
                 }
             
             if num_calls_remaining <= 0:
-                messages[-1]['content'] = "Maximum LLM calls reached."
+                messages.append({
+                    "role": "user", 
+                    "content": "Maximum LLM calls reached. Please provide your final answer now."
+                })
         
         # No answer found
-        if '<answer>' in messages[-1]['content']:
-            prediction = messages[-1]['content'].split('<answer>')[1].split('</answer>')[0]
+        last_content = messages[-1].get('content', '')
+        if '<answer>' in last_content:
+            prediction = last_content.split('<answer>')[1].split('</answer>')[0]
             termination = "answer"
         else:
             prediction = "No answer found."
@@ -318,23 +309,17 @@ class MLXReactAgent:
 def main():
     parser = argparse.ArgumentParser(description="Run DeepResearch with MLX on Apple Silicon")
     parser.add_argument("--model", type=str, default="abalogh/Tongyi-DeepResearch-30B-A3B-4bit",
-                        help="Model name (should match MLX server)")
+                        help="Model path or HuggingFace model ID")
     parser.add_argument("--dataset", type=str, required=True,
                         help="Path to input dataset (JSON or JSONL)")
     parser.add_argument("--output", type=str, default="./outputs",
                         help="Output directory")
-    parser.add_argument("--mlx_host", type=str, default="127.0.0.1",
-                        help="MLX server host")
-    parser.add_argument("--mlx_port", type=int, default=8080,
-                        help="MLX server port")
     parser.add_argument("--temperature", type=float, default=0.85,
                         help="Sampling temperature")
     parser.add_argument("--top_p", type=float, default=0.95,
                         help="Top-p sampling")
-    parser.add_argument("--presence_penalty", type=float, default=1.1,
-                        help="Presence penalty")
-    parser.add_argument("--max_workers", type=int, default=1,
-                        help="Number of parallel workers (keep at 1 for MLX)")
+    parser.add_argument("--max_tokens", type=int, default=8192,
+                        help="Maximum tokens per generation")
     parser.add_argument("--roll_out_count", type=int, default=1,
                         help="Number of rollouts per question")
     args = parser.parse_args()
@@ -347,12 +332,11 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
     
     print("=" * 50)
-    print("DeepResearch MLX Inference")
+    print("DeepResearch MLX Inference (Native API)")
     print("=" * 50)
     print(f"Model: {args.model}")
     print(f"Dataset: {args.dataset}")
     print(f"Output: {output_dir}")
-    print(f"MLX Server: http://{args.mlx_host}:{args.mlx_port}")
     print(f"Temperature: {args.temperature}")
     print(f"Rollouts: {args.roll_out_count}")
     print("=" * 50)
@@ -377,20 +361,12 @@ def main():
     print(f"Loaded {len(items)} items from dataset")
     
     # Initialize agent
-    try:
-        agent = MLXReactAgent(
-            model=args.model,
-            mlx_host=args.mlx_host,
-            mlx_port=args.mlx_port,
-            temperature=args.temperature,
-            top_p=args.top_p,
-            presence_penalty=args.presence_penalty,
-        )
-    except ConnectionError as e:
-        print(f"Error: {e}")
-        print("Make sure the MLX server is running:")
-        print(f"  mlx_lm.server --model {args.model} --port {args.mlx_port}")
-        return
+    agent = MLXReactAgent(
+        model_path=args.model,
+        temperature=args.temperature,
+        top_p=args.top_p,
+        max_tokens=args.max_tokens,
+    )
     
     # Setup output files per rollout
     output_files = {
@@ -399,9 +375,9 @@ def main():
     }
     
     # Load already processed questions
-    processed_per_rollout = {}
+    processed_per_rollout: Dict[int, set] = {}
     for rollout_idx in range(1, args.roll_out_count + 1):
-        processed = set()
+        processed: set = set()
         output_file = output_files[rollout_idx]
         if os.path.exists(output_file):
             with open(output_file, "r", encoding="utf-8") as f:
@@ -426,7 +402,7 @@ def main():
                     user_msg = item["messages"][1]["content"]
                     question = user_msg.split("User:")[1].strip() if "User:" in user_msg else user_msg
                     item["question"] = question
-                except:
+                except Exception:
                     continue
             
             if question and question not in processed:
@@ -442,7 +418,6 @@ def main():
         return
     
     # Run tasks
-    # Note: MLX is single-threaded on GPU, so max_workers=1 is recommended
     write_locks = {i: threading.Lock() for i in range(1, args.roll_out_count + 1)}
     
     for task in tqdm(tasks, desc="Processing"):
@@ -459,6 +434,8 @@ def main():
                     
         except Exception as e:
             print(f"Error processing task: {e}")
+            import traceback
+            traceback.print_exc()
             error_result = {
                 "question": task["item"].get("question", ""),
                 "answer": task["item"].get("answer", ""),
