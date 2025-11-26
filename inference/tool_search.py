@@ -8,6 +8,8 @@ Exa.ai advantages:
 - Better for research and complex queries
 - Built-in query optimization (autoprompt)
 - Supports date filtering and domain restrictions
+- Category filtering (research papers, news, company info, etc.)
+- AI-generated highlights for quick comprehension
 """
 
 import json
@@ -19,11 +21,17 @@ from qwen_agent.tools.base import BaseTool, register_tool
 EXA_API_KEY = os.environ.get('EXA_API_KEY')
 EXA_BASE_URL = "https://api.exa.ai"
 
+# Valid Exa categories for filtering results
+VALID_CATEGORIES = [
+    "company", "research paper", "news", "pdf", 
+    "github", "tweet", "personal site", "linkedin profile"
+]
+
 
 @register_tool("search", allow_overwrite=True)
 class Search(BaseTool):
     name = "search"
-    description = "Performs semantic web searches using Exa.ai: supply an array 'query'; retrieves top results with AI-powered understanding."
+    description = "Performs semantic web searches using Exa.ai: supply an array 'query'; retrieves top results with AI-powered understanding. Supports category filtering for research papers, news, etc."
     parameters = {
         "type": "object",
         "properties": {
@@ -39,8 +47,13 @@ class Search(BaseTool):
             },
             "include_contents": {
                 "type": "boolean",
-                "description": "Whether to include page text content",
+                "description": "Whether to include page text content and highlights",
                 "default": False
+            },
+            "category": {
+                "type": "string",
+                "description": "Filter by category: 'research paper', 'news', 'company', 'pdf', 'github', 'tweet', 'personal site', 'linkedin profile'",
+                "enum": ["company", "research paper", "news", "pdf", "github", "tweet", "personal site", "linkedin profile"]
             }
         },
         "required": ["query"],
@@ -52,7 +65,13 @@ class Search(BaseTool):
         if not self.api_key:
             raise ValueError("EXA_API_KEY environment variable not set. Get your key from https://exa.ai/")
 
-    def exa_search(self, query: str, num_results: int = 10, include_contents: bool = False) -> str:
+    def exa_search(
+        self, 
+        query: str, 
+        num_results: int = 10, 
+        include_contents: bool = False,
+        category: Optional[str] = None
+    ) -> str:
         """
         Perform a search using Exa.ai API.
         
@@ -60,6 +79,16 @@ class Search(BaseTool):
         - "auto": Intelligently combines neural and other methods (default)
         - "neural": AI-powered semantic search
         - "deep": Comprehensive search with query expansion
+        
+        Categories available:
+        - "research paper": Academic papers and publications
+        - "news": News articles
+        - "company": Company websites and info
+        - "pdf": PDF documents
+        - "github": GitHub repositories
+        - "tweet": Twitter/X posts
+        - "personal site": Personal websites/blogs
+        - "linkedin profile": LinkedIn profiles
         """
         headers = {
             "Content-Type": "application/json",
@@ -73,9 +102,14 @@ class Search(BaseTool):
             "useAutoprompt": True,
         }
         
+        # Add category filter if specified
+        if category and category in VALID_CATEGORIES:
+            payload["category"] = category
+        
         if include_contents:
             payload["contents"] = {
-                "text": {"maxCharacters": 2000}
+                "text": {"maxCharacters": 2000},
+                "highlights": True
             }
         
         response = None
@@ -107,22 +141,33 @@ class Search(BaseTool):
             title = result.get("title", "No title")
             url = result.get("url", "")
             published_date = result.get("publishedDate", "")
+            author = result.get("author", "")
             
             snippet_parts = [f"{idx}. [{title}]({url})"]
             
+            if author:
+                snippet_parts.append(f"Author: {author}")
             if published_date:
                 snippet_parts.append(f"Date: {published_date[:10]}")
             
-            if include_contents and "text" in result:
-                text = result["text"][:500]
-                snippet_parts.append(f"\n{text}...")
+            # Prefer highlights (AI-generated key points), then text, then snippet
+            if include_contents:
+                highlights = result.get("highlights", [])
+                if highlights:
+                    snippet_parts.append("\nKey points:")
+                    for h in highlights[:3]:
+                        snippet_parts.append(f"  • {h}")
+                elif "text" in result:
+                    text = result["text"][:500]
+                    snippet_parts.append(f"\n{text}...")
             elif "snippet" in result:
                 snippet_parts.append(f"\n{result['snippet']}")
             
             web_snippets.append("\n".join(snippet_parts))
         
         search_type = results.get("resolvedSearchType", "neural")
-        content = f"Exa {search_type} search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(web_snippets)
+        category_info = f" (category: {category})" if category else ""
+        content = f"Exa {search_type} search{category_info} for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(web_snippets)
         return content
 
     def call(self, params: Union[str, dict], **kwargs: Any) -> str:
@@ -142,14 +187,19 @@ class Search(BaseTool):
         raw_num = params_dict.get("num_results", 10)
         num_results = int(raw_num) if raw_num is not None else 10
         include_contents = bool(params_dict.get("include_contents", False))
+        category = params_dict.get("category")
+        
+        # Validate category if provided
+        if category and category not in VALID_CATEGORIES:
+            category = None
         
         if isinstance(query, str):
-            return self.exa_search(query, num_results, include_contents)
+            return self.exa_search(query, num_results, include_contents, category)
         
         if isinstance(query, list):
             responses = []
             for q in query:
-                responses.append(self.exa_search(q, num_results, include_contents))
+                responses.append(self.exa_search(q, num_results, include_contents, category))
             return "\n=======\n".join(responses)
         
         return "[Search] Invalid query format: must be string or array of strings"
