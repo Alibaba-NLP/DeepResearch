@@ -1,131 +1,166 @@
+"""
+Exa.ai Search Tool for DeepResearch
+AI-native semantic search with neural embeddings for superior research results.
+
+Exa.ai advantages:
+- Neural/semantic search (understands meaning, not just keywords)
+- Can retrieve full page contents directly
+- Better for research and complex queries
+- Built-in query optimization (autoprompt)
+- Supports date filtering and domain restrictions
+"""
+
 import json
-from concurrent.futures import ThreadPoolExecutor
-from typing import List, Union
+import os
+from typing import Any, Dict, List, Optional, Union
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
-import asyncio
-from typing import Dict, List, Optional, Union
-import uuid
-import http.client
-import json
 
-import os
-
-
-SERPER_KEY=os.environ.get('SERPER_KEY_ID')
+EXA_API_KEY = os.environ.get('EXA_API_KEY')
+EXA_BASE_URL = "https://api.exa.ai"
 
 
 @register_tool("search", allow_overwrite=True)
 class Search(BaseTool):
     name = "search"
-    description = "Performs batched web searches: supply an array 'query'; the tool retrieves the top 10 results for each query in one call."
+    description = "Performs semantic web searches using Exa.ai: supply an array 'query'; retrieves top results with AI-powered understanding."
     parameters = {
         "type": "object",
         "properties": {
             "query": {
                 "type": "array",
-                "items": {
-                    "type": "string"
-                },
-                "description": "Array of query strings. Include multiple complementary search queries in a single call."
+                "items": {"type": "string"},
+                "description": "Array of query strings. Exa understands natural language queries well."
             },
+            "num_results": {
+                "type": "integer",
+                "description": "Number of results per query (default: 10, max: 100)",
+                "default": 10
+            },
+            "include_contents": {
+                "type": "boolean",
+                "description": "Whether to include page text content",
+                "default": False
+            }
         },
         "required": ["query"],
     }
 
     def __init__(self, cfg: Optional[dict] = None):
         super().__init__(cfg)
-    def google_search_with_serp(self, query: str):
-        def contains_chinese_basic(text: str) -> bool:
-            return any('\u4E00' <= char <= '\u9FFF' for char in text)
-        conn = http.client.HTTPSConnection("google.serper.dev")
-        if contains_chinese_basic(query):
-            payload = json.dumps({
-                "q": query,
-                "location": "China",
-                "gl": "cn",
-                "hl": "zh-cn"
-            })
-            
-        else:
-            payload = json.dumps({
-                "q": query,
-                "location": "United States",
-                "gl": "us",
-                "hl": "en"
-            })
+        self.api_key = EXA_API_KEY
+        if not self.api_key:
+            raise ValueError("EXA_API_KEY environment variable not set. Get your key from https://exa.ai/")
+
+    def exa_search(self, query: str, num_results: int = 10, include_contents: bool = False) -> str:
+        """
+        Perform a search using Exa.ai API.
+        
+        Exa supports multiple search types:
+        - "auto": Intelligently combines neural and other methods (default)
+        - "neural": AI-powered semantic search
+        - "deep": Comprehensive search with query expansion
+        """
         headers = {
-                'X-API-KEY': SERPER_KEY,
-                'Content-Type': 'application/json'
+            "Content-Type": "application/json",
+            "x-api-key": self.api_key
+        }
+        
+        payload: Dict[str, Any] = {
+            "query": query,
+            "numResults": num_results,
+            "type": "auto",
+            "useAutoprompt": True,
+        }
+        
+        if include_contents:
+            payload["contents"] = {
+                "text": {"maxCharacters": 2000}
             }
         
-        
-        for i in range(5):
+        response = None
+        for attempt in range(3):
             try:
-                conn.request("POST", "/search", payload, headers)
-                res = conn.getresponse()
+                response = requests.post(
+                    f"{EXA_BASE_URL}/search",
+                    headers=headers,
+                    json=payload,
+                    timeout=30
+                )
+                response.raise_for_status()
                 break
-            except Exception as e:
-                print(e)
-                if i == 4:
-                    return f"Google search Timeout, return None, Please try again later."
+            except requests.exceptions.RequestException as e:
+                if attempt == 2:
+                    return f"Exa search failed after 3 attempts: {str(e)}"
                 continue
-    
-        data = res.read()
-        results = json.loads(data.decode("utf-8"))
+        
+        if response is None:
+            return "Exa search failed: no response received"
+        
+        results = response.json()
+        
+        if "results" not in results or not results["results"]:
+            return f"No results found for '{query}'. Try a different query."
+        
+        web_snippets = []
+        for idx, result in enumerate(results["results"], 1):
+            title = result.get("title", "No title")
+            url = result.get("url", "")
+            published_date = result.get("publishedDate", "")
+            
+            snippet_parts = [f"{idx}. [{title}]({url})"]
+            
+            if published_date:
+                snippet_parts.append(f"Date: {published_date[:10]}")
+            
+            if include_contents and "text" in result:
+                text = result["text"][:500]
+                snippet_parts.append(f"\n{text}...")
+            elif "snippet" in result:
+                snippet_parts.append(f"\n{result['snippet']}")
+            
+            web_snippets.append("\n".join(snippet_parts))
+        
+        search_type = results.get("resolvedSearchType", "neural")
+        content = f"Exa {search_type} search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(web_snippets)
+        return content
 
-        try:
-            if "organic" not in results:
-                raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
-
-            web_snippets = list()
-            idx = 0
-            if "organic" in results:
-                for page in results["organic"]:
-                    idx += 1
-                    date_published = ""
-                    if "date" in page:
-                        date_published = "\nDate published: " + page["date"]
-
-                    source = ""
-                    if "source" in page:
-                        source = "\nSource: " + page["source"]
-
-                    snippet = ""
-                    if "snippet" in page:
-                        snippet = "\n" + page["snippet"]
-
-                    redacted_version = f"{idx}. [{page['title']}]({page['link']}){date_published}{source}\n{snippet}"
-                    redacted_version = redacted_version.replace("Your browser can't play this video.", "")
-                    web_snippets.append(redacted_version)
-
-            content = f"A Google search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
-            return content
-        except:
-            return f"No results found for '{query}'. Try with a more general query."
-
-
-    
-    def search_with_serp(self, query: str):
-        result = self.google_search_with_serp(query)
-        return result
-
-    def call(self, params: Union[str, dict], **kwargs) -> str:
-        try:
-            query = params["query"]
-        except:
-            return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
+    def call(self, params: Union[str, dict], **kwargs: Any) -> str:
+        params_dict: Dict[str, Any]
+        if isinstance(params, str):
+            try:
+                params_dict = json.loads(params)
+            except json.JSONDecodeError:
+                return "[Search] Invalid JSON input"
+        else:
+            params_dict = dict(params)
+        
+        query = params_dict.get("query")
+        if not query:
+            return "[Search] Invalid request: 'query' field is required"
+        
+        raw_num = params_dict.get("num_results", 10)
+        num_results = int(raw_num) if raw_num is not None else 10
+        include_contents = bool(params_dict.get("include_contents", False))
         
         if isinstance(query, str):
-            # 单个查询
-            response = self.search_with_serp(query)
-        else:
-            # 多个查询
-            assert isinstance(query, List)
+            return self.exa_search(query, num_results, include_contents)
+        
+        if isinstance(query, list):
             responses = []
             for q in query:
-                responses.append(self.search_with_serp(q))
-            response = "\n=======\n".join(responses)
-            
-        return response
+                responses.append(self.exa_search(q, num_results, include_contents))
+            return "\n=======\n".join(responses)
+        
+        return "[Search] Invalid query format: must be string or array of strings"
 
+
+if __name__ == "__main__":
+    from dotenv import load_dotenv
+    
+    env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
+    load_dotenv(env_path)
+    
+    searcher = Search()
+    result = searcher.call({"query": ["What is retrieval augmented generation?"]})
+    print(result)
