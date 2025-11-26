@@ -4,6 +4,9 @@ MLX React Agent Runner for Apple Silicon
 This script runs DeepResearch using Apple's MLX framework instead of vLLM/CUDA.
 Uses native MLX Python API with proper chat template handling.
 
+Requirements:
+    pip install mlx-lm python-dotenv requests json5 tqdm qwen-agent
+
 Usage:
     python run_mlx_react.py --dataset eval_data/test.jsonl --output ./outputs
 """
@@ -11,12 +14,14 @@ Usage:
 import argparse
 import json
 import os
+import signal
+import sys
 import time
 import threading
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-# Load environment variables
+# Load environment variables before other imports
 from dotenv import load_dotenv
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
@@ -27,7 +32,10 @@ from mlx_lm.sample_utils import make_sampler
 
 from prompt import SYSTEM_PROMPT
 
-# Tool registry - import tools with fallbacks for compatibility
+# Disable tokenizer parallelism warning
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# Tool registry - import tools with fallbacks
 TOOL_MAP: Dict[str, Any] = {}
 
 try:
@@ -64,6 +72,23 @@ print(f"Loaded tools: {list(TOOL_MAP.keys())}")
 
 MAX_LLM_CALL_PER_RUN = int(os.getenv('MAX_LLM_CALL_PER_RUN', 100))
 
+# Graceful shutdown flag
+shutdown_requested = False
+
+
+def signal_handler(signum, frame):
+    """Handle interrupt signals gracefully."""
+    global shutdown_requested
+    if shutdown_requested:
+        print("\nForce quit...")
+        sys.exit(1)
+    shutdown_requested = True
+    print("\nShutdown requested. Finishing current task...")
+
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
 
 def today_date() -> str:
     return datetime.now().strftime("%Y-%m-%d")
@@ -71,9 +96,9 @@ def today_date() -> str:
 
 class MLXReactAgent:
     """
-    React agent that uses native MLX Python API for inference on Apple Silicon.
+    React agent using native MLX Python API for inference on Apple Silicon.
     
-    Uses the model's chat template directly for proper tool-calling format.
+    Uses the model's built-in chat template for proper formatting.
     """
     
     def __init__(self, model_path: str, temperature: float = 0.85, 
@@ -85,32 +110,57 @@ class MLXReactAgent:
         
         print(f"Loading model: {model_path}")
         self.model, self.tokenizer = load(model_path)
-        print("Model loaded successfully")
+        print(f"Model loaded successfully (memory: {self._get_memory_usage():.1f} GB)")
+    
+    def _get_memory_usage(self) -> float:
+        """Get current GPU memory usage in GB."""
+        try:
+            import mlx.core as mx
+            # Force memory stats update
+            mx.metal.get_peak_memory() 
+            return mx.metal.get_active_memory() / (1024**3)
+        except Exception:
+            return 0.0
     
     def build_prompt(self, messages: List[Dict[str, str]]) -> str:
         """
-        Build prompt using the Qwen chat template format.
-        Format: <|im_start|>role\ncontent<|im_end|>
+        Build prompt using tokenizer's chat template.
+        Falls back to manual Qwen format if template unavailable.
         """
+        # Try using tokenizer's built-in chat template
+        if hasattr(self.tokenizer, 'apply_chat_template'):
+            try:
+                prompt = self.tokenizer.apply_chat_template(
+                    messages,
+                    tokenize=False,
+                    add_generation_prompt=True
+                )
+                return prompt
+            except Exception as e:
+                print(f"Warning: apply_chat_template failed, using manual format: {e}")
+        
+        # Fallback: Manual Qwen/ChatML format
         prompt_parts = []
         for msg in messages:
             role = msg["role"]
             content = msg["content"]
             prompt_parts.append(f"<|im_start|>{role}\n{content}<|im_end|>")
-        
-        # Add assistant start token for generation
         prompt_parts.append("<|im_start|>assistant\n")
         return "\n".join(prompt_parts)
+    
+    def count_tokens(self, messages: List[Dict[str, str]]) -> int:
+        """Count tokens using the actual tokenizer."""
+        prompt = self.build_prompt(messages)
+        tokens = self.tokenizer.encode(prompt)
+        return len(tokens)
     
     def generate_response(self, messages: List[Dict[str, str]], max_tokens: Optional[int] = None) -> str:
         """Generate response using native MLX API."""
         prompt = self.build_prompt(messages)
         tokens = max_tokens or self.max_tokens
         
-        # Create sampler with temperature and top_p
         sampler = make_sampler(temp=self.temperature, top_p=self.top_p)
         
-        # Generate with sampler
         response = generate(
             self.model,
             self.tokenizer,
@@ -128,28 +178,42 @@ class MLXReactAgent:
         
         return response.strip()
     
-    def estimate_tokens(self, messages: List[Dict[str, str]]) -> int:
-        """Rough token estimation."""
-        total_chars = sum(len(m.get("content", "")) for m in messages)
-        return total_chars // 4
-    
-    def custom_call_tool(self, tool_name: str, tool_args: Dict[str, Any]) -> str:
-        """Execute a tool and return the result."""
+    def execute_tool(self, tool_name: str, tool_args: Dict[str, Any], timeout: int = 120) -> str:
+        """Execute a tool with timeout protection."""
         if tool_name not in TOOL_MAP:
-            return f"Error: Tool {tool_name} not found. Available: {list(TOOL_MAP.keys())}"
+            return f"Error: Tool '{tool_name}' not found. Available: {list(TOOL_MAP.keys())}"
         
+        # Prepare args
         tool_args["params"] = tool_args
+        result = ""
+        error = None
         
-        if "python" in tool_name.lower():
-            return str(TOOL_MAP['PythonInterpreter'].call(tool_args))
+        def run_tool():
+            nonlocal result, error
+            try:
+                if "python" in tool_name.lower():
+                    result = str(TOOL_MAP['PythonInterpreter'].call(tool_args))
+                elif tool_name == "parse_file":
+                    import asyncio
+                    params = {"files": tool_args.get("files", [])}
+                    r = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="./eval_data/file_corpus"))
+                    result = str(r) if not isinstance(r, str) else r
+                else:
+                    result = str(TOOL_MAP[tool_name].call(tool_args))
+            except Exception as e:
+                error = str(e)
         
-        if tool_name == "parse_file":
-            import asyncio
-            params = {"files": tool_args["files"]}
-            result = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="./eval_data/file_corpus"))
-            return str(result) if not isinstance(result, str) else result
+        thread = threading.Thread(target=run_tool)
+        thread.start()
+        thread.join(timeout=timeout)
         
-        return str(TOOL_MAP[tool_name].call(tool_args))
+        if thread.is_alive():
+            return f"Error: Tool '{tool_name}' timed out after {timeout}s"
+        
+        if error:
+            return f"Error executing tool '{tool_name}': {error}"
+        
+        return result
     
     def run(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -161,6 +225,8 @@ class MLXReactAgent:
         Returns:
             Dict with question, answer, messages, prediction, and termination status
         """
+        global shutdown_requested
+        
         # Extract question
         item = data['item']
         question = item.get('question', '')
@@ -184,10 +250,20 @@ class MLXReactAgent:
         
         num_calls_remaining = MAX_LLM_CALL_PER_RUN
         round_num = 0
-        max_context_tokens = 110 * 1024  # ~110K tokens max
-        timeout_minutes = 150  # 2.5 hours
+        max_context_tokens = 100 * 1024  # 100K tokens (conservative for 128K model)
+        timeout_minutes = 120  # 2 hours
         
         while num_calls_remaining > 0:
+            # Check for shutdown
+            if shutdown_requested:
+                return {
+                    "question": question,
+                    "answer": answer,
+                    "messages": messages,
+                    "prediction": "Interrupted by user",
+                    "termination": "interrupted"
+                }
+            
             # Check timeout
             elapsed = time.time() - start_time
             if elapsed > timeout_minutes * 60:
@@ -202,7 +278,7 @@ class MLXReactAgent:
             round_num += 1
             num_calls_remaining -= 1
             
-            print(f"--- Round {round_num} ---")
+            print(f"--- Round {round_num} (calls left: {num_calls_remaining}) ---")
             
             # Generate response
             content = self.generate_response(messages)
@@ -217,23 +293,23 @@ class MLXReactAgent:
                 tool_call_str = content.split('<tool_call>')[1].split('</tool_call>')[0]
                 
                 try:
+                    # Handle Python interpreter specially
                     if "python" in tool_call_str.lower() and "<code>" in content:
-                        try:
-                            code = content.split('<tool_call>')[1].split('</tool_call>')[0]
-                            code = code.split('<code>')[1].split('</code>')[0].strip()
-                            result = str(TOOL_MAP['PythonInterpreter'].call(code))
-                        except Exception:
-                            result = "[Python Interpreter Error]: Formatting error."
+                        code = content.split('<code>')[1].split('</code>')[0].strip()
+                        result = self.execute_tool('PythonInterpreter', {"code": code})
                     else:
-                        tool_call = json5.loads(tool_call_str)
+                        tool_call = json5.loads(tool_call_str.strip())
                         tool_name = tool_call.get('name', '')
                         tool_args = tool_call.get('arguments', {})
-                        print(f"Tool call: {tool_name} with args: {tool_args}")
-                        result = self.custom_call_tool(tool_name, tool_args)
+                        print(f"Tool: {tool_name} | Args: {json.dumps(tool_args)[:100]}...")
+                        result = self.execute_tool(tool_name, tool_args)
+                except json.JSONDecodeError as e:
+                    result = f'Error: Invalid JSON in tool call. {e}'
                 except Exception as e:
-                    result = f'Error: Tool call is not valid JSON. Must contain "name" and "arguments" fields. Error: {e}'
+                    result = f'Error: Tool call failed. {e}'
                 
-                print(f"Tool result preview: {result[:200]}..." if len(result) > 200 else f"Tool result: {result}")
+                result_preview = result[:200] + "..." if len(result) > 200 else result
+                print(f"Result: {result_preview}")
                 
                 tool_response = f"<tool_response>\n{result}\n</tool_response>"
                 messages.append({"role": "user", "content": tool_response})
@@ -241,30 +317,32 @@ class MLXReactAgent:
             # Check for final answer
             if '<answer>' in content and '</answer>' in content:
                 prediction = content.split('<answer>')[1].split('</answer>')[0]
+                elapsed_mins = (time.time() - start_time) / 60
+                print(f"Answer found in {elapsed_mins:.1f} minutes")
                 return {
                     "question": question,
                     "answer": answer,
                     "messages": messages,
-                    "prediction": prediction,
+                    "prediction": prediction.strip(),
                     "termination": "answer"
                 }
             
             # Check token limit
-            token_count = self.estimate_tokens(messages)
-            print(f"Estimated tokens: {token_count}")
+            token_count = self.count_tokens(messages)
+            print(f"Tokens: {token_count:,}")
             
             if token_count > max_context_tokens:
-                print(f"Token limit exceeded: {token_count} > {max_context_tokens}")
+                print(f"Token limit exceeded: {token_count:,} > {max_context_tokens:,}")
                 
                 # Force final answer
                 messages.append({
                     "role": "user",
-                    "content": "You have reached the maximum context length. Stop making tool calls and "
-                               "provide your best answer based on all information above in this format:\n"
-                               "<think>your final thinking</think>\n<answer>your answer</answer>"
+                    "content": "IMPORTANT: You have reached the maximum context length. "
+                               "Stop making tool calls. Provide your final answer NOW based on all information above.\n"
+                               "Format: <think>final reasoning</think>\n<answer>your answer</answer>"
                 })
                 
-                content = self.generate_response(messages)
+                content = self.generate_response(messages, max_tokens=2048)
                 messages.append({"role": "assistant", "content": content})
                 
                 if '<answer>' in content and '</answer>' in content:
@@ -272,42 +350,48 @@ class MLXReactAgent:
                     termination = "token_limit_answer"
                 else:
                     prediction = content
-                    termination = "token_limit_format_error"
+                    termination = "token_limit_no_answer"
                 
                 return {
                     "question": question,
                     "answer": answer,
                     "messages": messages,
-                    "prediction": prediction,
+                    "prediction": prediction.strip(),
                     "termination": termination
                 }
-            
-            if num_calls_remaining <= 0:
-                messages.append({
-                    "role": "user", 
-                    "content": "Maximum LLM calls reached. Please provide your final answer now."
-                })
         
-        # No answer found
-        last_content = messages[-1].get('content', '')
-        if '<answer>' in last_content:
-            prediction = last_content.split('<answer>')[1].split('</answer>')[0]
-            termination = "answer"
+        # Max calls reached - try to get final answer
+        print("Max LLM calls reached, requesting final answer...")
+        messages.append({
+            "role": "user", 
+            "content": "Maximum iterations reached. Provide your final answer NOW.\n"
+                       "<answer>your answer</answer>"
+        })
+        
+        content = self.generate_response(messages, max_tokens=2048)
+        messages.append({"role": "assistant", "content": content})
+        
+        if '<answer>' in content and '</answer>' in content:
+            prediction = content.split('<answer>')[1].split('</answer>')[0]
+            termination = "max_calls_answer"
         else:
-            prediction = "No answer found."
-            termination = "calls_exhausted"
+            prediction = content if content else "No answer found."
+            termination = "max_calls_no_answer"
         
         return {
             "question": question,
             "answer": answer,
             "messages": messages,
-            "prediction": prediction,
+            "prediction": prediction.strip(),
             "termination": termination
         }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run DeepResearch with MLX on Apple Silicon")
+    parser = argparse.ArgumentParser(
+        description="Run DeepResearch with MLX on Apple Silicon",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser.add_argument("--model", type=str, default="abalogh/Tongyi-DeepResearch-30B-A3B-4bit",
                         help="Model path or HuggingFace model ID")
     parser.add_argument("--dataset", type=str, required=True,
@@ -315,14 +399,20 @@ def main():
     parser.add_argument("--output", type=str, default="./outputs",
                         help="Output directory")
     parser.add_argument("--temperature", type=float, default=0.85,
-                        help="Sampling temperature")
+                        help="Sampling temperature (0.0-2.0)")
     parser.add_argument("--top_p", type=float, default=0.95,
-                        help="Top-p sampling")
+                        help="Top-p (nucleus) sampling (0.0-1.0)")
     parser.add_argument("--max_tokens", type=int, default=8192,
                         help="Maximum tokens per generation")
     parser.add_argument("--roll_out_count", type=int, default=1,
                         help="Number of rollouts per question")
     args = parser.parse_args()
+    
+    # Validate args
+    if not 0.0 <= args.temperature <= 2.0:
+        print("Warning: temperature should be between 0.0 and 2.0")
+    if not 0.0 <= args.top_p <= 1.0:
+        print("Warning: top_p should be between 0.0 and 1.0")
     
     # Setup output directory
     model_name = os.path.basename(args.model.rstrip('/'))
@@ -331,42 +421,55 @@ def main():
     output_dir = os.path.join(model_dir, dataset_name)
     os.makedirs(output_dir, exist_ok=True)
     
-    print("=" * 50)
-    print("DeepResearch MLX Inference (Native API)")
-    print("=" * 50)
-    print(f"Model: {args.model}")
-    print(f"Dataset: {args.dataset}")
-    print(f"Output: {output_dir}")
+    print("=" * 60)
+    print("DeepResearch MLX Inference (Apple Silicon)")
+    print("=" * 60)
+    print(f"Model:       {args.model}")
+    print(f"Dataset:     {args.dataset}")
+    print(f"Output:      {output_dir}")
     print(f"Temperature: {args.temperature}")
-    print(f"Rollouts: {args.roll_out_count}")
-    print("=" * 50)
+    print(f"Top-P:       {args.top_p}")
+    print(f"Max Tokens:  {args.max_tokens}")
+    print(f"Rollouts:    {args.roll_out_count}")
+    print("=" * 60)
     
     # Load dataset
     try:
         if args.dataset.endswith(".json"):
             with open(args.dataset, "r", encoding="utf-8") as f:
                 items = json.load(f)
+                if isinstance(items, dict):
+                    items = [items]
         elif args.dataset.endswith(".jsonl"):
             with open(args.dataset, "r", encoding="utf-8") as f:
-                items = [json.loads(line) for line in f]
+                items = [json.loads(line) for line in f if line.strip()]
         else:
-            raise ValueError("Dataset must be .json or .jsonl")
+            print("Error: Dataset must be .json or .jsonl")
+            return 1
     except FileNotFoundError:
         print(f"Error: Dataset not found at {args.dataset}")
-        return
-    except Exception as e:
-        print(f"Error loading dataset: {e}")
-        return
+        return 1
+    except json.JSONDecodeError as e:
+        print(f"Error: Invalid JSON in dataset: {e}")
+        return 1
     
     print(f"Loaded {len(items)} items from dataset")
     
+    if not items:
+        print("Error: No items in dataset")
+        return 1
+    
     # Initialize agent
-    agent = MLXReactAgent(
-        model_path=args.model,
-        temperature=args.temperature,
-        top_p=args.top_p,
-        max_tokens=args.max_tokens,
-    )
+    try:
+        agent = MLXReactAgent(
+            model_path=args.model,
+            temperature=args.temperature,
+            top_p=args.top_p,
+            max_tokens=args.max_tokens,
+        )
+    except Exception as e:
+        print(f"Error loading model: {e}")
+        return 1
     
     # Setup output files per rollout
     output_files = {
@@ -389,7 +492,8 @@ def main():
                     except json.JSONDecodeError:
                         pass
         processed_per_rollout[rollout_idx] = processed
-        print(f"Rollout {rollout_idx}: {len(processed)} already processed")
+        if processed:
+            print(f"Rollout {rollout_idx}: {len(processed)} already processed")
     
     # Build task list
     tasks = []
@@ -415,27 +519,38 @@ def main():
     
     if not tasks:
         print("All tasks already completed!")
-        return
+        return 0
     
     # Run tasks
-    write_locks = {i: threading.Lock() for i in range(1, args.roll_out_count + 1)}
+    write_lock = threading.Lock()
+    completed = 0
+    failed = 0
     
-    for task in tqdm(tasks, desc="Processing"):
+    for task in tqdm(tasks, desc="Processing", disable=shutdown_requested):
+        if shutdown_requested:
+            print(f"\nStopped early. Completed: {completed}, Failed: {failed}")
+            break
+        
         rollout_idx = task["rollout_idx"]
         output_file = output_files[rollout_idx]
         
         try:
             result = agent.run(task)
             result["rollout_idx"] = rollout_idx
+            result["elapsed_time"] = time.time()
             
-            with write_locks[rollout_idx]:
+            with write_lock:
                 with open(output_file, "a", encoding="utf-8") as f:
                     f.write(json.dumps(result, ensure_ascii=False) + "\n")
-                    
+            
+            completed += 1
+            
         except Exception as e:
-            print(f"Error processing task: {e}")
+            failed += 1
+            print(f"\nError: {e}")
             import traceback
             traceback.print_exc()
+            
             error_result = {
                 "question": task["item"].get("question", ""),
                 "answer": task["item"].get("answer", ""),
@@ -444,13 +559,20 @@ def main():
                 "messages": [],
                 "prediction": "[Failed]"
             }
-            with write_locks[rollout_idx]:
+            with write_lock:
                 with open(output_file, "a", encoding="utf-8") as f:
                     f.write(json.dumps(error_result, ensure_ascii=False) + "\n")
     
-    print("\nInference complete!")
-    print(f"Results saved to: {output_dir}")
+    print("\n" + "=" * 60)
+    print("Inference Complete")
+    print("=" * 60)
+    print(f"Completed: {completed}")
+    print(f"Failed:    {failed}")
+    print(f"Output:    {output_dir}")
+    print("=" * 60)
+    
+    return 0 if failed == 0 else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
