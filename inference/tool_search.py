@@ -14,7 +14,7 @@ Exa.ai advantages:
 
 import json
 import os
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Union
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
 
@@ -123,6 +123,13 @@ class Search(BaseTool):
                 )
                 response.raise_for_status()
                 break
+            except requests.exceptions.HTTPError as e:
+                if response is not None and response.status_code == 429:
+                    return f"Exa search rate limited. Please wait and try again."
+                if response is not None and response.status_code == 401:
+                    return f"Exa API key invalid. Check your EXA_API_KEY environment variable."
+                if attempt == 2:
+                    return f"Exa search failed after 3 attempts: {str(e)}"
             except requests.exceptions.RequestException as e:
                 if attempt == 2:
                     return f"Exa search failed after 3 attempts: {str(e)}"
