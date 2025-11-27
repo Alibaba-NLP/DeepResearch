@@ -252,6 +252,8 @@ class MLXReactAgent:
         round_num = 0
         max_context_tokens = 100 * 1024  # 100K tokens (conservative for 128K model)
         timeout_minutes = 120  # 2 hours
+        consecutive_errors = 0
+        last_tool_call = ""  # For loop detection
         
         while num_calls_remaining > 0:
             # Check for shutdown
@@ -280,6 +282,13 @@ class MLXReactAgent:
             
             print(f"--- Round {round_num} (calls left: {num_calls_remaining}) ---")
             
+            # Inject reminder at round 5 to encourage conclusion
+            if round_num == 5:
+                messages.append({
+                    "role": "user",
+                    "content": "REMINDER: You have made several searches. If you have enough information to answer the question, please provide your final answer now using <answer></answer> tags. Only continue searching if absolutely necessary."
+                })
+            
             # Generate response
             content = self.generate_response(messages)
             
@@ -291,6 +300,29 @@ class MLXReactAgent:
             # Check for tool calls
             if '<tool_call>' in content and '</tool_call>' in content:
                 tool_call_str = content.split('<tool_call>')[1].split('</tool_call>')[0]
+                
+                # Loop detection: check if same tool call as last time
+                if tool_call_str.strip() == last_tool_call:
+                    print("Warning: Detected repeated tool call, forcing answer...")
+                    messages.append({
+                        "role": "user",
+                        "content": "You are repeating the same action. Stop and provide your final answer NOW based on available information.\n<answer>your answer</answer>"
+                    })
+                    content = self.generate_response(messages, max_tokens=2048)
+                    messages.append({"role": "assistant", "content": content})
+                    if '<answer>' in content and '</answer>' in content:
+                        prediction = content.split('<answer>')[1].split('</answer>')[0]
+                    else:
+                        prediction = content
+                    return {
+                        "question": question,
+                        "answer": answer,
+                        "messages": messages,
+                        "prediction": prediction.strip(),
+                        "termination": "loop_detected"
+                    }
+                
+                last_tool_call = tool_call_str.strip()
                 
                 try:
                     # Handle Python interpreter specially
@@ -307,6 +339,31 @@ class MLXReactAgent:
                     result = f'Error: Invalid JSON in tool call. {e}'
                 except Exception as e:
                     result = f'Error: Tool call failed. {e}'
+                
+                # Track consecutive errors
+                if result.startswith('Error:'):
+                    consecutive_errors += 1
+                    if consecutive_errors >= 3:
+                        print(f"Warning: {consecutive_errors} consecutive errors, forcing answer...")
+                        messages.append({
+                            "role": "user",
+                            "content": f"Multiple tool errors occurred. Please provide your best answer based on the information you have gathered so far.\n<answer>your answer</answer>"
+                        })
+                        content = self.generate_response(messages, max_tokens=2048)
+                        messages.append({"role": "assistant", "content": content})
+                        if '<answer>' in content and '</answer>' in content:
+                            prediction = content.split('<answer>')[1].split('</answer>')[0]
+                        else:
+                            prediction = content
+                        return {
+                            "question": question,
+                            "answer": answer,
+                            "messages": messages,
+                            "prediction": prediction.strip(),
+                            "termination": "consecutive_errors"
+                        }
+                else:
+                    consecutive_errors = 0  # Reset on success
                 
                 result_preview = result[:200] + "..." if len(result) > 200 else result
                 print(f"Result: {result_preview}")
