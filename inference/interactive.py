@@ -163,7 +163,11 @@ def main():
             if query.lower() == '/status':
                 try:
                     import mlx.core as mx
-                    mem_gb = mx.metal.get_active_memory() / (1024**3)
+                    # Use new API (mlx >= 0.24) or fall back to deprecated
+                    if hasattr(mx, 'get_active_memory'):
+                        mem_gb = mx.get_active_memory() / (1024**3)
+                    else:
+                        mem_gb = mx.metal.get_active_memory() / (1024**3)
                     print(f"Model: {args.model}")
                     print(f"GPU Memory: {mem_gb:.1f} GB")
                 except Exception:

@@ -116,8 +116,9 @@ class MLXReactAgent:
         """Get current GPU memory usage in GB."""
         try:
             import mlx.core as mx
-            # Force memory stats update
-            mx.metal.get_peak_memory() 
+            # Use new API (mlx >= 0.24) or fall back to deprecated
+            if hasattr(mx, 'get_active_memory'):
+                return mx.get_active_memory() / (1024**3)
             return mx.metal.get_active_memory() / (1024**3)
         except Exception:
             return 0.0
