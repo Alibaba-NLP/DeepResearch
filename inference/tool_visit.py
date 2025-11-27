@@ -1,7 +1,6 @@
 import json
 import os
 import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Union, Optional
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
@@ -96,6 +95,14 @@ class Visit(BaseTool):
         "required": ["url", "goal"]
     }
 
+    def _validate_url(self, url: str) -> bool:
+        """Check if URL is valid and has a proper scheme."""
+        try:
+            parsed = urlparse(url)
+            return parsed.scheme in ('http', 'https') and bool(parsed.netloc)
+        except Exception:
+            return False
+
     def call(self, params: Union[str, dict], **kwargs) -> str:
         try:
             url = params["url"]
@@ -104,6 +111,8 @@ class Visit(BaseTool):
             return "[Visit] Invalid request: need 'url' and 'goal' fields"
 
         if isinstance(url, str):
+            if not self._validate_url(url):
+                return f"[Visit] Invalid URL: {url}. URL must start with http:// or https://"
             return self.readpage(url, goal)
         
         # Multiple URLs
@@ -112,6 +121,9 @@ class Visit(BaseTool):
         for u in url:
             if time.time() - start > 300:  # 5 min timeout for batch
                 responses.append(f"[Timeout] Skipped: {u}")
+                continue
+            if not self._validate_url(u):
+                responses.append(f"[Visit] Invalid URL: {u}")
                 continue
             try:
                 responses.append(self.readpage(u, goal))

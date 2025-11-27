@@ -184,8 +184,8 @@ class MLXReactAgent:
         if tool_name not in TOOL_MAP:
             return f"Error: Tool '{tool_name}' not found. Available: {list(TOOL_MAP.keys())}"
         
-        # Prepare args
-        tool_args["params"] = tool_args
+        # Copy args to avoid mutation
+        args = dict(tool_args)
         result = ""
         error = None
         
@@ -193,14 +193,14 @@ class MLXReactAgent:
             nonlocal result, error
             try:
                 if "python" in tool_name.lower():
-                    result = str(TOOL_MAP['PythonInterpreter'].call(tool_args))
+                    result = str(TOOL_MAP['PythonInterpreter'].call(args))
                 elif tool_name == "parse_file":
                     import asyncio
-                    params = {"files": tool_args.get("files", [])}
+                    params = {"files": args.get("files", [])}
                     r = asyncio.run(TOOL_MAP[tool_name].call(params, file_root_path="./eval_data/file_corpus"))
                     result = str(r) if not isinstance(r, str) else r
                 else:
-                    result = str(TOOL_MAP[tool_name].call(tool_args))
+                    result = str(TOOL_MAP[tool_name].call(args))
             except Exception as e:
                 error = str(e)
         
