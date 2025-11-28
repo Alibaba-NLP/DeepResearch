@@ -67,7 +67,7 @@ EXA_API_KEY = os.environ.get("EXA_API_KEY", "")
 TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY", "")
 SERPER_KEY = os.environ.get("SERPER_KEY_ID", "")
 
-MAX_ROUNDS = 30
+MAX_ROUNDS = 10
 MAX_TOKENS = 4096
 TEMPERATURE = 0.7
 TOP_P = 0.95

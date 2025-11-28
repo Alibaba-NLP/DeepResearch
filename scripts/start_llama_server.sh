@@ -187,6 +187,7 @@ SERVER_ARGS=(
     --flash-attn auto
     --metrics
     --log-disable
+    --alias deepresearch
 )
 # Note: --jinja is enabled by default in recent llama.cpp versions
 
