@@ -32,15 +32,16 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 LLAMA_SERVER="$PROJECT_DIR/llama.cpp/build/bin/llama-server"
 MODEL_PATH="$PROJECT_DIR/models/gguf/Alibaba-NLP_Tongyi-DeepResearch-30B-A3B-Q4_K_M.gguf"
 
-# Default settings (optimized for Apple Silicon with 32GB+ RAM)
+# Default settings (optimized for Apple Silicon with 32GB RAM)
 PORT=${PORT:-8080}
 HOST=${HOST:-127.0.0.1}
-CTX_SIZE=${CTX_SIZE:-32768}       # 32K context for long research sessions
+CTX_SIZE=${CTX_SIZE:-16384}       # 16K context (use --ctx 32768 for longer sessions)
 GPU_LAYERS=${GPU_LAYERS:-99}      # Offload all layers to Metal
 THREADS=${THREADS:-8}             # CPU threads for non-GPU ops
 PARALLEL=${PARALLEL:-1}           # Parallel request slots
 BATCH_SIZE=${BATCH_SIZE:-512}     # Batch size for prompt processing
 WEBUI=${WEBUI:-true}              # Enable web UI by default
+MLOCK=${MLOCK:-false}             # Don't lock model in RAM (saves memory for other apps)
 
 # Colors
 RED='\033[0;31m'
@@ -104,16 +105,28 @@ while [[ $# -gt 0 ]]; do
             WEBUI=true
             shift
             ;;
+        --mlock)
+            MLOCK=true
+            shift
+            ;;
+        --low-memory)
+            # Low memory mode: smaller context, no mlock
+            CTX_SIZE=8192
+            MLOCK=false
+            shift
+            ;;
         -h|--help)
             echo "Usage: $0 [options]"
             echo ""
             echo "Options:"
             echo "  --port N      Port number (default: 8080)"
-            echo "  --ctx N       Context size (default: 32768)"
+            echo "  --ctx N       Context size (default: 16384)"
             echo "  --threads N   CPU threads (default: 8)"
             echo "  --parallel N  Parallel requests (default: 1)"
             echo "  --webui       Enable web UI (default)"
             echo "  --no-webui    Disable web UI, API only"
+            echo "  --mlock       Lock model in RAM (uses more memory but faster)"
+            echo "  --low-memory  Low memory mode: 8K context, no mlock"
             echo "  -h, --help    Show this help"
             echo ""
             echo "Access points:"
@@ -128,7 +141,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Display configuration
 echo -e "${GREEN}Configuration:${NC}"
 echo "  Model:     $(basename "$MODEL_PATH")"
 echo "  Size:      $(du -h "$MODEL_PATH" | cut -f1)"
@@ -136,6 +148,7 @@ echo "  Context:   $CTX_SIZE tokens"
 echo "  GPU:       Metal (all $GPU_LAYERS layers)"
 echo "  Threads:   $THREADS"
 echo "  Parallel:  $PARALLEL slots"
+echo "  Mlock:     $MLOCK"
 echo "  Web UI:    $WEBUI"
 echo "  Endpoint:  http://$HOST:$PORT"
 echo ""
@@ -172,11 +185,15 @@ SERVER_ARGS=(
     --parallel "$PARALLEL"
     --batch-size "$BATCH_SIZE"
     --flash-attn auto
-    --mlock
     --metrics
     --log-disable
 )
 # Note: --jinja is enabled by default in recent llama.cpp versions
+
+# Add mlock if requested (uses more memory but may be faster)
+if [ "$MLOCK" = "true" ]; then
+    SERVER_ARGS+=(--mlock)
+fi
 
 # Add no-webui flag if requested
 if [ "$WEBUI" = "false" ]; then
