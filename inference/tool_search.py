@@ -1,376 +1,393 @@
 """
-Multi-Provider Search Tool for DeepResearch
-Implements a fallback chain: Exa.ai → Serper → DuckDuckGo
+Multi-Provider Web Search Tool
+==============================
 
-Provider priority:
-1. Exa.ai (best quality, semantic search with neural embeddings)
-2. Serper.dev (Google results, reliable fallback)
-3. DuckDuckGo (free, always available)
+Implements a robust search fallback chain optimized for AI research:
+  1. Exa.ai     - Best semantic/neural search, $10 free credits
+  2. Tavily    - Purpose-built for RAG/LLMs, 1,000 free requests/month
+  3. Serper    - Google SERP results, 2,500 free queries
+  4. DuckDuckGo - Free forever, final fallback (no API key needed)
 
-The tool automatically falls back to the next provider when:
-- API key is not configured
-- Rate limit is hit
-- API errors occur
+Each provider is tried in order. If one fails (rate limit, error, no key),
+the next provider is attempted automatically.
+
+Environment Variables:
+  EXA_API_KEY      - Exa.ai API key (https://exa.ai/)
+  TAVILY_API_KEY   - Tavily API key (https://tavily.com/)
+  SERPER_KEY_ID    - Serper API key (https://serper.dev/)
+
+If no API keys are set, DuckDuckGo is used as the default (free, no key needed).
 """
 
+import http.client
 import json
 import os
 import time
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
+
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
 
+
 # API Keys from environment
-EXA_API_KEY = os.environ.get('EXA_API_KEY')
-SERPER_API_KEY = os.environ.get('SERPER_API_KEY')
-
-# API endpoints
-EXA_BASE_URL = "https://api.exa.ai"
-SERPER_BASE_URL = "https://google.serper.dev"
-
-# Valid Exa categories
-VALID_CATEGORIES = [
-    "company", "research paper", "news", "pdf", 
-    "github", "tweet", "personal site", "linkedin profile"
-]
+EXA_API_KEY = os.environ.get("EXA_API_KEY", "")
+TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY", "")
+SERPER_KEY = os.environ.get("SERPER_KEY_ID", "")
 
 
-class SearchProviderError(Exception):
-    """Raised when a search provider fails and should fallback."""
-    pass
+def contains_chinese(text: str) -> bool:
+    """Check if text contains Chinese characters."""
+    return any("\u4E00" <= char <= "\u9FFF" for char in text)
 
 
-class ExaSearch:
-    """Exa.ai semantic search provider."""
+# =============================================================================
+# Search Providers
+# =============================================================================
+
+def search_exa(query: str, num_results: int = 10) -> Optional[str]:
+    """
+    Exa.ai - Neural/semantic search engine.
+    Best for finding conceptually relevant results, not just keyword matches.
+    """
+    if not EXA_API_KEY:
+        return None
     
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-    
-    def search(
-        self,
-        query: str,
-        num_results: int = 10,
-        include_contents: bool = False,
-        category: Optional[str] = None
-    ) -> str:
-        headers = {
-            "Content-Type": "application/json",
-            "x-api-key": self.api_key
-        }
+    try:
+        response = requests.post(
+            "https://api.exa.ai/search",
+            headers={
+                "x-api-key": EXA_API_KEY,
+                "Content-Type": "application/json",
+            },
+            json={
+                "query": query,
+                "numResults": num_results,
+                "useAutoprompt": True,
+                "type": "neural",
+            },
+            timeout=30,
+        )
         
-        payload: Dict[str, Any] = {
-            "query": query,
-            "numResults": num_results,
-            "type": "auto",
-            "useAutoprompt": True,
-        }
-        
-        if category and category in VALID_CATEGORIES:
-            payload["category"] = category
-        
-        if include_contents:
-            payload["contents"] = {
-                "text": {"maxCharacters": 2000},
-                "highlights": True
-            }
-        
-        response = None
-        for attempt in range(3):
-            try:
-                response = requests.post(
-                    f"{EXA_BASE_URL}/search",
-                    headers=headers,
-                    json=payload,
-                    timeout=30
-                )
-                response.raise_for_status()
-                break
-            except requests.exceptions.HTTPError as e:
-                if response is not None:
-                    if response.status_code == 429:
-                        raise SearchProviderError("Exa rate limited")
-                    if response.status_code == 401:
-                        raise SearchProviderError("Exa API key invalid")
-                    if response.status_code == 402:
-                        raise SearchProviderError("Exa credits exhausted")
-                if attempt == 2:
-                    raise SearchProviderError(f"Exa failed: {e}")
-            except requests.exceptions.RequestException as e:
-                if attempt == 2:
-                    raise SearchProviderError(f"Exa failed: {e}")
-                time.sleep(1)
-        
-        if response is None:
-            raise SearchProviderError("Exa: no response")
-        
-        results = response.json()
-        
-        if "results" not in results or not results["results"]:
-            return f"No results found for '{query}'."
-        
-        snippets = []
-        for idx, r in enumerate(results["results"], 1):
-            title = r.get("title", "No title")
-            url = r.get("url", "")
-            date = r.get("publishedDate", "")[:10] if r.get("publishedDate") else ""
-            
-            parts = [f"{idx}. [{title}]({url})"]
-            if date:
-                parts.append(f"Date: {date}")
-            
-            if include_contents:
-                highlights = r.get("highlights", [])
-                if highlights:
-                    parts.append("Key points:")
-                    for h in highlights[:3]:
-                        parts.append(f"  • {h}")
-                elif r.get("text"):
-                    parts.append(r["text"][:500] + "...")
-            elif r.get("snippet"):
-                parts.append(r["snippet"])
-            
-            snippets.append("\n".join(parts))
-        
-        search_type = results.get("resolvedSearchType", "neural")
-        cat_info = f" (category: {category})" if category else ""
-        return f"[Exa {search_type}]{cat_info} '{query}' - {len(snippets)} results:\n\n" + "\n\n".join(snippets)
-
-
-class SerperSearch:
-    """Serper.dev Google search provider."""
-    
-    def __init__(self, api_key: str):
-        self.api_key = api_key
-    
-    def search(self, query: str, num_results: int = 10) -> str:
-        headers = {
-            "X-API-KEY": self.api_key,
-            "Content-Type": "application/json"
-        }
-        
-        payload = {
-            "q": query,
-            "num": min(num_results, 100)
-        }
-        
-        response = None
-        for attempt in range(3):
-            try:
-                response = requests.post(
-                    f"{SERPER_BASE_URL}/search",
-                    headers=headers,
-                    json=payload,
-                    timeout=30
-                )
-                response.raise_for_status()
-                break
-            except requests.exceptions.HTTPError as e:
-                if response is not None:
-                    if response.status_code == 429:
-                        raise SearchProviderError("Serper rate limited")
-                    if response.status_code in (401, 403):
-                        raise SearchProviderError("Serper API key invalid")
-                if attempt == 2:
-                    raise SearchProviderError(f"Serper failed: {e}")
-            except requests.exceptions.RequestException as e:
-                if attempt == 2:
-                    raise SearchProviderError(f"Serper failed: {e}")
-                time.sleep(1)
-        
-        if response is None:
-            raise SearchProviderError("Serper: no response")
+        if response.status_code == 401:
+            print("[Exa] Invalid API key")
+            return None
+        if response.status_code == 429:
+            print("[Exa] Rate limited")
+            return None
+        if response.status_code != 200:
+            print(f"[Exa] Error {response.status_code}: {response.text[:200]}")
+            return None
         
         data = response.json()
-        organic = data.get("organic", [])
-        
-        if not organic:
-            return f"No results found for '{query}'."
-        
-        snippets = []
-        for idx, r in enumerate(organic[:num_results], 1):
-            title = r.get("title", "No title")
-            url = r.get("link", "")
-            snippet = r.get("snippet", "")
-            
-            parts = [f"{idx}. [{title}]({url})"]
-            if snippet:
-                parts.append(snippet)
-            snippets.append("\n".join(parts))
-        
-        return f"[Serper/Google] '{query}' - {len(snippets)} results:\n\n" + "\n\n".join(snippets)
-
-
-class DuckDuckGoSearch:
-    """DuckDuckGo search provider (free, no API key needed)."""
-    
-    def search(self, query: str, num_results: int = 10) -> str:
-        try:
-            from duckduckgo_search import DDGS
-        except ImportError:
-            raise SearchProviderError("DuckDuckGo: duckduckgo_search not installed")
-        
-        results: List[Dict[str, Any]] = []
-        for attempt in range(3):
-            try:
-                with DDGS() as ddg:
-                    results = list(ddg.text(query, max_results=num_results))
-                break
-            except Exception as e:
-                err = str(e).lower()
-                if "ratelimit" in err or "429" in err:
-                    if attempt < 2:
-                        wait = 2 ** attempt
-                        time.sleep(wait)
-                        continue
-                    raise SearchProviderError(f"DuckDuckGo rate limited after {attempt + 1} attempts")
-                if attempt == 2:
-                    raise SearchProviderError(f"DuckDuckGo failed: {e}")
-                time.sleep(1)
+        results = data.get("results", [])
         
         if not results:
-            return f"No results found for '{query}'."
+            return None
         
         snippets = []
         for idx, r in enumerate(results, 1):
             title = r.get("title", "No title")
-            url = r.get("href", "")
-            body = r.get("body", "")
+            url = r.get("url", "")
+            text = r.get("text", "")[:300] if r.get("text") else ""
+            published = r.get("publishedDate", "")
             
-            parts = [f"{idx}. [{title}]({url})"]
-            if body:
-                parts.append(body)
-            snippets.append("\n".join(parts))
+            snippet = f"{idx}. [{title}]({url})"
+            if published:
+                snippet += f"\nDate published: {published[:10]}"
+            if text:
+                snippet += f"\n{text}"
+            snippets.append(snippet)
         
-        return f"[DuckDuckGo] '{query}' - {len(snippets)} results:\n\n" + "\n\n".join(snippets)
+        return f"A search for '{query}' found {len(snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(snippets)
+    
+    except requests.Timeout:
+        print("[Exa] Request timeout")
+        return None
+    except Exception as e:
+        print(f"[Exa] Error: {e}")
+        return None
 
+
+def search_tavily(query: str, num_results: int = 10) -> Optional[str]:
+    """
+    Tavily - Search API designed specifically for RAG and LLM applications.
+    Returns AI-optimized snippets and supports advanced filtering.
+    """
+    if not TAVILY_API_KEY:
+        return None
+    
+    try:
+        response = requests.post(
+            "https://api.tavily.com/search",
+            headers={"Content-Type": "application/json"},
+            json={
+                "api_key": TAVILY_API_KEY,
+                "query": query,
+                "max_results": num_results,
+                "search_depth": "advanced",
+                "include_answer": False,
+                "include_raw_content": False,
+            },
+            timeout=30,
+        )
+        
+        if response.status_code == 401:
+            print("[Tavily] Invalid API key")
+            return None
+        if response.status_code == 429:
+            print("[Tavily] Rate limited")
+            return None
+        if response.status_code != 200:
+            print(f"[Tavily] Error {response.status_code}: {response.text[:200]}")
+            return None
+        
+        data = response.json()
+        results = data.get("results", [])
+        
+        if not results:
+            return None
+        
+        snippets = []
+        for idx, r in enumerate(results, 1):
+            title = r.get("title", "No title")
+            url = r.get("url", "")
+            content = r.get("content", "")[:300]
+            score = r.get("score", 0)
+            
+            snippet = f"{idx}. [{title}]({url})"
+            if content:
+                snippet += f"\n{content}"
+            snippets.append(snippet)
+        
+        return f"A search for '{query}' found {len(snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(snippets)
+    
+    except requests.Timeout:
+        print("[Tavily] Request timeout")
+        return None
+    except Exception as e:
+        print(f"[Tavily] Error: {e}")
+        return None
+
+
+def search_serper(query: str, num_results: int = 10) -> Optional[str]:
+    """
+    Serper - Google Search API (SERP results).
+    Fast and reliable Google search results.
+    """
+    if not SERPER_KEY:
+        return None
+    
+    try:
+        conn = http.client.HTTPSConnection("google.serper.dev")
+        
+        if contains_chinese(query):
+            payload = json.dumps({
+                "q": query,
+                "location": "China",
+                "gl": "cn",
+                "hl": "zh-cn",
+                "num": num_results,
+            })
+        else:
+            payload = json.dumps({
+                "q": query,
+                "location": "United States",
+                "gl": "us",
+                "hl": "en",
+                "num": num_results,
+            })
+        
+        headers = {
+            "X-API-KEY": SERPER_KEY,
+            "Content-Type": "application/json",
+        }
+        
+        res = None
+        for attempt in range(3):
+            try:
+                conn.request("POST", "/search", payload, headers)
+                res = conn.getresponse()
+                break
+            except Exception as e:
+                if attempt == 2:
+                    print(f"[Serper] Connection error: {e}")
+                    return None
+                time.sleep(1)
+                continue
+        
+        if res is None:
+            return None
+        
+        data = json.loads(res.read().decode("utf-8"))
+        
+        if "error" in data:
+            print(f"[Serper] API error: {data['error']}")
+            return None
+        
+        if "organic" not in data:
+            return None
+        
+        snippets = []
+        for idx, page in enumerate(data["organic"], 1):
+            title = page.get("title", "No title")
+            url = page.get("link", "")
+            snippet_text = page.get("snippet", "")
+            date = page.get("date", "")
+            source = page.get("source", "")
+            
+            result = f"{idx}. [{title}]({url})"
+            if date:
+                result += f"\nDate published: {date}"
+            if source:
+                result += f"\nSource: {source}"
+            if snippet_text:
+                result += f"\n{snippet_text}"
+            
+            result = result.replace("Your browser can't play this video.", "")
+            snippets.append(result)
+        
+        return f"A search for '{query}' found {len(snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(snippets)
+    
+    except Exception as e:
+        print(f"[Serper] Error: {e}")
+        return None
+
+
+def search_duckduckgo(query: str, num_results: int = 10) -> Optional[str]:
+    """
+    DuckDuckGo - Free search with no API key required.
+    Rate limited but reliable as a final fallback.
+    """
+    try:
+        from duckduckgo_search import DDGS
+        from duckduckgo_search.exceptions import RatelimitException
+    except ImportError:
+        print("[DuckDuckGo] duckduckgo-search package not installed")
+        return None
+    
+    retries = 3
+    for attempt in range(retries):
+        try:
+            with DDGS() as ddgs:
+                results = list(ddgs.text(query, max_results=num_results))
+            
+            if not results:
+                return None
+            
+            snippets = []
+            for idx, r in enumerate(results, 1):
+                title = r.get("title", "No title")
+                url = r.get("href", r.get("link", ""))
+                body = r.get("body", "")[:300]
+                
+                snippet = f"{idx}. [{title}]({url})"
+                if body:
+                    snippet += f"\n{body}"
+                snippets.append(snippet)
+            
+            return f"A search for '{query}' found {len(snippets)} results:\n\n## Web Results\n\n" + "\n\n".join(snippets)
+        
+        except RatelimitException:
+            if attempt < retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            print("[DuckDuckGo] Rate limited after retries")
+            return None
+        except Exception as e:
+            print(f"[DuckDuckGo] Error: {e}")
+            return None
+    
+    return None
+
+
+# =============================================================================
+# Multi-Provider Search with Fallback
+# =============================================================================
+
+def multi_provider_search(query: str, num_results: int = 10) -> str:
+    """
+    Search using multiple providers with automatic fallback.
+    
+    Provider priority (by quality):
+      1. Exa.ai     - Best semantic search
+      2. Tavily     - Purpose-built for LLMs
+      3. Serper     - Google SERP results
+      4. DuckDuckGo - Free fallback
+    
+    Returns the first successful result or an error message.
+    """
+    providers = [
+        ("Exa", search_exa),
+        ("Tavily", search_tavily),
+        ("Serper", search_serper),
+        ("DuckDuckGo", search_duckduckgo),
+    ]
+    
+    errors = []
+    
+    for name, search_fn in providers:
+        result = search_fn(query, num_results)
+        if result:
+            return result
+        errors.append(name)
+    
+    return f"No results found for '{query}'. All providers failed: {', '.join(errors)}. Try a different query."
+
+
+# =============================================================================
+# Qwen Agent Tool Registration
+# =============================================================================
 
 @register_tool("search", allow_overwrite=True)
 class Search(BaseTool):
-    """
-    Multi-provider search tool with automatic fallback.
-    
-    Fallback chain: Exa.ai → Serper → DuckDuckGo
-    """
+    """Web search tool with multi-provider fallback."""
     
     name = "search"
-    description = "Search the web. Tries Exa.ai (semantic), then Serper (Google), then DuckDuckGo. Supply 'query' as string or array."
+    description = "Performs batched web searches: supply an array 'query'; the tool retrieves the top 10 results for each query in one call."
     parameters = {
         "type": "object",
         "properties": {
             "query": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "Query string or array of queries"
+                "description": "Array of query strings. Include multiple complementary search queries in a single call.",
             },
-            "num_results": {
-                "type": "integer",
-                "description": "Results per query (default: 10)",
-                "default": 10
-            },
-            "include_contents": {
-                "type": "boolean",
-                "description": "Include page contents (Exa only)",
-                "default": False
-            },
-            "category": {
-                "type": "string",
-                "description": "Category filter (Exa only): 'research paper', 'news', 'company', 'pdf', 'github'",
-                "enum": VALID_CATEGORIES
-            }
         },
         "required": ["query"],
     }
 
     def __init__(self, cfg: Optional[dict] = None):
         super().__init__(cfg)
-        self.providers: List[tuple] = []
         
-        # Build provider list based on available API keys
+        # Log which providers are available
+        available = []
         if EXA_API_KEY:
-            self.providers.append(("exa", ExaSearch(EXA_API_KEY)))
-        if SERPER_API_KEY:
-            self.providers.append(("serper", SerperSearch(SERPER_API_KEY)))
-        # DuckDuckGo always available (no API key needed)
-        self.providers.append(("duckduckgo", DuckDuckGoSearch()))
+            available.append("Exa")
+        if TAVILY_API_KEY:
+            available.append("Tavily")
+        if SERPER_KEY:
+            available.append("Serper")
+        available.append("DuckDuckGo")
         
-        if not self.providers:
-            raise ValueError("No search providers available")
+        print(f"[Search] Available providers: {', '.join(available)}")
 
-    def _search_with_fallback(
-        self,
-        query: str,
-        num_results: int = 10,
-        include_contents: bool = False,
-        category: Optional[str] = None
-    ) -> str:
-        """Try each provider in order until one succeeds."""
-        errors = []
-        
-        for name, provider in self.providers:
-            try:
-                if name == "exa":
-                    return provider.search(query, num_results, include_contents, category)
-                elif name == "serper":
-                    return provider.search(query, num_results)
-                else:  # duckduckgo
-                    return provider.search(query, num_results)
-            except SearchProviderError as e:
-                errors.append(f"{name}: {e}")
-                continue
-        
-        return f"[Search] All providers failed for '{query}':\n" + "\n".join(f"  - {e}" for e in errors)
-
-    def call(self, params: Union[str, dict], **kwargs: Any) -> str:
-        params_dict: Dict[str, Any]
+    def call(self, params: Union[str, dict], **kwargs) -> str:
         if isinstance(params, str):
-            try:
-                params_dict = json.loads(params)
-            except json.JSONDecodeError:
-                return "[Search] Invalid JSON"
-        else:
-            params_dict = dict(params)
+            return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
         
+        params_dict: dict = params
         query = params_dict.get("query")
-        if not query:
-            return "[Search] 'query' is required"
-        
-        num_results = int(params_dict.get("num_results", 10) or 10)
-        include_contents = bool(params_dict.get("include_contents", False))
-        category = params_dict.get("category")
-        
-        if category and category not in VALID_CATEGORIES:
-            category = None
+        if query is None:
+            return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
         
         if isinstance(query, str):
-            return self._search_with_fallback(query, num_results, include_contents, category)
+            return multi_provider_search(query)
         
-        if isinstance(query, list):
-            results = []
-            for q in query:
-                results.append(self._search_with_fallback(q, num_results, include_contents, category))
-            return "\n=======\n".join(results)
+        if not isinstance(query, list):
+            return "[Search] Invalid query format: 'query' must be a string or array of strings"
         
-        return "[Search] query must be string or array"
-
-
-if __name__ == "__main__":
-    from dotenv import load_dotenv
-    
-    env_path = os.path.join(os.path.dirname(__file__), "..", ".env")
-    load_dotenv(env_path)
-    
-    # Check available providers
-    exa_key = os.environ.get('EXA_API_KEY')
-    serper_key = os.environ.get('SERPER_API_KEY')
-    
-    print("Available providers:")
-    if exa_key:
-        print("  ✓ Exa.ai")
-    if serper_key:
-        print("  ✓ Serper.dev")
-    print("  ✓ DuckDuckGo (always available)")
-    print()
-    
-    searcher = Search()
-    result = searcher.call({"query": ["What is retrieval augmented generation?"]})
-    print(result)
+        responses = []
+        for q in query:
+            responses.append(multi_provider_search(q))
+        
+        return "\n=======\n".join(responses)
