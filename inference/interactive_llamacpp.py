@@ -11,13 +11,19 @@ Tongyi-DeepResearch model and provides a full ReAct agent loop
 with web search and page visiting capabilities.
 
 Architecture:
-    ┌─────────────────┐     HTTP      ┌──────────────────┐
-    │  This Script    │ ────────────> │  llama.cpp       │
-    │  (Agent Logic)  │               │  Server          │
-    │  - Tool calls   │ <──────────── │  (Model loaded)  │
-    │  - Web search   │     JSON      │  - Metal GPU     │
-    │  - Page visits  │               │  - 32K context   │
-    └─────────────────┘               └──────────────────┘
+    +------------------+     HTTP      +-------------------+
+    |  This Script     | ------------> |  llama.cpp        |
+    |  (Agent Logic)   |               |  Server           |
+    |  - Tool calls    | <------------ |  (Model loaded)   |
+    |  - Web search    |     JSON      |  - Metal GPU      |
+    |  - Page visits   |               |  - 32K context    |
+    +------------------+               +-------------------+
+
+Search Providers (in order of quality):
+    1. Exa.ai      - Best semantic/neural search
+    2. Tavily      - Purpose-built for RAG/LLMs
+    3. Serper      - Google SERP results
+    4. DuckDuckGo  - Free fallback (no API key needed)
 
 Usage:
     # Terminal 1: Start the server (one-time, stays running)
@@ -28,27 +34,25 @@ Usage:
 
 Requirements:
     pip install requests duckduckgo-search python-dotenv
-
-The server must be running before starting this script.
 """
 
 import argparse
+import http.client
 import json
 import os
 import re
 import sys
 import time
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
 import requests
-
-from urllib.parse import urlparse
 
 # Load environment variables
 try:
     from dotenv import load_dotenv
-    load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
+    load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 except ImportError:
     pass
 
@@ -58,6 +62,11 @@ except ImportError:
 
 LLAMA_SERVER_URL = os.environ.get("LLAMA_SERVER_URL", "http://127.0.0.1:8080")
 JINA_API_KEY = os.environ.get("JINA_API_KEYS", "") or os.environ.get("JINA_API_KEY", "")
+
+# Search API keys
+EXA_API_KEY = os.environ.get("EXA_API_KEY", "")
+TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY", "")
+SERPER_KEY = os.environ.get("SERPER_KEY_ID", "")
 
 MAX_ROUNDS = 30
 MAX_TOKENS = 4096
@@ -70,6 +79,7 @@ STOP_SEQUENCES = [
     "<tool_response>",
     "\n<tool_response>",
 ]
+
 
 # =============================================================================
 # System Prompt - Optimized for DeepResearch ReAct Agent
@@ -122,59 +132,227 @@ Current date: {datetime.now().strftime("%Y-%m-%d")}"""
 
 
 # =============================================================================
-# Tools - DuckDuckGo Search (FREE, no API key needed!)
+# Search Providers
 # =============================================================================
 
-def duckduckgo_search(queries: list, num_results: int = 10) -> str:
-    """Search using DuckDuckGo - completely free, no API key needed."""
+def contains_chinese(text: str) -> bool:
+    """Check if text contains Chinese characters."""
+    return any("\u4E00" <= char <= "\u9FFF" for char in text)
+
+
+def search_exa(query: str, num_results: int = 10) -> Optional[str]:
+    """Exa.ai - Neural/semantic search engine."""
+    if not EXA_API_KEY:
+        return None
+    
+    try:
+        response = requests.post(
+            "https://api.exa.ai/search",
+            headers={
+                "x-api-key": EXA_API_KEY,
+                "Content-Type": "application/json",
+            },
+            json={
+                "query": query,
+                "numResults": num_results,
+                "useAutoprompt": True,
+                "type": "neural",
+            },
+            timeout=30,
+        )
+        
+        if response.status_code in (401, 429) or response.status_code != 200:
+            return None
+        
+        data = response.json()
+        results = data.get("results", [])
+        if not results:
+            return None
+        
+        output = [f"\n## Search: '{query}'\n"]
+        for idx, r in enumerate(results, 1):
+            title = r.get("title", "No title")
+            url = r.get("url", "")
+            text = r.get("text", "")[:300] if r.get("text") else ""
+            output.append(f"{idx}. [{title}]({url})")
+            if text:
+                output.append(f"   {text}...")
+        
+        return "\n".join(output)
+    except Exception:
+        return None
+
+
+def search_tavily(query: str, num_results: int = 10) -> Optional[str]:
+    """Tavily - Search API for RAG/LLM applications."""
+    if not TAVILY_API_KEY:
+        return None
+    
+    try:
+        response = requests.post(
+            "https://api.tavily.com/search",
+            headers={"Content-Type": "application/json"},
+            json={
+                "api_key": TAVILY_API_KEY,
+                "query": query,
+                "max_results": num_results,
+                "search_depth": "advanced",
+            },
+            timeout=30,
+        )
+        
+        if response.status_code in (401, 429) or response.status_code != 200:
+            return None
+        
+        data = response.json()
+        results = data.get("results", [])
+        if not results:
+            return None
+        
+        output = [f"\n## Search: '{query}'\n"]
+        for idx, r in enumerate(results, 1):
+            title = r.get("title", "No title")
+            url = r.get("url", "")
+            content = r.get("content", "")[:300]
+            output.append(f"{idx}. [{title}]({url})")
+            if content:
+                output.append(f"   {content}...")
+        
+        return "\n".join(output)
+    except Exception:
+        return None
+
+
+def search_serper(query: str, num_results: int = 10) -> Optional[str]:
+    """Serper - Google Search API."""
+    if not SERPER_KEY:
+        return None
+    
+    try:
+        conn = http.client.HTTPSConnection("google.serper.dev")
+        
+        if contains_chinese(query):
+            payload = json.dumps({
+                "q": query, "location": "China", "gl": "cn", "hl": "zh-cn", "num": num_results
+            })
+        else:
+            payload = json.dumps({
+                "q": query, "location": "United States", "gl": "us", "hl": "en", "num": num_results
+            })
+        
+        headers = {"X-API-KEY": SERPER_KEY, "Content-Type": "application/json"}
+        
+        res = None
+        for attempt in range(3):
+            try:
+                conn.request("POST", "/search", payload, headers)
+                res = conn.getresponse()
+                break
+            except Exception:
+                if attempt == 2:
+                    return None
+                time.sleep(1)
+        
+        if res is None:
+            return None
+        
+        data = json.loads(res.read().decode("utf-8"))
+        if "organic" not in data:
+            return None
+        
+        output = [f"\n## Search: '{query}'\n"]
+        for idx, page in enumerate(data["organic"], 1):
+            title = page.get("title", "No title")
+            url = page.get("link", "")
+            snippet = page.get("snippet", "")[:300]
+            output.append(f"{idx}. [{title}]({url})")
+            if snippet:
+                output.append(f"   {snippet}...")
+        
+        return "\n".join(output)
+    except Exception:
+        return None
+
+
+def search_duckduckgo(query: str, num_results: int = 10) -> Optional[str]:
+    """DuckDuckGo - Free search, no API key required."""
     try:
         from duckduckgo_search import DDGS
         from duckduckgo_search.exceptions import RatelimitException
     except ImportError:
-        return "[Search Error] duckduckgo-search not installed. Run: pip install duckduckgo-search"
+        return None
     
-    results = []
-    for query in queries[:3]:
-        retries = 3
-        for attempt in range(retries):
-            try:
-                with DDGS() as ddgs:
-                    search_results = list(ddgs.text(query, max_results=num_results))
-                
-                output = [f"\n## Search: '{query}'\n"]
-                for idx, r in enumerate(search_results, 1):
-                    title = r.get("title", "No title")
-                    url = r.get("href", r.get("link", ""))
-                    snippet = r.get("body", "")[:300]
-                    output.append(f"{idx}. [{title}]({url})")
-                    if snippet:
-                        output.append(f"   {snippet}...")
-                
-                results.append("\n".join(output))
-                break  # Success, exit retry loop
-            except RatelimitException:
-                if attempt < retries - 1:
-                    time.sleep(2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
-                    continue
-                results.append(f"[Search Error for '{query}']: Rate limited. Try again in a few seconds.")
-            except Exception as e:
-                results.append(f"[Search Error for '{query}']: {e}")
-                break
+    retries = 3
+    for attempt in range(retries):
+        try:
+            with DDGS() as ddgs:
+                results = list(ddgs.text(query, max_results=num_results))
+            
+            if not results:
+                return None
+            
+            output = [f"\n## Search: '{query}'\n"]
+            for idx, r in enumerate(results, 1):
+                title = r.get("title", "No title")
+                url = r.get("href", r.get("link", ""))
+                body = r.get("body", "")[:300]
+                output.append(f"{idx}. [{title}]({url})")
+                if body:
+                    output.append(f"   {body}...")
+            
+            return "\n".join(output)
+        except RatelimitException:
+            if attempt < retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            return None
+        except Exception:
+            return None
     
-    return "\n".join(results) if results else "No results found"
+    return None
 
+
+def multi_provider_search(queries: list, num_results: int = 10) -> str:
+    """Search using multiple providers with automatic fallback."""
+    providers = [
+        ("Exa", search_exa),
+        ("Tavily", search_tavily),
+        ("Serper", search_serper),
+        ("DuckDuckGo", search_duckduckgo),
+    ]
+    
+    all_results = []
+    
+    for query in queries[:3]:
+        result = None
+        for name, search_fn in providers:
+            result = search_fn(query, num_results)
+            if result:
+                break
+        
+        if result:
+            all_results.append(result)
+        else:
+            all_results.append(f"\n## Search: '{query}'\n[No results found]")
+    
+    return "\n".join(all_results) if all_results else "No results found"
+
+
+# =============================================================================
+# Page Visitor
+# =============================================================================
 
 def is_valid_url(url: str) -> bool:
     """Check if URL is valid and uses http/https scheme."""
     try:
         result = urlparse(url)
-        return all([result.scheme in ('http', 'https'), result.netloc])
+        return all([result.scheme in ("http", "https"), result.netloc])
     except Exception:
         return False
 
 
 def visit_page(url: str, goal: str) -> str:
-    """Fetch webpage content using Jina Reader (free tier) or direct fetch."""
+    """Fetch webpage content using Jina Reader or direct fetch."""
     if isinstance(url, list):
         url = url[0] if url else ""
     
@@ -184,7 +362,7 @@ def visit_page(url: str, goal: str) -> str:
     if not is_valid_url(url):
         return f"[Visit Error] Invalid URL: {url}. Must be a valid http/https URL."
     
-    # Try Jina Reader first (free tier available)
+    # Try Jina Reader first
     try:
         headers = {"Accept": "text/plain"}
         if JINA_API_KEY:
@@ -194,7 +372,7 @@ def visit_page(url: str, goal: str) -> str:
         response = requests.get(jina_url, headers=headers, timeout=30, allow_redirects=True)
         
         if response.status_code == 200 and len(response.text) > 100:
-            content = response.text[:12000]  # Increased limit for more context
+            content = response.text[:12000]
             return f"**Content from {url}** (goal: {goal}):\n\n{content}"
     except Exception:
         pass
@@ -206,10 +384,10 @@ def visit_page(url: str, goal: str) -> str:
         response.raise_for_status()
         
         text = response.text
-        text = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL | re.IGNORECASE)
-        text = re.sub(r'<style[^>]*>.*?</style>', '', text, flags=re.DOTALL | re.IGNORECASE)
-        text = re.sub(r'<[^>]+>', ' ', text)
-        text = re.sub(r'\s+', ' ', text).strip()
+        text = re.sub(r"<script[^>]*>.*?</script>", "", text, flags=re.DOTALL | re.IGNORECASE)
+        text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL | re.IGNORECASE)
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
         
         if len(text) > 100:
             return f"**Content from {url}** (goal: {goal}):\n\n{text[:12000]}"
@@ -228,7 +406,7 @@ class LlamaCppClient:
     """Client for the llama.cpp OpenAI-compatible API."""
     
     def __init__(self, base_url: str = LLAMA_SERVER_URL):
-        self.base_url = base_url.rstrip('/')
+        self.base_url = base_url.rstrip("/")
         self.api_url = f"{self.base_url}/v1/chat/completions"
         self.session = requests.Session()
     
@@ -240,13 +418,15 @@ class LlamaCppClient:
         except Exception:
             return False
     
-    def generate(self, messages: List[Dict[str, str]], 
-                 max_tokens: int = MAX_TOKENS,
-                 temperature: float = TEMPERATURE,
-                 top_p: float = TOP_P,
-                 stop: Optional[List[str]] = None) -> str:
+    def generate(
+        self,
+        messages: List[Dict[str, str]],
+        max_tokens: int = MAX_TOKENS,
+        temperature: float = TEMPERATURE,
+        top_p: float = TOP_P,
+        stop: Optional[List[str]] = None,
+    ) -> str:
         """Generate a response from the llama.cpp server."""
-        
         payload = {
             "messages": messages,
             "max_tokens": max_tokens,
@@ -261,7 +441,7 @@ class LlamaCppClient:
                 self.api_url,
                 json=payload,
                 headers={"Content-Type": "application/json"},
-                timeout=300,  # 5 minute timeout for long generations
+                timeout=300,
             )
             
             if response.status_code != 200:
@@ -284,17 +464,22 @@ class LlamaCppClient:
 # Research Agent
 # =============================================================================
 
-def research(client: LlamaCppClient, question: str, verbose: bool = True, 
-             max_rounds: int = MAX_ROUNDS, temperature: float = TEMPERATURE) -> dict:
+def research(
+    client: LlamaCppClient,
+    question: str,
+    verbose: bool = True,
+    max_rounds: int = MAX_ROUNDS,
+    temperature: float = TEMPERATURE,
+) -> dict:
     """Run the research agent loop."""
     if verbose:
-        print(f"\n🔍 Researching: {question}\n")
+        print(f"\n[*] Researching: {question}\n")
         print("-" * 60)
     
     system_prompt = get_system_prompt()
     messages: List[Dict[str, str]] = [
         {"role": "system", "content": system_prompt},
-        {"role": "user", "content": question}
+        {"role": "user", "content": question},
     ]
     
     sources: List[Dict[str, Any]] = []
@@ -306,7 +491,7 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
     
     for round_num in range(max_rounds):
         if verbose:
-            print(f"\n📝 Round {round_num + 1}/{max_rounds}")
+            print(f"\n[Round {round_num + 1}/{max_rounds}]")
         
         gen_start = time.time()
         content = client.generate(messages, temperature=temperature)
@@ -314,11 +499,11 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
         
         if content.startswith("[Error]") or content.startswith("[Server Error]"):
             if verbose:
-                print(f"   ❌ {content}")
+                print(f"   Error: {content}")
             break
         
         if verbose:
-            print(f"   ⏱️  Generated in {gen_time:.1f}s")
+            print(f"   Generated in {gen_time:.1f}s")
         
         messages.append({"role": "assistant", "content": content})
         
@@ -328,7 +513,7 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
             thinking.append(think_content)
             if verbose:
                 preview = think_content[:200] + "..." if len(think_content) > 200 else think_content
-                print(f"   💭 {preview}")
+                print(f"   Thinking: {preview}")
         
         # Check for final answer
         if "<answer>" in content:
@@ -341,11 +526,11 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
             
             if verbose:
                 print("\n" + "=" * 60)
-                print("✅ ANSWER:")
+                print("ANSWER:")
                 print("=" * 60)
                 print(answer.strip())
                 print("=" * 60)
-                print(f"\n📊 Stats: {round_num + 1} rounds, {len(sources)} sources, {elapsed:.1f}s")
+                print(f"\nStats: {round_num + 1} rounds, {len(sources)} sources, {elapsed:.1f}s")
             
             return {
                 "answer": answer.strip(),
@@ -364,7 +549,7 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
                 args = tool.get("arguments", {})
                 
                 if verbose:
-                    print(f"   🔧 Tool: {name}")
+                    print(f"   Tool: {name}")
                 
                 tool_error = False
                 
@@ -373,9 +558,9 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
                     if isinstance(queries, str):
                         queries = [queries]
                     if verbose:
-                        print(f"      Searching: {queries}")
-                    tool_result = duckduckgo_search(queries)
-                    if "[Search Error" in tool_result:
+                        print(f"   Queries: {queries}")
+                    tool_result = multi_provider_search(queries)
+                    if "[No results" in tool_result or "error" in tool_result.lower():
                         tool_error = True
                     else:
                         sources.append({"type": "search", "queries": queries})
@@ -388,13 +573,13 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
                     
                     if url in visited_urls:
                         if verbose:
-                            print(f"      ⚠️ Already visited: {url}")
+                            print(f"   [!] Already visited: {url}")
                         tool_result = f"[Already Visited] You already visited {url}. Use the information from your previous visit or try a different source."
                         tool_error = True
                     else:
                         visited_urls.add(url)
                         if verbose:
-                            print(f"      Visiting: {url[:60]}...")
+                            print(f"   Visiting: {url[:60]}...")
                         tool_result = visit_page(url, goal)
                         if "[Visit Error]" in tool_result:
                             tool_error = True
@@ -410,41 +595,41 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
                     consecutive_errors += 1
                     if consecutive_errors >= max_consecutive_errors:
                         if verbose:
-                            print(f"\n⚠️  {max_consecutive_errors} consecutive tool errors detected.")
+                            print(f"\n[!] {max_consecutive_errors} consecutive tool errors detected.")
                         messages.append({
                             "role": "user",
-                            "content": f"<tool_response>\n{tool_result}\n\n[System Notice] You have encountered {consecutive_errors} consecutive errors. Please provide your best answer now based on information gathered so far, or try a completely different approach.\n</tool_response>"
+                            "content": f"<tool_response>\n{tool_result}\n\n[System Notice] You have encountered {consecutive_errors} consecutive errors. Please provide your best answer now based on information gathered so far, or try a completely different approach.\n</tool_response>",
                         })
                         continue
                 else:
-                    consecutive_errors = 0  # Reset on success
+                    consecutive_errors = 0
                 
                 # Inject tool response
                 messages.append({
-                    "role": "user", 
-                    "content": f"<tool_response>\n{tool_result}\n</tool_response>"
+                    "role": "user",
+                    "content": f"<tool_response>\n{tool_result}\n</tool_response>",
                 })
             
             except json.JSONDecodeError as e:
                 consecutive_errors += 1
                 messages.append({
-                    "role": "user", 
-                    "content": f"<tool_response>\nError: Invalid JSON in tool call: {e}\n</tool_response>"
+                    "role": "user",
+                    "content": f"<tool_response>\nError: Invalid JSON in tool call: {e}\n</tool_response>",
                 })
             except Exception as e:
                 consecutive_errors += 1
                 messages.append({
-                    "role": "user", 
-                    "content": f"<tool_response>\nTool error: {e}\n</tool_response>"
+                    "role": "user",
+                    "content": f"<tool_response>\nTool error: {e}\n</tool_response>",
                 })
     
     # Force final answer after max rounds
     if verbose:
-        print("\n⚠️  Max rounds reached, requesting final answer...")
+        print("\n[!] Max rounds reached, requesting final answer...")
     
     messages.append({
         "role": "user",
-        "content": "You have reached the maximum number of research rounds. Please provide your final answer now based on all the information gathered. Use <answer></answer> tags."
+        "content": "You have reached the maximum number of research rounds. Please provide your final answer now based on all the information gathered. Use <answer></answer> tags.",
     })
     
     content = client.generate(messages, max_tokens=2048, temperature=temperature)
@@ -461,11 +646,11 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
     
     if verbose:
         print("\n" + "=" * 60)
-        print("✅ ANSWER:")
+        print("ANSWER:")
         print("=" * 60)
         print(answer.strip())
         print("=" * 60)
-        print(f"\n📊 Stats: {max_rounds} rounds (max), {len(sources)} sources, {elapsed:.1f}s")
+        print(f"\nStats: {max_rounds} rounds (max), {len(sources)} sources, {elapsed:.1f}s")
     
     return {
         "answer": answer.strip(),
@@ -479,6 +664,19 @@ def research(client: LlamaCppClient, question: str, verbose: bool = True,
 # =============================================================================
 # Main
 # =============================================================================
+
+def get_available_providers() -> List[str]:
+    """Return list of available search providers."""
+    providers = []
+    if EXA_API_KEY:
+        providers.append("Exa")
+    if TAVILY_API_KEY:
+        providers.append("Tavily")
+    if SERPER_KEY:
+        providers.append("Serper")
+    providers.append("DuckDuckGo")
+    return providers
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -497,25 +695,43 @@ Examples:
     
     # Connect to a different server:
     python inference/interactive_llamacpp.py --server http://192.168.1.100:8080
-"""
+""",
     )
-    parser.add_argument("--server", type=str, default=LLAMA_SERVER_URL,
-                        help="llama.cpp server URL (default: http://127.0.0.1:8080)")
-    parser.add_argument("--query", "-q", type=str, default=None,
-                        help="Single query mode - run one research query and exit")
-    parser.add_argument("--max-rounds", type=int, default=MAX_ROUNDS,
-                        help=f"Maximum research rounds (default: {MAX_ROUNDS})")
-    parser.add_argument("--temperature", type=float, default=TEMPERATURE,
-                        help=f"Sampling temperature (default: {TEMPERATURE})")
+    parser.add_argument(
+        "--server",
+        type=str,
+        default=LLAMA_SERVER_URL,
+        help="llama.cpp server URL (default: http://127.0.0.1:8080)",
+    )
+    parser.add_argument(
+        "--query", "-q",
+        type=str,
+        default=None,
+        help="Single query mode - run one research query and exit",
+    )
+    parser.add_argument(
+        "--max-rounds",
+        type=int,
+        default=MAX_ROUNDS,
+        help=f"Maximum research rounds (default: {MAX_ROUNDS})",
+    )
+    parser.add_argument(
+        "--temperature",
+        type=float,
+        default=TEMPERATURE,
+        help=f"Sampling temperature (default: {TEMPERATURE})",
+    )
     args = parser.parse_args()
     
+    providers = get_available_providers()
+    
     print("\n" + "=" * 60)
-    print("🔬 DeepResearch - Interactive CLI")
-    print("   llama.cpp Server Edition (100% Local)")
+    print("DeepResearch - Interactive CLI")
+    print("llama.cpp Server Edition (100% Local)")
     print("=" * 60)
     print(f"Server:  {args.server}")
-    print(f"Search:  DuckDuckGo (free, no API key)")
-    print(f"Reader:  Jina.ai {'✓' if JINA_API_KEY else '(free tier)'}")
+    print(f"Search:  {', '.join(providers)}")
+    print(f"Reader:  Jina.ai {'[configured]' if JINA_API_KEY else '[free tier]'}")
     print("=" * 60)
     
     # Initialize client
@@ -524,14 +740,14 @@ Examples:
     # Check server connection
     print("\nConnecting to llama.cpp server...", end=" ")
     if not client.check_server():
-        print("❌ FAILED")
+        print("FAILED")
         print(f"\nError: Cannot connect to llama.cpp server at {args.server}")
         print("\nPlease start the server first:")
         print("    ./scripts/start_llama_server.sh")
         print("\nOr specify a different server URL:")
         print("    python inference/interactive_llamacpp.py --server http://your-server:8080")
         sys.exit(1)
-    print("✅ Connected!")
+    print("OK")
     
     # Single query mode
     if args.query:
@@ -543,23 +759,23 @@ Examples:
     
     while True:
         try:
-            question = input("❓ Question: ").strip()
+            question = input("Question: ").strip()
             
             if not question:
                 continue
             
-            if question.lower() in ('quit', 'exit', 'q'):
-                print("\n👋 Goodbye!")
+            if question.lower() in ("quit", "exit", "q"):
+                print("\nGoodbye!")
                 break
             
             research(client, question, max_rounds=args.max_rounds, temperature=args.temperature)
             print("\n" + "-" * 60 + "\n")
         
         except KeyboardInterrupt:
-            print("\n\n👋 Goodbye!")
+            print("\n\nGoodbye!")
             break
         except Exception as e:
-            print(f"\n❌ Error: {e}\n")
+            print(f"\nError: {e}\n")
 
 
 if __name__ == "__main__":
