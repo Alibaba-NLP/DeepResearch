@@ -37,7 +37,6 @@ Requirements:
 """
 
 import argparse
-import http.client
 import json
 import os
 import re
@@ -137,12 +136,28 @@ Current date: {datetime.now().strftime("%Y-%m-%d")}"""
 
 def contains_chinese(text: str) -> bool:
     """Check if text contains Chinese characters."""
+    if not text:
+        return False
     return any("\u4E00" <= char <= "\u9FFF" for char in text)
 
 
+def sanitize_query(query: str) -> str:
+    """Sanitize and validate a search query."""
+    if not query:
+        return ""
+    return query.strip()[:500]
+
+
 def search_exa(query: str, num_results: int = 10) -> Optional[str]:
-    """Exa.ai - Neural/semantic search engine."""
+    """
+    Exa.ai - Neural/semantic search engine.
+    API Docs: https://docs.exa.ai/reference/search
+    """
     if not EXA_API_KEY:
+        return None
+    
+    query = sanitize_query(query)
+    if not query:
         return None
     
     try:
@@ -154,14 +169,22 @@ def search_exa(query: str, num_results: int = 10) -> Optional[str]:
             },
             json={
                 "query": query,
-                "numResults": num_results,
-                "useAutoprompt": True,
-                "type": "neural",
+                "numResults": min(num_results, 100),
+                "type": "auto",  # Let Exa choose best search type
             },
             timeout=30,
         )
         
-        if response.status_code in (401, 429) or response.status_code != 200:
+        if response.status_code == 401:
+            print("[Exa] Invalid or expired API key")
+            return None
+        if response.status_code == 429:
+            print("[Exa] Rate limited")
+            return None
+        if response.status_code == 402:
+            print("[Exa] Payment required - credits exhausted")
+            return None
+        if response.status_code != 200:
             return None
         
         data = response.json()
@@ -171,7 +194,7 @@ def search_exa(query: str, num_results: int = 10) -> Optional[str]:
         
         output = [f"\n## Search: '{query}'\n"]
         for idx, r in enumerate(results, 1):
-            title = r.get("title", "No title")
+            title = r.get("title") or "No title"
             url = r.get("url", "")
             text = r.get("text", "")[:300] if r.get("text") else ""
             output.append(f"{idx}. [{title}]({url})")
@@ -179,29 +202,60 @@ def search_exa(query: str, num_results: int = 10) -> Optional[str]:
                 output.append(f"   {text}...")
         
         return "\n".join(output)
-    except Exception:
+    except requests.Timeout:
+        print("[Exa] Request timeout")
+        return None
+    except requests.ConnectionError:
+        print("[Exa] Connection error")
+        return None
+    except Exception as e:
+        print(f"[Exa] Error: {e}")
         return None
 
 
 def search_tavily(query: str, num_results: int = 10) -> Optional[str]:
-    """Tavily - Search API for RAG/LLM applications."""
+    """
+    Tavily - Search API for RAG/LLM applications.
+    API Docs: https://docs.tavily.com/documentation/api-reference/endpoint/search
+    """
     if not TAVILY_API_KEY:
         return None
     
+    query = sanitize_query(query)
+    if not query:
+        return None
+    
     try:
+        # Use Bearer token auth (preferred over api_key in body)
         response = requests.post(
             "https://api.tavily.com/search",
-            headers={"Content-Type": "application/json"},
+            headers={
+                "Authorization": f"Bearer {TAVILY_API_KEY}",
+                "Content-Type": "application/json",
+            },
             json={
-                "api_key": TAVILY_API_KEY,
                 "query": query,
-                "max_results": num_results,
-                "search_depth": "advanced",
+                "max_results": min(num_results, 20),
+                "search_depth": "basic",  # Use basic (1 credit) vs advanced (2 credits)
+                "include_answer": False,
+                "include_raw_content": False,
             },
             timeout=30,
         )
         
-        if response.status_code in (401, 429) or response.status_code != 200:
+        if response.status_code == 401:
+            print("[Tavily] Invalid or expired API key")
+            return None
+        if response.status_code == 429:
+            print("[Tavily] Rate limited")
+            return None
+        if response.status_code == 432:
+            print("[Tavily] Plan limit exceeded")
+            return None
+        if response.status_code == 433:
+            print("[Tavily] Pay-as-you-go limit exceeded")
+            return None
+        if response.status_code != 200:
             return None
         
         data = response.json()
@@ -211,7 +265,7 @@ def search_tavily(query: str, num_results: int = 10) -> Optional[str]:
         
         output = [f"\n## Search: '{query}'\n"]
         for idx, r in enumerate(results, 1):
-            title = r.get("title", "No title")
+            title = r.get("title") or "No title"
             url = r.get("url", "")
             content = r.get("content", "")[:300]
             output.append(f"{idx}. [{title}]({url})")
@@ -219,58 +273,81 @@ def search_tavily(query: str, num_results: int = 10) -> Optional[str]:
                 output.append(f"   {content}...")
         
         return "\n".join(output)
-    except Exception:
+    except requests.Timeout:
+        print("[Tavily] Request timeout")
+        return None
+    except requests.ConnectionError:
+        print("[Tavily] Connection error")
+        return None
+    except Exception as e:
+        print(f"[Tavily] Error: {e}")
         return None
 
 
 def search_serper(query: str, num_results: int = 10) -> Optional[str]:
-    """Serper - Google Search API."""
+    """
+    Serper - Google Search API.
+    API Docs: https://serper.dev/
+    """
     if not SERPER_KEY:
         return None
     
+    query = sanitize_query(query)
+    if not query:
+        return None
+    
     try:
-        conn = http.client.HTTPSConnection("google.serper.dev")
-        
         if contains_chinese(query):
-            payload = json.dumps({
-                "q": query, "location": "China", "gl": "cn", "hl": "zh-cn", "num": num_results
-            })
+            payload = {"q": query, "gl": "cn", "hl": "zh-cn", "num": min(num_results, 100)}
         else:
-            payload = json.dumps({
-                "q": query, "location": "United States", "gl": "us", "hl": "en", "num": num_results
-            })
+            payload = {"q": query, "gl": "us", "hl": "en", "num": min(num_results, 100)}
         
-        headers = {"X-API-KEY": SERPER_KEY, "Content-Type": "application/json"}
+        response = requests.post(
+            "https://google.serper.dev/search",
+            headers={
+                "X-API-KEY": SERPER_KEY,
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=30,
+        )
         
-        res = None
-        for attempt in range(3):
-            try:
-                conn.request("POST", "/search", payload, headers)
-                res = conn.getresponse()
-                break
-            except Exception:
-                if attempt == 2:
-                    return None
-                time.sleep(1)
-        
-        if res is None:
+        if response.status_code == 401:
+            print("[Serper] Invalid API key")
+            return None
+        if response.status_code == 429:
+            print("[Serper] Rate limited")
+            return None
+        if response.status_code != 200:
             return None
         
-        data = json.loads(res.read().decode("utf-8"))
-        if "organic" not in data:
+        data = response.json()
+        if "error" in data:
+            print(f"[Serper] API error: {data['error']}")
+            return None
+        
+        organic = data.get("organic", [])
+        if not organic:
             return None
         
         output = [f"\n## Search: '{query}'\n"]
-        for idx, page in enumerate(data["organic"], 1):
-            title = page.get("title", "No title")
+        for idx, page in enumerate(organic, 1):
+            title = page.get("title") or "No title"
             url = page.get("link", "")
-            snippet = page.get("snippet", "")[:300]
+            snippet = page.get("snippet", "")[:300].replace("Your browser can't play this video.", "").strip()
             output.append(f"{idx}. [{title}]({url})")
             if snippet:
                 output.append(f"   {snippet}...")
         
         return "\n".join(output)
-    except Exception:
+    except requests.Timeout:
+        print("[Serper] Request timeout")
+        return None
+    except requests.ConnectionError:
+        print("[Serper] Connection error")
+        return None
+    except Exception as e:
+        print(f"[Serper] Error: {e}")
         return None
 
 
@@ -278,23 +355,28 @@ def search_duckduckgo(query: str, num_results: int = 10) -> Optional[str]:
     """DuckDuckGo - Free search, no API key required."""
     try:
         from duckduckgo_search import DDGS
-        from duckduckgo_search.exceptions import RatelimitException
+        from duckduckgo_search.exceptions import RatelimitException, DuckDuckGoSearchException
     except ImportError:
+        print("[DuckDuckGo] duckduckgo-search package not installed")
+        return None
+    
+    query = sanitize_query(query)
+    if not query:
         return None
     
     retries = 3
     for attempt in range(retries):
         try:
             with DDGS() as ddgs:
-                results = list(ddgs.text(query, max_results=num_results))
+                results = list(ddgs.text(query, max_results=min(num_results, 25)))
             
             if not results:
                 return None
             
             output = [f"\n## Search: '{query}'\n"]
             for idx, r in enumerate(results, 1):
-                title = r.get("title", "No title")
-                url = r.get("href", r.get("link", ""))
+                title = r.get("title") or "No title"
+                url = r.get("href") or r.get("link", "")
                 body = r.get("body", "")[:300]
                 output.append(f"{idx}. [{title}]({url})")
                 if body:
@@ -303,10 +385,17 @@ def search_duckduckgo(query: str, num_results: int = 10) -> Optional[str]:
             return "\n".join(output)
         except RatelimitException:
             if attempt < retries - 1:
-                time.sleep(2 ** attempt)
+                wait = 2 ** attempt
+                print(f"[DuckDuckGo] Rate limited, waiting {wait}s...")
+                time.sleep(wait)
                 continue
+            print("[DuckDuckGo] Rate limited after all retries")
             return None
-        except Exception:
+        except DuckDuckGoSearchException as e:
+            print(f"[DuckDuckGo] Search error: {e}")
+            return None
+        except Exception as e:
+            print(f"[DuckDuckGo] Error: {e}")
             return None
     
     return None
