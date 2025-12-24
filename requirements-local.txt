@@ -1,0 +1,12 @@
+# DeepResearch - Minimal requirements for llama.cpp local inference
+# Install with: pip install -r requirements-local.txt
+
+# Core dependencies
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Web search (FREE, no API key needed)
+duckduckgo-search>=6.0.0
+
+# Optional but recommended
+tqdm>=4.66.0

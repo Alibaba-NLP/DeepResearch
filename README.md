@@ -179,6 +179,55 @@ You need to modify the following in the file [inference/react_agent.py](https://
 - Change the model name to alibaba/tongyi-deepresearch-30b-a3b.
 - Adjust the content concatenation way as described in the comments on lines **88–90.**
 
+
+---
+
+### 7. Local Inference with llama.cpp (Optional)
+
+> **For Mac users or anyone who wants 100% local inference without vLLM/CUDA dependencies.**
+
+This repo includes support for running DeepResearch locally using [llama.cpp](https://github.com/ggerganov/llama.cpp) with Metal (Apple Silicon) or CUDA acceleration. Zero API costs, full privacy.
+
+#### Requirements
+
+- llama.cpp built with Metal or CUDA support
+- GGUF model: [bartowski/Alibaba-NLP_Tongyi-DeepResearch-30B-A3B-GGUF](https://huggingface.co/bartowski/Alibaba-NLP_Tongyi-DeepResearch-30B-A3B-GGUF)
+- 32GB+ RAM (for Q4_K_M quantization)
+
+#### Quick Start
+
+```bash
+# Install minimal dependencies
+pip install -r requirements-local.txt
+
+# Build llama.cpp (Mac with Metal)
+cd llama.cpp
+cmake -B build -DLLAMA_METAL=ON -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release
+cd ..
+
+# Download model (~18GB)
+mkdir -p models/gguf
+curl -L -o models/gguf/Alibaba-NLP_Tongyi-DeepResearch-30B-A3B-Q4_K_M.gguf \
+  'https://huggingface.co/bartowski/Alibaba-NLP_Tongyi-DeepResearch-30B-A3B-GGUF/resolve/main/Alibaba-NLP_Tongyi-DeepResearch-30B-A3B-Q4_K_M.gguf'
+
+# Terminal 1: Start the server
+./scripts/start_llama_server.sh
+
+# Terminal 2: Run research queries
+python inference/interactive_llamacpp.py
+```
+
+The llama.cpp server provides both an API and a web UI at http://localhost:8080.
+
+#### Features
+
+- **Free web search**: Uses DuckDuckGo (no API key required)
+- **Page visiting**: Uses Jina Reader (optional API key for better results)
+- **Loop detection**: Prevents infinite tool call cycles
+- **32K context**: Long research sessions supported
+
+---
 ## Benchmark Evaluation
 
 We provide benchmark evaluation scripts for various datasets. Please refer to the [evaluation scripts](./evaluation/) directory for more details.
