@@ -212,6 +212,7 @@ Tongyi DeepResearch also has an extensive deep research agent family. You can fi
 [15] [Repurposing Synthetic Data for Fine-grained Search Agent Supervision](https://arxiv.org/pdf/2510.24694)<br>
 [16] [ParallelMuse: Agentic Parallel Thinking for Deep Information Seeking](https://arxiv.org/pdf/2510.24698)<br>
 [17] [AgentFrontier: Expanding the Capability Frontier of LLM Agents with ZPD-Guided Data Synthesis](https://arxiv.org/pdf/2510.24695)<br>
+[18] [Nested Browser-Use Learning for Agentic Information Seeking](https://arxiv.org/pdf/2512.23647)<br>
 
 ## 🌟 Misc
 
