@@ -220,7 +220,7 @@ class Visit(BaseTool):
                 raw = summary_page_func(messages, max_retries=max_retries)
                 summary_retries -= 1
 
-            parse_retry_times = 2
+            parse_retry_times = 0
             if isinstance(raw, str):
                 raw = raw.replace("```json", "").replace("```", "").strip()
             while parse_retry_times < 3:
