@@ -1,0 +1,9 @@
+MODEL_PATH=""
+MODEL_NAME="all_moreturn_0920"
+CUDA_VISIBLE_DEVICES=0 vllm serve ${MODEL_PATH} --host 0.0.0.0 --port 8000  --trust-remote-code --gpu-memory-utilization 0.95 --tensor-parallel-size 1 --served-model-name ${MODEL_NAME} --disable-log-requests &
+CUDA_VISIBLE_DEVICES=1 vllm serve ${MODEL_PATH} --host 0.0.0.0 --port 8001  --trust-remote-code --gpu-memory-utilization 0.95 --tensor-parallel-size 1 --served-model-name ${MODEL_NAME} --disable-log-requests &
+CUDA_VISIBLE_DEVICES=2 vllm serve ${MODEL_PATH} --host 0.0.0.0 --port 8002  --trust-remote-code --gpu-memory-utilization 0.95 --tensor-parallel-size 1 --served-model-name ${MODEL_NAME} --disable-log-requests &
+CUDA_VISIBLE_DEVICES=3 vllm serve ${MODEL_PATH} --host 0.0.0.0 --port 8003  --trust-remote-code --gpu-memory-utilization 0.95 --tensor-parallel-size 1 --served-model-name ${MODEL_NAME} --disable-log-requests &
+CUDA_VISIBLE_DEVICES=4 vllm serve ${MODEL_PATH} --host 0.0.0.0 --port 8004  --trust-remote-code --gpu-memory-utilization 0.95 --tensor-parallel-size 1 --served-model-name ${MODEL_NAME} --disable-log-requests &
+CUDA_VISIBLE_DEVICES=5 vllm serve ${MODEL_PATH} --host 0.0.0.0 --port 8005  --trust-remote-code --gpu-memory-utilization 0.95 --tensor-parallel-size 1 --served-model-name ${MODEL_NAME} --disable-log-requests &
+CUDA_VISIBLE_DEVICES=6,7 vllm serve "gpt-oss-120b" --host 0.0.0.0 --port 8006 --disable-log-requests --tensor-parallel-size 2 &
