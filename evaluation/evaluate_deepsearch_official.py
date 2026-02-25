@@ -1,7 +1,5 @@
-from pydantic import BaseModel
 from openai import OpenAI
 import concurrent.futures
-from typing import Literal
 import litellm 
 import os 
 import argparse
@@ -189,7 +187,7 @@ def aggregate_statistics(round1_file, round2_file, round3_file):
     round3_stats = single_round_statistics(round3_file)
     
     keys = round1_stats.keys()  
-    avg_stats = {} 
+    avg_stats = {}
     for key in keys: 
         if isinstance(round1_stats[key], dict):
             
@@ -224,7 +222,7 @@ def single_round_statistics(input_file):
 
     try:
         tokenizer = AutoTokenizer.from_pretrained(os.getenv("Qwen2_5_7B_PATH", ""))
-    except Exception as e: 
+    except Exception: 
         tokenizer = tiktoken.encoding_for_model("gpt-4o")
     
     for item in contents:
@@ -329,7 +327,7 @@ def calculate_enhanced_statistics(round_results, round_items):
     
     try:
         tokenizer = AutoTokenizer.from_pretrained(os.getenv("Qwen2_5_7B_PATH", ""))
-    except Exception as e: 
+    except Exception: 
         tokenizer = tiktoken.encoding_for_model("gpt-4o")
     
     enhanced_stats = {}
@@ -419,7 +417,7 @@ def calculate_best_pass_at_1(query_results):
     round_correct = {round_name: 0 for round_name in ["round1", "round2", "round3"]}
 
     for query, results in query_results.items():
-        for round_name in ["round1", "round2", "round3"]: 
+        for round_name in ["round1", "round2", "round3"]:
             if results[round_name] == "Correct":  
                 round_correct[round_name] += 1 
 
@@ -459,10 +457,10 @@ def main():
     args = parser.parse_args()
     
     dataset = args.dataset  
-    if dataset in ["gaia", "webwalker"]: 
+    if dataset in ["gaia", "webwalker"]:
         judge_model = "openai/qwen2.5-72b-instruct"
         judge_prompt = JUDGE_PROMPT_GAIA 
-    elif dataset in ["xbench-deepsearch"]: 
+    elif dataset in ["xbench-deepsearch"]:
         judge_prompt = JUDGE_PROMPT_XBENCH
         judge_model = "google/gemini-2.0-flash-001"
     elif dataset.startswith("browsecomp_zh"):
