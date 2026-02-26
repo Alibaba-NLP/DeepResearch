@@ -1,0 +1,5 @@
+certifi==2021.10.8
+charset-normalizer==2.0.7
+idna==3.3
+requests==2.26.0
+urllib3==1.26.7
