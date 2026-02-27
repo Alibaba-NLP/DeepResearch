@@ -7,7 +7,11 @@ from concurrent.futures import ThreadPoolExecutor
 import http.client
 
 
+from tavily import TavilyClient
+
+
 SERPER_KEY=os.environ.get('SERPER_KEY_ID')
+SEARCH_PROVIDER=os.environ.get('SEARCH_PROVIDER', 'serper').lower()
 
 
 @register_tool("google_scholar", allow_overwrite=True)
@@ -91,6 +95,60 @@ class Scholar(BaseTool):
             return f"No results found for '{query}'. Try with a more general query."
 
 
+    def scholar_with_tavily(self, query: str):
+        academic_domains = [
+            "scholar.google.com",
+            "arxiv.org",
+            "pubmed.ncbi.nlm.nih.gov",
+            "semanticscholar.org",
+            "ieee.org",
+            "acm.org",
+            "springer.com",
+            "sciencedirect.com",
+            "nature.com",
+            "wiley.com",
+        ]
+        try:
+            client = TavilyClient()
+            response = client.search(
+                query=query,
+                max_results=10,
+                search_depth="advanced",
+                include_domains=academic_domains,
+            )
+        except Exception as e:
+            print(e)
+            return f"Tavily Scholar Timeout, return None, Please try again later."
+
+        try:
+            results = response.get("results", [])
+            if not results:
+                raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
+
+            web_snippets = list()
+            for idx, page in enumerate(results, 1):
+                date_published = ""
+                if page.get("published_date"):
+                    date_published = "\nDate published: " + page["published_date"]
+
+                snippet = ""
+                if page.get("content"):
+                    snippet = "\n" + page["content"]
+
+                redacted_version = f"{idx}. [{page.get('title', '')}]({page.get('url', '')}){date_published}\n{snippet}"
+                redacted_version = redacted_version.replace("Your browser can't play this video.", "")
+                web_snippets.append(redacted_version)
+
+            content = f"A Tavily scholar search for '{query}' found {len(web_snippets)} results:\n\n## Scholar Results\n" + "\n\n".join(web_snippets)
+            return content
+        except:
+            return f"No results found for '{query}'. Try with a more general query."
+
+    def _do_scholar_search(self, query: str):
+        if SEARCH_PROVIDER == 'tavily':
+            return self.scholar_with_tavily(query)
+        return self.google_scholar_with_serp(query)
+
     def call(self, params: Union[str, dict], **kwargs) -> str:
         # assert GOOGLE_SEARCH_KEY is not None, "Please set the IDEALAB_SEARCH_KEY environment variable."
         try:
@@ -98,13 +156,13 @@ class Scholar(BaseTool):
             query = params["query"]
         except:
             return "[google_scholar] Invalid request format: Input must be a JSON object containing 'query' field"
-        
+
         if isinstance(query, str):
-            response = self.google_scholar_with_serp(query)
+            response = self._do_scholar_search(query)
         else:
             assert isinstance(query, List)
             with ThreadPoolExecutor(max_workers=3) as executor:
 
-                response = list(executor.map(self.google_scholar_with_serp, query))
+                response = list(executor.map(self._do_scholar_search, query))
             response = "\n=======\n".join(response)
         return response
