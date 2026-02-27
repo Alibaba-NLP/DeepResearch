@@ -25,7 +25,7 @@ def call_dashscope(model, messages, stop, temperature, top_p, max_tokens, max_re
     }
     
     url = os.getenv("DASHSCOPE_API_BASE", "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")
-    api_key = os.getenv("DASHSCOPE_API_KEY", "sk-4deb7c21bc32424290dfb2dc127f4054")
+    api_key = os.getenv("DASHSCOPE_API_KEY")
     headers = {
         "Authorization": api_key,
         "Content-Type": "application/json"
