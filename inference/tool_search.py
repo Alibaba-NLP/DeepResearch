@@ -10,9 +10,11 @@ import http.client
 import json
 
 import os
+from tavily import TavilyClient
 
 
 SERPER_KEY=os.environ.get('SERPER_KEY_ID')
+SEARCH_PROVIDER=os.environ.get('SEARCH_PROVIDER', 'serper').lower()
 
 
 @register_tool("search", allow_overwrite=True)
@@ -110,22 +112,63 @@ class Search(BaseTool):
         result = self.google_search_with_serp(query)
         return result
 
+    def search_with_tavily(self, query: str):
+        try:
+            client = TavilyClient()
+            response = client.search(
+                query=query,
+                max_results=10,
+                search_depth="basic",
+            )
+        except Exception as e:
+            print(e)
+            return f"Tavily search Timeout, return None, Please try again later."
+
+        try:
+            results = response.get("results", [])
+            if not results:
+                raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
+
+            web_snippets = list()
+            for idx, page in enumerate(results, 1):
+                date_published = ""
+                if page.get("published_date"):
+                    date_published = "\nDate published: " + page["published_date"]
+
+                snippet = ""
+                if page.get("content"):
+                    snippet = "\n" + page["content"]
+
+                redacted_version = f"{idx}. [{page.get('title', '')}]({page.get('url', '')}){date_published}\n{snippet}"
+                redacted_version = redacted_version.replace("Your browser can't play this video.", "")
+                web_snippets.append(redacted_version)
+
+            content = f"A Tavily search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
+            return content
+        except:
+            return f"No results found for '{query}'. Try with a more general query."
+
+    def _do_search(self, query: str):
+        if SEARCH_PROVIDER == 'tavily':
+            return self.search_with_tavily(query)
+        return self.search_with_serp(query)
+
     def call(self, params: Union[str, dict], **kwargs) -> str:
         try:
             query = params["query"]
         except:
             return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
-        
+
         if isinstance(query, str):
             # 单个查询
-            response = self.search_with_serp(query)
+            response = self._do_search(query)
         else:
             # 多个查询
             assert isinstance(query, List)
             responses = []
             for q in query:
-                responses.append(self.search_with_serp(q))
+                responses.append(self._do_search(q))
             response = "\n=======\n".join(responses)
-            
+
         return response
 
