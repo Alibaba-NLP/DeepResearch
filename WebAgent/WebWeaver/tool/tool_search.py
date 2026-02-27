@@ -11,8 +11,11 @@ import json
 
 import os
 
+from tavily import TavilyClient
 
 SERPER_KEY=os.environ.get('SERPER_KEY_ID')
+TAVILY_API_KEY=os.environ.get('TAVILY_API_KEY')
+SEARCH_PROVIDER=os.environ.get('SEARCH_PROVIDER', 'serper')
 
 
 @register_tool("search", allow_overwrite=True)
@@ -110,6 +113,51 @@ class Search(BaseTool):
         result = self.google_search_with_serp(query)
         return result
 
+    def search_with_tavily(self, query: str):
+        client = TavilyClient(api_key=TAVILY_API_KEY)
+        for i in range(5):
+            try:
+                response = client.search(query=query, max_results=10, search_depth="basic")
+                break
+            except Exception as e:
+                print(e)
+                if i == 4:
+                    return f"Tavily search Timeout, return None, Please try again later."
+                continue
+
+        try:
+            results = response.get("results", [])
+            if not results:
+                raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
+
+            web_snippets = list()
+            idx = 0
+            for page in results:
+                idx += 1
+                date_published = ""
+                if page.get("published_date"):
+                    date_published = "\nDate published: " + page["published_date"]
+
+                source = ""
+
+                snippet = ""
+                if page.get("content"):
+                    snippet = "\n" + page["content"]
+
+                redacted_version = f"{idx}. [{page.get('title', '')}]({page['url']}){date_published}{source}\n{snippet}"
+                redacted_version = redacted_version.replace("Your browser can't play this video.", "")
+                web_snippets.append(redacted_version)
+
+            content = f"A Tavily search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
+            return content
+        except:
+            return f"No results found for '{query}'. Try with a more general query."
+
+    def _search(self, query: str):
+        if SEARCH_PROVIDER == 'tavily':
+            return self.search_with_tavily(query)
+        return self.search_with_serp(query)
+
     def call(self, params: Union[str, dict], **kwargs) -> str:
         try:
             query = params["query"]
@@ -118,13 +166,13 @@ class Search(BaseTool):
         
         if isinstance(query, str):
             # 单个查询
-            response = self.search_with_serp(query)
+            response = self._search(query)
         else:
             # 多个查询
             assert isinstance(query, List)
             responses = []
             for q in query:
-                responses.append(self.search_with_serp(q))
+                responses.append(self._search(q))
             response = "\n=======\n".join(responses)
             
         return response
