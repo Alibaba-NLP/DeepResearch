@@ -1,4 +1,4 @@
-from qwen_agent.tools.base import BaseTool, register_tool 
+from qwen_agent.tools.base import BaseTool, register_tool
 import json
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Union
@@ -8,6 +8,8 @@ import os
 
 
 GOOGLE_SEARCH_KEY = os.getenv("GOOGLE_SEARCH_KEY")
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+SEARCH_PROVIDER = os.getenv("SEARCH_PROVIDER", "serper")  # "serper" or "tavily"
 
 
 @register_tool("search", allow_overwrite=True)
@@ -86,19 +88,64 @@ class Search(BaseTool):
             return f"No results found for '{query}'. Try with a more general query, or remove the year filter."
 
 
+    def tavily_search(self, query: str):
+        from tavily import TavilyClient
+        client = TavilyClient(api_key=TAVILY_API_KEY)
+
+        for i in range(5):
+            try:
+                results = client.search(query=query, max_results=10)
+                break
+            except Exception as e:
+                print(e)
+                if i == 4:
+                    return f"Tavily search Timeout, return None, Please try again later."
+
+        try:
+            if not results.get("results"):
+                raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
+
+            web_snippets = list()
+            idx = 0
+            for page in results["results"]:
+                idx += 1
+                date_published = ""
+                if page.get("published_date"):
+                    date_published = "\nDate published: " + page["published_date"]
+
+                source = ""
+
+                snippet = ""
+                if page.get("content"):
+                    snippet = "\n" + page["content"]
+
+                redacted_version = f"{idx}. [{page['title']}]({page['url']}){date_published}{source}\n{snippet}"
+
+                redacted_version = redacted_version.replace("Your browser can't play this video.", "")
+                web_snippets.append(redacted_version)
+
+            content = f"A Tavily search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
+            return content
+        except:
+            return f"No results found for '{query}'. Try with a more general query, or remove the year filter."
+
     def call(self, params: Union[str, dict], **kwargs) -> str:
-        assert GOOGLE_SEARCH_KEY is not None, "Please set the GOOGLE_SEARCH_KEY environment variable."
+        if SEARCH_PROVIDER == "tavily":
+            assert TAVILY_API_KEY is not None, "Please set the TAVILY_API_KEY environment variable."
+        else:
+            assert GOOGLE_SEARCH_KEY is not None, "Please set the GOOGLE_SEARCH_KEY environment variable."
         try:
             query = params["query"]
         except:
             return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
         
+        search_fn = self.tavily_search if SEARCH_PROVIDER == "tavily" else self.google_search
         if isinstance(query, str):
-            response = self.google_search(query)
+            response = search_fn(query)
         else:
             assert isinstance(query, List)
             with ThreadPoolExecutor(max_workers=3) as executor:
-                response = list(executor.map(self.google_search, query))
+                response = list(executor.map(search_fn, query))
             response = "\n=======\n".join(response)
         return response
 
