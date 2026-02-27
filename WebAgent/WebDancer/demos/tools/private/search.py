@@ -6,6 +6,8 @@ from qwen_agent.tools.base import BaseTool, register_tool
 from concurrent.futures import ThreadPoolExecutor
 MAX_MULTIQUERY_NUM = os.getenv("MAX_MULTIQUERY_NUM", 3)
 GOOGLE_SEARCH_KEY = os.getenv("GOOGLE_SEARCH_KEY")
+TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
+SEARCH_PROVIDER = os.getenv("SEARCH_PROVIDER", "serper").lower()
 
 @register_tool("search", allow_overwrite=True)
 class Search(BaseTool):
@@ -26,19 +28,25 @@ class Search(BaseTool):
     }
 
     def call(self, params: str, **kwargs) -> str:
-        assert GOOGLE_SEARCH_KEY, "Please set the GOOGLE_SEARCH_KEY environment variable."
         try:
             params = self._verify_json_format_args(params)
             query = params["query"][:MAX_MULTIQUERY_NUM]
         except:
             return "[Search] Invalid request format: Input must be a JSON object containing 'query' field"
 
+        if SEARCH_PROVIDER == "tavily":
+            assert TAVILY_API_KEY, "Please set the TAVILY_API_KEY environment variable."
+            search_fn = self.tavily_search
+        else:
+            assert GOOGLE_SEARCH_KEY, "Please set the GOOGLE_SEARCH_KEY environment variable."
+            search_fn = self.google_search
+
         if isinstance(query, str):
-            response = self.google_search(query)
+            response = search_fn(query)
         else:
             assert isinstance(query, List)
             with ThreadPoolExecutor(max_workers=3) as executor:
-                response = list(executor.map(self.google_search, query))
+                response = list(executor.map(search_fn, query))
             response = "\n=======\n".join(response)
         return response
 
@@ -94,6 +102,35 @@ class Search(BaseTool):
             return content
         except Exception as e:
             return str(e) + f"No results found for '{query}'. Try with a more general query."
+
+    def tavily_search(self, query: str) -> str:
+        from tavily import TavilyClient
+
+        try:
+            client = TavilyClient(api_key=TAVILY_API_KEY)
+            results = client.search(query=query, max_results=10, search_depth="basic")
+        except Exception as e:
+            return f"Tavily search failed: {e}. Please try again later."
+
+        if not results.get("results"):
+            return f"No results found for query: '{query}'. Use a less specific query."
+
+        web_snippets = list()
+        for idx, page in enumerate(results["results"], start=1):
+            date_published = ""
+            if page.get("published_date"):
+                date_published = "\nDate published: " + page["published_date"]
+
+            snippet = ""
+            if page.get("content"):
+                snippet = "\n" + page["content"]
+
+            redacted_version = f"{idx}. [{page['title']}]({page['url']}){date_published}\n{snippet}"
+            redacted_version = redacted_version.replace("Your browser can't play this video.", "")
+            web_snippets.append(redacted_version)
+
+        content = f"A Tavily search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
+        return content
 
 if __name__ == "__main__":
     print(Search().call({"query": ["tongyi lab"]}))
