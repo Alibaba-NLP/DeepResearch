@@ -3,6 +3,7 @@ from typing import Union
 
 from .azure import TextChatAtAzure
 from .base import LLM_REGISTRY, BaseChatModel, ModelServiceError
+from .minimax import TextChatAtMiniMax
 from .oai import TextChatAtOAI
 from .openvino import OpenVINO
 from .qwen_dashscope import QwenChatAtDS
@@ -64,6 +65,10 @@ def get_chat_model(cfg: Union[dict, str] = 'qwen-plus') -> BaseChatModel:
 
     model = cfg.get('model', '')
 
+    if 'minimax' in model.lower():
+        model_type = 'minimax'
+        return LLM_REGISTRY[model_type](cfg)
+
     if '-vl' in model.lower():
         model_type = 'qwenvl_dashscope'
         return LLM_REGISTRY[model_type](cfg)
@@ -84,6 +89,7 @@ __all__ = [
     'QwenChatAtDS',
     'TextChatAtOAI',
     'TextChatAtAzure',
+    'TextChatAtMiniMax',
     'QwenVLChatAtDS',
     'QwenVLChatAtOAI',
     'QwenAudioChatAtDS',
