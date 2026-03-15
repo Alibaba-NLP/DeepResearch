@@ -97,9 +97,13 @@ class Visit(BaseTool):
         return response.strip()
         
     def call_server(self, msgs, max_retries=2):
-        api_key = os.environ.get("API_KEY")
-        url_llm = os.environ.get("API_BASE")
-        model_name = os.environ.get("SUMMARY_MODEL_NAME", "")
+        api_key = os.environ.get("API_KEY") or os.environ.get("MINIMAX_API_KEY")
+        url_llm = os.environ.get("API_BASE") or (
+            "https://api.minimax.io/v1" if os.environ.get("MINIMAX_API_KEY") and not os.environ.get("API_KEY") else None
+        )
+        model_name = os.environ.get("SUMMARY_MODEL_NAME") or (
+            "MiniMax-M2.5" if os.environ.get("MINIMAX_API_KEY") and not os.environ.get("API_KEY") else ""
+        )
         client = OpenAI(
             api_key=api_key,
             base_url=url_llm,
