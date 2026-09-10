@@ -54,6 +54,10 @@ You can download WebWatcher via Hugging Face [🤗 HuggingFace](https://huggingf
 
 Before running inference, test set images need to be downloaded to the `infer/scripts_eval/images` folder. This can be accomplished by running `infer/scripts_eval/download_image.py`. If you encounter issues downloading images from our provided OSS URLs, please obtain the images from the original dataset source and place them in the corresponding `infer/scripts_eval/images` folder.
 
+Keep each JSONL sample's `file_path` as a publicly accessible image URL, even when you download the image separately. The evaluator loads the local copy from `IMAGE_DIR` using the basename of `file_path`, but also includes the original URL in the agent's prompt for reverse image search. `VLSearchImage` passes that URL to SerpApi; it cannot search an image using a path on your machine.
+
+For example, with `benchmark=simplevqa` and `file_path` set to `https://example.org/images/sample.jpg`, place the local copy at `infer/scripts_eval/images/simplevqa/sample.jpg`. If the original URL is unavailable, replace `file_path` with another publicly accessible URL for the same image and match the local filename to its basename. Changing `file_path` to the local filename alone does not configure reverse image search.
+
 ### Step 3: Model Preparation
 
 Put a trained model that needs inference and a summery model (qwen-2.5-72b or more) into `infer/pretrain_model`.
