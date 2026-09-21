@@ -109,6 +109,23 @@ class FileParser(BaseTool):
         }
     ]
 
+    @staticmethod
+    def _resolve_in_root(file_root_path, f_name):
+        """Resolve a model-supplied file name inside ``file_root_path``.
+
+        ``os.path.join`` silently drops ``file_root_path`` when ``f_name`` is an
+        absolute path, and ``..`` segments walk out of it, so the name coming from
+        the tool call could address any file the process is allowed to read.
+        Return ``None`` when the name does not stay inside the root.
+        """
+        root = os.path.realpath(file_root_path)
+        target = os.path.realpath(os.path.join(root, f_name))
+        try:
+            inside = os.path.commonpath([root, target]) == root
+        except ValueError:  # different drives on Windows
+            inside = False
+        return target if inside else None
+
     async def call(self, params, file_root_path):
         file_name = params["files"]
         outputs = []
@@ -116,10 +133,15 @@ class FileParser(BaseTool):
         file_path = []
         omnifile_path = []
         for f_name in file_name:
+            resolved = self._resolve_in_root(file_root_path, f_name)
+            if resolved is None:
+                outputs.append(f'# Error processing {os.path.basename(f_name)}: '
+                               f'file name is outside {file_root_path}')
+                continue
             if '.mp3' not in f_name:
-                file_path.append(os.path.join(file_root_path, f_name))
+                file_path.append(resolved)
             else:
-                omnifile_path.append(os.path.join(file_root_path, f_name))
+                omnifile_path.append(resolved)
 
         if len(file_path):
             params = {'files': file_path}
