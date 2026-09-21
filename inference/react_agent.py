@@ -157,11 +157,15 @@ class MultiTurnReactAgent(FnCallAgent):
                 content = content[:pos]
             messages.append({"role": "assistant", "content": content.strip()})
             if '<tool_call>' in content and '</tool_call>' in content:
-                tool_call = content.split('<tool_call>')[1].split('</tool_call>')[0]
+                # Take the last <tool_call> block: the model frequently restates the
+                # required tool-call format inside its own <think> reasoning, and the
+                # call it actually decided on is the one that ends the turn.
+                # Same convention as WebAgent/NestBrowse and WebAgent/ParallelMuse.
+                tool_call = content.split('<tool_call>')[-1].split('</tool_call>')[0]
                 try:
                     if "python" in tool_call.lower():
                         try:
-                            code_raw=content.split('<tool_call>')[1].split('</tool_call>')[0].split('<code>')[1].split('</code>')[0].strip()
+                            code_raw=tool_call.split('<code>')[1].split('</code>')[0].strip()
                             result = TOOL_MAP['PythonInterpreter'].call(code_raw)
                         except:
                             result = "[Python Interpreter Error]: Formatting error."
