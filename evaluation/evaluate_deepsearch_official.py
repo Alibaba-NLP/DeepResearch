@@ -70,7 +70,15 @@ extracted_answer_format_for_xbench = {
 
 
 def is_correct_judgement(judgement):
-    return judgement.lower() == "correct" or (judgement and judgement.lower()[0] == "a")
+    if not judgement:
+        return False
+    verdict = judgement.strip().lower()
+    # JUDGE_PROMPT_GAIA answers "Correct"/"Incorrect"; JUDGE_PROMPT_XBENCH and
+    # JUDGE_PROMPT_BROWSECOMP_OFFICIAL are reduced to "Correct"/"" by call_llm_judge();
+    # the letter-grade prompts (JUDGE_PROMPT_QA, JUDGE_PROMPT_SEAL0_QA) answer a bare
+    # "A"/"B"/"C". Matching only the first character also accepted verdicts such as
+    # "Actually, ... incorrect" or "Answer: Incorrect" as correct.
+    return verdict == "correct" or verdict == "a"
 
 
 def call_llm_judge(item): 
