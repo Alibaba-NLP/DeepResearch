@@ -159,7 +159,9 @@ class MultiTurnReactAgent(FnCallAgent):
             if '<tool_call>' in content and '</tool_call>' in content:
                 tool_call = content.split('<tool_call>')[1].split('</tool_call>')[0]
                 try:
-                    if "python" in tool_call.lower():
+                    # Python calls append a <code> block after the JSON header.
+                    tool_header = json5.loads(tool_call, consume_trailing=False)
+                    if tool_header.get('name') == 'PythonInterpreter':
                         try:
                             code_raw=content.split('<tool_call>')[1].split('</tool_call>')[0].split('<code>')[1].split('</code>')[0].strip()
                             result = TOOL_MAP['PythonInterpreter'].call(code_raw)
