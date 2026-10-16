@@ -100,6 +100,7 @@ cp .env.example .env
 Edit the `.env` file and provide your actual API keys and configuration values:
 
 - **SERPER_KEY_ID**: Get your key from [Serper.dev](https://serper.dev/) for web search and Google Scholar
+- **SEARCH_PROVIDER** / **YDC_API_KEY** (optional): set `SEARCH_PROVIDER=you` to use [You.com](https://you.com/platform) for web search instead of Serper. `YDC_API_KEY` is optional; without it a keyless endpoint is used (100 searches/day per IP). Google Scholar still uses Serper.
 - **JINA_API_KEYS**: Get your key from [Jina.ai](https://jina.ai/) for web page reading
 - **API_KEY/API_BASE**: OpenAI-compatible API for page summarization from [OpenAI](https://platform.openai.com/)
 - **DASHSCOPE_API_KEY**: Get your key from [Dashscope](https://dashscope.aliyun.com/) for file parsing

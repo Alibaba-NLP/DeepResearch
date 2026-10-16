@@ -10,9 +10,15 @@ import http.client
 import json
 
 import os
+import time
 
 
 SERPER_KEY=os.environ.get('SERPER_KEY_ID')
+# Optional You.com backend: set SEARCH_PROVIDER=you (default: serper).
+# YDC_API_KEY is optional; without it the keyless endpoint is used (100 searches/day per IP).
+SEARCH_PROVIDER=os.environ.get('SEARCH_PROVIDER', 'serper').lower()
+YDC_API_KEY=os.environ.get('YDC_API_KEY')
+YDC_USER_AGENT="youdotcom-integration/alibaba-nlp-deepresearch"
 
 
 @register_tool("search", allow_overwrite=True)
@@ -106,7 +112,65 @@ class Search(BaseTool):
 
 
     
+    def search_with_youcom(self, query: str):
+        headers = {'User-Agent': YDC_USER_AGENT}
+        if YDC_API_KEY:
+            url = "https://ydc-index.io/v1/search"
+            headers['X-API-Key'] = YDC_API_KEY
+            kwargs = {'json': {"query": query, "count": 10}}
+        else:
+            url = "https://api.you.com/v1/agents/search"
+            kwargs = {'params': {"query": query, "count": 10}}
+
+        for i in range(5):
+            try:
+                res = requests.request("POST" if YDC_API_KEY else "GET", url, headers=headers, timeout=30, **kwargs)
+                if res.status_code == 429 and i < 4:
+                    retry_after = res.headers.get("Retry-After", "")
+                    time.sleep(min(int(retry_after), 60) if retry_after.isdigit() else 2 ** i)
+                    continue
+                if res.status_code in (401, 402, 403, 429):
+                    reason = {401: "invalid YDC_API_KEY", 402: "out of credits",
+                              403: "key lacks scope or wrong host", 429: "rate limited"}[res.status_code]
+                    print(f"You.com search error {res.status_code}: {reason}")
+                    return f"You.com search failed ({res.status_code}: {reason}), Please try again later."
+                res.raise_for_status()
+                results = res.json()
+                break
+            except Exception as e:
+                print(e)
+                if i == 4:
+                    return f"Google search Timeout, return None, Please try again later."
+                continue
+
+        try:
+            pages = (results.get("results") or {}).get("web") or []
+            if not pages:
+                raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
+
+            web_snippets = list()
+            idx = 0
+            for page in pages:
+                idx += 1
+                date_published = ""
+                if page.get("page_age"):
+                    date_published = "\nDate published: " + str(page["page_age"]).split("T")[0]
+
+                snippet = ""
+                if page.get("description"):
+                    snippet = "\n" + page["description"]
+
+                redacted_version = f"{idx}. [{page.get('title', '')}]({page.get('url', '')}){date_published}\n{snippet}"
+                web_snippets.append(redacted_version)
+
+            content = f"A Google search for '{query}' found {len(web_snippets)} results:\n\n## Web Results\n" + "\n\n".join(web_snippets)
+            return content
+        except:
+            return f"No results found for '{query}'. Try with a more general query."
+
     def search_with_serp(self, query: str):
+        if SEARCH_PROVIDER == "you":
+            return self.search_with_youcom(query)
         result = self.google_search_with_serp(query)
         return result
 
