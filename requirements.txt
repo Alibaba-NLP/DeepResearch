@@ -76,6 +76,7 @@ lxml==6.0.1
 markdown-it-py==4.0.0
 MarkupSafe==3.0.2
 mdurl==0.1.2
+mcp==1.26.0
 mistral_common==1.8.5
 modelscope==1.30.0
 mpmath==1.3.0

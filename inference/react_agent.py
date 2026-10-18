@@ -16,6 +16,7 @@ from qwen_agent.utils.utils import format_as_text_message, merge_generate_cfgs
 from prompt import *
 import time
 import asyncio
+import uuid
 
 from tool_file import *
 from tool_scholar import *
@@ -133,6 +134,7 @@ class MultiTurnReactAgent(FnCallAgent):
         cur_date = today_date()
         system_prompt = system_prompt + str(cur_date)
         messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": question}]
+        search_session_id = uuid.uuid4().hex
         num_llm_calls_available = MAX_LLM_CALL_PER_RUN
         round = 0
         while num_llm_calls_available > 0:
@@ -170,7 +172,7 @@ class MultiTurnReactAgent(FnCallAgent):
                         tool_call = json5.loads(tool_call)
                         tool_name = tool_call.get('name', '')
                         tool_args = tool_call.get('arguments', {})
-                        result = self.custom_call_tool(tool_name, tool_args)
+                        result = self.custom_call_tool(tool_name, tool_args, search_session_id=search_session_id)
 
                 except:
                     result = 'Error: Tool call is not a valid JSON. Tool call must contain a valid "name" and "arguments" field.'
