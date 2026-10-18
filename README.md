@@ -99,7 +99,8 @@ cp .env.example .env
 
 Edit the `.env` file and provide your actual API keys and configuration values:
 
-- **SERPER_KEY_ID**: Get your key from [Serper.dev](https://serper.dev/) for web search and Google Scholar
+- **SEARCH_PROVIDER**: Leave blank for automatic web search selection: a configured `SERPER_KEY_ID` keeps Serper; otherwise use [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp) with no account or API key. Anonymous Parallel search uses Fast mode and is subject to free-tier rate limits. Set `parallel` or `serper` to choose explicitly, or `none` to disable web search. Provider failures are returned to the agent without switching providers. Parallel returns source URLs and excerpts; its result count and ranking can differ from Google search.
+- **SERPER_KEY_ID**: Get your key from [Serper.dev](https://serper.dev/) for Google Scholar and optional Serper web search. The example value `your_key` is treated as unconfigured for web search selection. Google Scholar still requires Serper when web search uses Parallel.
 - **JINA_API_KEYS**: Get your key from [Jina.ai](https://jina.ai/) for web page reading
 - **API_KEY/API_BASE**: OpenAI-compatible API for page summarization from [OpenAI](https://platform.openai.com/)
 - **DASHSCOPE_API_KEY**: Get your key from [Dashscope](https://dashscope.aliyun.com/) for file parsing
