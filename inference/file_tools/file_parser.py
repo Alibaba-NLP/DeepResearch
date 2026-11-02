@@ -556,10 +556,14 @@ class SingleFileParser(BaseTool):
         logger.info(f'The parsing result of {file_path} has been cached')
 
     def _flatten_result(self, result: list) -> str:
-        return PARAGRAPH_SPLIT_SYMBOL.join(
-            para.get('text', para.get('table', ''))
-            for page in result for para in page['content']
-        )
+        paragraphs = []
+        for page in result:
+            for para in page['content']:
+                content = para.get('text', para.get('table', para.get('schema', '')))
+                if isinstance(content, dict):
+                    content = json.dumps(content, ensure_ascii=False)
+                paragraphs.append(content)
+        return PARAGRAPH_SPLIT_SYMBOL.join(paragraphs)
 
     def parse_zip(self, file_path: str) -> List[dict]:
         extract_dir = os.path.join(self.data_root, f"zip_{hash_sha256(file_path)}")
