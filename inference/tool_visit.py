@@ -128,6 +128,10 @@ class Visit(BaseTool):
                     return ""
                 continue
 
+        # Exhausted retries with empty content on the last attempt: fall through
+        # here and return "" so callers never receive an implicit None.
+        return ""
+
 
     def jina_readpage(self, url: str) -> str:
         """
@@ -223,22 +227,31 @@ class Visit(BaseTool):
             parse_retry_times = 0
             if isinstance(raw, str):
                 raw = raw.replace("```json", "").replace("```", "").strip()
+            parsed = None
             while parse_retry_times < 3:
                 try:
-                    raw = json.loads(raw)
-                    break
-                except:
-                    raw = summary_page_func(messages, max_retries=max_retries)
-                    parse_retry_times += 1
-            
-            if parse_retry_times >= 3:
+                    candidate = json.loads(raw)
+                    # A valid JSON payload of the wrong shape (list, string,
+                    # scalar, or missing keys) would crash on raw["evidence"]
+                    # below; treat it as a parse failure and refetch instead.
+                    if isinstance(candidate, dict) and "evidence" in candidate and "summary" in candidate:
+                        parsed = candidate
+                        break
+                except Exception:
+                    pass
+                raw = summary_page_func(messages, max_retries=max_retries)
+                if isinstance(raw, str):
+                    raw = raw.replace("```json", "").replace("```", "").strip()
+                parse_retry_times += 1
+
+            if parsed is None:
                 useful_information = "The useful information in {url} for user goal {goal} as follows: \n\n".format(url=url, goal=goal)
                 useful_information += "Evidence in page: \n" + "The provided webpage content could not be accessed. Please check the URL or file format." + "\n\n"
                 useful_information += "Summary: \n" + "The webpage content could not be processed, and therefore, no information is available." + "\n\n"
             else:
                 useful_information = "The useful information in {url} for user goal {goal} as follows: \n\n".format(url=url, goal=goal)
-                useful_information += "Evidence in page: \n" + str(raw["evidence"]) + "\n\n"
-                useful_information += "Summary: \n" + str(raw["summary"]) + "\n\n"
+                useful_information += "Evidence in page: \n" + str(parsed["evidence"]) + "\n\n"
+                useful_information += "Summary: \n" + str(parsed["summary"]) + "\n\n"
 
             if len(useful_information) < 10 and summary_retries < 0:
                 print("[visit] Could not generate valid summary after maximum retries")
