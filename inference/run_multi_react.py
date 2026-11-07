@@ -38,7 +38,10 @@ if __name__ == "__main__":
     model_name = os.path.basename(model.rstrip('/'))
 
     model_dir = os.path.join(output_base, f"{model_name}_sglang")
-    dataset_dir = os.path.join(model_dir, args.dataset)
+    # Absolute input paths must not replace the model output directory.
+    # Keep relative output layouts unchanged so existing runs can resume.
+    dataset_name = os.path.basename(args.dataset) if os.path.isabs(args.dataset) else args.dataset
+    dataset_dir = os.path.join(model_dir, dataset_name)
 
     os.makedirs(dataset_dir, exist_ok=True)
 
