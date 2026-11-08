@@ -46,11 +46,13 @@ class Scholar(BaseTool):
                 if i == 4:
                     return f"Google Scholar Timeout, return None, Please try again later."
                 continue
-        
 
-        data = res.read()
-    
-        results = json.loads(data.decode("utf-8"))
+        try:
+            data = res.read()
+            results = json.loads(data.decode("utf-8"))
+        except Exception as e:
+            print(e)
+            return f"Google Scholar returned a malformed response for '{query}', please try again later."
         try:
             if "organic" not in results:
                 raise Exception(f"No results found for query: '{query}'. Use a less specific query.")
