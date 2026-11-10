@@ -4,12 +4,21 @@ from typing import List, Union
 import requests
 from qwen_agent.tools.base import BaseTool, register_tool
 import asyncio
-from typing import Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 import uuid
 import http.client
 import json
 
 import os
+
+# Contamination guard integration (benchmark evaluation integrity)
+try:
+    import sys
+    sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "evaluation"))
+    from contamination_guard import ContaminationGuard
+    _GUARD_AVAILABLE = True
+except ImportError:
+    _GUARD_AVAILABLE = False
 
 
 SERPER_KEY=os.environ.get('SERPER_KEY_ID')
@@ -35,6 +44,15 @@ class Search(BaseTool):
 
     def __init__(self, cfg: Optional[dict] = None):
         super().__init__(cfg)
+        # Optional contamination guard: set via environment variable
+        # CONTAMINATION_GUARD_DATA=path/to/benchmark.jsonl
+        guard_data = os.environ.get("CONTAMINATION_GUARD_DATA", "")
+        self.guard: Optional[Any] = None
+        if _GUARD_AVAILABLE and guard_data:
+            self.guard = ContaminationGuard(
+                benchmark_name=os.environ.get("CONTAMINATION_GUARD_BENCHMARK", "generic"),
+                benchmark_data_path=guard_data,
+            )
     def google_search_with_serp(self, query: str):
         def contains_chinese_basic(text: str) -> bool:
             return any('\u4E00' <= char <= '\u9FFF' for char in text)
@@ -107,6 +125,14 @@ class Search(BaseTool):
 
     
     def search_with_serp(self, query: str):
+        # Contamination guard: block queries that match benchmark question text
+        if self.guard is not None:
+            result = self.guard.check_query(query)
+            if not result.allowed:
+                return (
+                    f"[Contamination Guard] Search blocked: {result.reason}. "
+                    f"Please reformulate your query using your own reasoning."
+                )
         result = self.google_search_with_serp(query)
         return result
 
